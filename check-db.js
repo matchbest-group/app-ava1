@@ -1,9 +1,16 @@
 const { MongoClient } = require('mongodb');
-require('dotenv').config({ path: '.env.local' });
+const path = require('path');
+require('dotenv').config({ path: path.resolve(__dirname, '.env.local') });
+
+// Debug: Check environment variables
+console.log('Environment variables loaded:');
+console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'SET' : 'NOT SET');
+console.log('MONGODB_DB_NAME:', process.env.MONGODB_DB_NAME);
+console.log('ADMIN_PASSWORD:', process.env.ADMIN_PASSWORD ? 'SET' : 'NOT SET');
 
 async function checkCredentials() {
   // Use the MongoDB Atlas URI from environment
-  const uri = process.env.MONGODB_URI || 'mongodb://localhost:27017';
+  const uri = process.env.MONGODB_URI;
   console.log('Using URI:', uri.replace(/\/\/[^:]+:[^@]+@/, '//***:***@')); // Hide credentials in log
   
   const client = new MongoClient(uri);
