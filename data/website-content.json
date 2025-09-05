@@ -1,0 +1,71 @@
+{
+  "hero": {
+    "title": "Welcome to AVA ONE",
+    "subtitle": "Empowering businesses with cutting-edge solutions",
+    "backgroundImage": "/uploads/hero-backgroundImage-1756981589001.jpeg",
+    "ctaText": "Get Started"
+  },
+  "businessIntelligence": {
+    "title": "Business Intelligence",
+    "description": "Transform your data into actionable insights",
+    "features": [
+      "Real-time Analytics",
+      "Custom Dashboards",
+      "Data Visualization",
+      "Predictive Analytics"
+    ],
+    "image": "/uploads/businessIntelligence-image-1756974328488.png"
+  },
+  "pricing": {
+    "title": "Choose Your Plan",
+    "subtitle": "Select the perfect plan for your business needs",
+    "plans": [
+      {
+        "name": "Starter",
+        "price": "$29/month",
+        "features": [
+          "Basic Analytics",
+          "5 Users",
+          "Email Support"
+        ],
+        "popular": true
+      },
+      {
+        "name": "Professional",
+        "price": "$99/month",
+        "features": [
+          "Advanced Analytics",
+          "25 Users",
+          "Priority Support",
+          "Custom Reports"
+        ],
+        "popular": false
+      },
+      {
+        "name": "Enterprise",
+        "price": "$299/month",
+        "features": [
+          "Full Analytics Suite",
+          "Unlimited Users",
+          "24/7 Support",
+          "Custom Integration"
+        ],
+        "popular": false
+      }
+    ]
+  },
+  "contact": {
+    "title": "Get in Touch",
+    "subtitle": "Ready to transform your business with Ava One? Contact us today!",
+    "email": "contact@avaone.com",
+    "phone": "+1 (555) 123-4567",
+    "address": "123 Business St, Tech City, TC 12345"
+  },
+  "promoBanner": {
+    "isVisible": true,
+    "text": "🎉 Limited Time Offer: Get 50% OFF on all Premium Plans! Use code SAVE50",
+    "backgroundColor": "#6368f2",
+    "textColor": "#f0efef",
+    "link": "/pricing"
+  }
+}

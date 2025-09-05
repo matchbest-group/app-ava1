@@ -5,44 +5,45 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { ArrowRight, Play, Star, Users, Zap } from "lucide-react"
 
-const heroSlides = [
-  {
-    title: "Enterprise Solutions That Scale",
-    subtitle: "Powerful tools for modern businesses",
-    description:
-      "Transform your workflow with our comprehensive suite of professional-grade applications designed for enterprise success.",
-    cta: "Explore Products",
-    image: "/modern-office-workspace-with-multiple-screens-show.png",
-  },
-  {
-    title: "Bundle & Save Up to 40%",
-    subtitle: "Complete productivity suites",
-    description:
-      "Get more value with our carefully curated product bundles. Everything you need to run your business efficiently.",
-    cta: "View Bundles",
-    image: "/professional-team-collaborating-with-various-softw.png",
-  },
-  {
-    title: "Trusted by 10,000+ Companies",
-    subtitle: "Industry-leading reliability",
-    description:
-      "Join thousands of successful businesses who trust our platform for their critical operations and growth.",
-    cta: "See Case Studies",
-    image: "/diverse-business-professionals-using-technology-in.png",
-  },
-]
+interface HeroContent {
+  title: string
+  subtitle: string
+  backgroundImage: string
+  ctaText: string
+}
 
 export function HeroSection() {
+  const [heroContent, setHeroContent] = useState<HeroContent>({
+    title: "Welcome to AVA One",
+    subtitle: "Empowering businesses with cutting-edge solutions",
+    backgroundImage: "/modern-office-workspace-with-multiple-screens-show.png",
+    ctaText: "Get Started"
+  })
+
   const [currentSlide, setCurrentSlide] = useState(0)
+
+  // Load content from API
+  useEffect(() => {
+    const loadContent = async () => {
+      try {
+        const response = await fetch('/api/website-content')
+        if (response.ok) {
+          const data = await response.json()
+          setHeroContent(data.hero)
+        }
+      } catch (error) {
+        console.error('Failed to load hero content:', error)
+      }
+    }
+    loadContent()
+  }, [])
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length)
+      setCurrentSlide((prev) => (prev + 1) % 3)
     }, 5000)
     return () => clearInterval(timer)
   }, [])
-
-  const currentHero = heroSlides[currentSlide]
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-br from-background via-card to-muted">
@@ -53,17 +54,17 @@ export function HeroSection() {
             <div className="space-y-4">
               <div className="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium">
                 <Star className="w-4 h-4 mr-2" />
-                {currentHero.subtitle}
+                New Platform
               </div>
               <h1 className="font-heading font-black text-4xl lg:text-6xl text-foreground leading-tight text-balance">
-                {currentHero.title}
+                {heroContent.title}
               </h1>
-              <p className="text-lg text-muted-foreground max-w-lg text-pretty">{currentHero.description}</p>
+              <p className="text-lg text-muted-foreground max-w-lg text-pretty">{heroContent.subtitle}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <Button size="lg" className="group">
-                {currentHero.cta}
+                {heroContent.ctaText}
                 <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
               </Button>
               <Button variant="outline" size="lg" className="group bg-transparent">
@@ -93,8 +94,8 @@ export function HeroSection() {
           <div className="relative">
             <Card className="overflow-hidden border-0 shadow-2xl">
               <img
-                src={currentHero.image || "/placeholder.svg"}
-                alt={currentHero.title}
+                src={heroContent.backgroundImage || "/placeholder.svg"}
+                alt={heroContent.title}
                 className="w-full h-[400px] object-cover transition-all duration-500"
               />
             </Card>
@@ -111,7 +112,7 @@ export function HeroSection() {
 
         {/* Slide Indicators */}
         <div className="flex justify-center mt-12 space-x-2">
-          {heroSlides.map((_, index) => (
+          {[0, 1, 2].map((_, index) => (
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
