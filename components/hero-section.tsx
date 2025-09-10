@@ -116,9 +116,8 @@ export function HeroSection() {
             <button
               key={index}
               onClick={() => setCurrentSlide(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === currentSlide ? "bg-primary" : "bg-muted-foreground/30"
-              }`}
+              className={`w-3 h-3 rounded-full transition-all ${index === currentSlide ? "bg-primary" : "bg-muted-foreground/30"
+                }`}
             />
           ))}
         </div>

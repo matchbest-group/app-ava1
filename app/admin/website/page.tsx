@@ -189,7 +189,7 @@ export default function AdminWebsitePage() {
             [field]: url
           }
         }))
-        
+
         toast({
           title: 'Success',
           description: 'Image uploaded successfully!'
@@ -252,7 +252,7 @@ export default function AdminWebsitePage() {
                   placeholder="Enter main title"
                 />
               </div>
-              
+
               <div>
                 <Label htmlFor="hero-subtitle">Subtitle</Label>
                 <Textarea
@@ -695,9 +695,9 @@ export default function AdminWebsitePage() {
               {/* Preview */}
               <div>
                 <Label>Preview</Label>
-                <div 
+                <div
                   className="mt-2 h-12 flex items-center justify-center rounded border relative overflow-hidden"
-                  style={{ 
+                  style={{
                     backgroundColor: content.promoBanner?.backgroundColor || '#6366f1',
                     color: content.promoBanner?.textColor || '#ffffff'
                   }}
@@ -724,7 +724,7 @@ export default function AdminWebsitePage() {
                 <p className="text-muted-foreground mb-4">
                   Leads are now managed in a dedicated section for better organization.
                 </p>
-                <Button 
+                <Button
                   onClick={() => window.open('/admin/leads', '_blank')}
                   className="group"
                 >

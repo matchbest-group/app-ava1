@@ -19,7 +19,7 @@ export function BusinessIntelligenceSection() {
     description: "Transform your data into actionable insights",
     features: [
       "Real-time Analytics",
-      "Custom Dashboards", 
+      "Custom Dashboards",
       "Data Visualization",
       "Predictive Analytics"
     ],
@@ -107,7 +107,7 @@ export function BusinessIntelligenceSection() {
                 className="w-full h-[500px] object-cover"
               />
             </Card>
-            
+
             {/* Floating stats cards */}
             <Card className="absolute -top-6 -left-6 p-4 shadow-lg bg-background border">
               <div className="flex items-center space-x-2">
@@ -118,7 +118,7 @@ export function BusinessIntelligenceSection() {
                 </div>
               </div>
             </Card>
-            
+
             <Card className="absolute -bottom-6 -right-6 p-4 shadow-lg bg-background border">
               <div className="flex items-center space-x-2">
                 <div className="w-3 h-3 bg-blue-500 rounded-full animate-pulse"></div>

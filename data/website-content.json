@@ -28,7 +28,7 @@
           "5 Users",
           "Email Support"
         ],
-        "popular": true
+        "popular": false
       },
       {
         "name": "Professional",
@@ -50,7 +50,7 @@
           "24/7 Support",
           "Custom Integration"
         ],
-        "popular": false
+        "popular": true
       }
     ]
   },
@@ -64,7 +64,7 @@
   "promoBanner": {
     "isVisible": true,
     "text": "🎉 Limited Time Offer: Get 50% OFF on all Premium Plans! Use code SAVE50",
-    "backgroundColor": "#6368f2",
+    "backgroundColor": "#30a16c",
     "textColor": "#f0efef",
     "link": "/pricing"
   }

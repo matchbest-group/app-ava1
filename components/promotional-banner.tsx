@@ -19,7 +19,7 @@ export function PromotionalBanner() {
     textColor: "#ffffff",
     link: "/pricing"
   })
-  
+
   const [isVisible, setIsVisible] = useState(true)
   const [isClosed, setIsClosed] = useState(false)
 
@@ -57,9 +57,9 @@ export function PromotionalBanner() {
   }
 
   return (
-    <div 
+    <div
       className="relative h-12 flex items-center justify-center overflow-hidden cursor-pointer"
-      style={{ 
+      style={{
         backgroundColor: bannerContent.backgroundColor,
         color: bannerContent.textColor
       }}

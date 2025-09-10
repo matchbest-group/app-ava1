@@ -130,7 +130,7 @@ export default function AdminLeadsPage() {
             <p className="text-xs text-muted-foreground">All time leads</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">New Leads</CardTitle>
@@ -141,7 +141,7 @@ export default function AdminLeadsPage() {
             <p className="text-xs text-muted-foreground">Awaiting response</p>
           </CardContent>
         </Card>
-        
+
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">This Month</CardTitle>
@@ -179,7 +179,7 @@ export default function AdminLeadsPage() {
                           {lead.status}
                         </Badge>
                       </div>
-                      
+
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm text-gray-600 mb-3">
                         <div className="flex items-center space-x-2">
                           <Mail className="w-4 h-4" />
@@ -196,14 +196,14 @@ export default function AdminLeadsPage() {
                           <span>{formatDate(lead.createdAt)}</span>
                         </div>
                       </div>
-                      
+
                       <div className="bg-gray-100 p-3 rounded-md">
                         <p className="text-sm text-gray-700">
                           <strong>Message:</strong> {lead.message}
                         </p>
                       </div>
                     </div>
-                    
+
                     <div className="flex space-x-2 ml-4">
                       <Button
                         variant="outline"
@@ -274,14 +274,14 @@ export default function AdminLeadsPage() {
                   <p>{selectedLead.source}</p>
                 </div>
               </div>
-              
+
               <div>
                 <label className="text-sm font-medium text-gray-600">Message</label>
                 <div className="bg-gray-100 p-4 rounded-md mt-2">
                   <p className="whitespace-pre-wrap">{selectedLead.message}</p>
                 </div>
               </div>
-              
+
               <div className="flex justify-end space-x-2 pt-4">
                 <Button variant="outline" onClick={() => setSelectedLead(null)}>
                   Close

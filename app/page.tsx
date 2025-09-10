@@ -16,16 +16,16 @@ export default function HomePage() {
       <HeroSection />
       <ProductOverview />
       <FeaturedBundles />
-      
+
       {/* Business Intelligence Section */}
       <BusinessIntelligenceSection />
-      
+
       {/* Dynamic Pricing Section */}
       <DynamicPricingSection />
-      
+
       {/* Dynamic Contact Section */}
       <DynamicContactSection />
-      
+
       <Footer />
     </main>
   )

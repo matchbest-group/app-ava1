@@ -32,14 +32,14 @@ export function DynamicPricingSection() {
         popular: false
       },
       {
-        name: "Professional", 
+        name: "Professional",
         price: "$99/month",
         features: ["Advanced Analytics", "25 Users", "Priority Support", "Custom Reports"],
         popular: true
       },
       {
         name: "Enterprise",
-        price: "$299/month", 
+        price: "$299/month",
         features: ["Full Analytics Suite", "Unlimited Users", "24/7 Support", "Custom Integration"],
         popular: false
       }
@@ -74,7 +74,7 @@ export function DynamicPricingSection() {
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
             {pricingContent.subtitle}
           </p>
-          
+
           <div className="flex items-center justify-center space-x-4">
             <span className={`text-sm ${!isAnnual ? 'font-semibold' : 'text-muted-foreground'}`}>
               Monthly
@@ -94,13 +94,12 @@ export function DynamicPricingSection() {
 
         <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {pricingContent.plans.map((plan, index) => (
-            <Card 
-              key={index} 
-              className={`relative ${
-                plan.popular 
-                  ? 'border-primary shadow-lg scale-105' 
+            <Card
+              key={index}
+              className={`relative ${plan.popular
+                  ? 'border-primary shadow-lg scale-105'
                   : 'border-border'
-              }`}
+                }`}
             >
               {plan.popular && (
                 <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
@@ -110,13 +109,13 @@ export function DynamicPricingSection() {
                   </Badge>
                 </div>
               )}
-              
+
               <CardHeader className="text-center pb-8">
                 <CardTitle className="text-xl font-bold">{plan.name}</CardTitle>
                 <div className="mt-4">
                   <span className="text-4xl font-bold">
-                    {plan.price.includes('$') 
-                      ? plan.price.split('/')[0] 
+                    {plan.price.includes('$')
+                      ? plan.price.split('/')[0]
                       : plan.price
                     }
                   </span>
@@ -127,7 +126,7 @@ export function DynamicPricingSection() {
                   )}
                 </div>
               </CardHeader>
-              
+
               <CardContent className="space-y-4">
                 <ul className="space-y-3">
                   {plan.features.map((feature, featureIndex) => (
@@ -137,13 +136,12 @@ export function DynamicPricingSection() {
                     </li>
                   ))}
                 </ul>
-                
-                <Button 
-                  className={`w-full mt-6 ${
-                    plan.popular 
-                      ? 'bg-primary hover:bg-primary/90' 
+
+                <Button
+                  className={`w-full mt-6 ${plan.popular
+                      ? 'bg-primary hover:bg-primary/90'
                       : 'variant-outline'
-                  }`}
+                    }`}
                   variant={plan.popular ? 'default' : 'outline'}
                 >
                   Get Started
