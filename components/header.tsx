@@ -63,7 +63,7 @@ export function Header() {
               <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
                 <span className="text-primary-foreground font-bold text-lg">P</span>
               </div>
-              <span className="font-heading font-bold text-xl text-foreground">AvaOne Suit</span>
+              <span className="font-heading font-bold text-xl text-foreground">AvaOne</span>
             </Link>
           </div>
 

@@ -1,5 +1,5 @@
-import { getMainDb, getOrganizationDb, clientPromise } from './mongodb'
-import { Organization, OrganizationAdmin, OrganizationUser, WorkspaceUser } from './types'
+import { getMainDb, getOrganizationDb, getPingoraDb, getCrmDb, clientPromise } from './mongodb'
+import { Organization, OrganizationAdmin, OrganizationUser, WorkspaceUser, PingoraUser, CrmUser } from './types'
 
 // Main Database Operations (Organizations)
 export class MainDatabaseService {
@@ -15,7 +15,7 @@ export class MainDatabaseService {
       updatedAt: now
     }
     
-    const result = await collection.insertOne(organization)
+    const result = await collection.insertOne(organization as any)
     organization._id = result.insertedId.toString()
     
     return organization
@@ -25,7 +25,7 @@ export class MainDatabaseService {
   static async getAllOrganizations(): Promise<Organization[]> {
     const db = await getMainDb()
     const collection = db.collection('organizations')
-    return await collection.find({}).toArray() as Organization[]
+    return await collection.find({}).toArray() as any as Organization[]
   }
 
   // Get organization by ID
@@ -107,7 +107,7 @@ export class OrganizationDatabaseService {
       updatedAt: now
     }
     
-    const result = await collection.insertOne(admin)
+    const result = await collection.insertOne(admin as any)
     admin._id = result.insertedId.toString()
     
     return admin
@@ -115,8 +115,13 @@ export class OrganizationDatabaseService {
 
   // Create organization user/employee
   static async createOrganizationUser(orgName: string, userData: Omit<OrganizationUser, '_id' | 'createdAt' | 'updatedAt'>): Promise<OrganizationUser> {
+    console.log('Creating organization user in database:', { orgName, userData })
+    
     const db = await getOrganizationDb(orgName)
+    console.log('Got organization database:', db.databaseName)
+    
     const collection = db.collection('users')
+    console.log('Got users collection')
     
     const now = new Date().toISOString()
     const user: OrganizationUser = {
@@ -125,9 +130,11 @@ export class OrganizationDatabaseService {
       updatedAt: now
     }
     
-    const result = await collection.insertOne(user)
+    console.log('Inserting user document:', user)
+    const result = await collection.insertOne(user as any)
     user._id = result.insertedId.toString()
     
+    console.log('User inserted successfully with ID:', user._id)
     return user
   }
 
@@ -163,7 +170,7 @@ export class OrganizationDatabaseService {
     const db = await getOrganizationDb(orgName)
     const collection = db.collection('users')
     
-    return await collection.find({ isActive: true }).toArray() as (OrganizationAdmin | OrganizationUser)[]
+    return await collection.find({ isActive: true }).toArray() as any as (OrganizationAdmin | OrganizationUser)[]
   }
 
   // Update organization user
@@ -212,7 +219,7 @@ export class WorkspaceDatabaseService {
       updatedAt: now
     }
     
-    const result = await collection.insertOne(user)
+    const result = await collection.insertOne(user as any)
     user._id = result.insertedId.toString()
     
     return user
@@ -281,6 +288,118 @@ export class WorkspaceDatabaseService {
     const db = await getMainDb()
     const collection = db.collection('workspace_users')
     
-    return await collection.find({}).toArray() as WorkspaceUser[]
+    return await collection.find({}).toArray() as any as WorkspaceUser[]
+  }
+}
+
+// Pingora Database Operations
+export class PingoraDatabaseService {
+  // Create Pingora user
+  static async createPingoraUser(userData: Omit<PingoraUser, '_id' | 'createdAt' | 'updatedAt'>): Promise<PingoraUser | null> {
+    const db = await getPingoraDb()
+    if (!db) {
+      console.warn('Pingora database not available, skipping user creation')
+      return null
+    }
+    
+    const collection = db.collection('users')
+    
+    const now = new Date().toISOString()
+    const user: PingoraUser = {
+      ...userData,
+      role: userData.role || 'user', // Default to 'user' if not specified
+      displayName: userData.displayName || userData.username, // Default to username if not specified
+      createdAt: now,
+      updatedAt: now
+    }
+    
+    const result = await collection.insertOne(user as any)
+    user._id = result.insertedId.toString()
+    
+    return user
+  }
+
+  // Get Pingora user by credentials
+  static async getPingoraUser(username: string, password: string): Promise<PingoraUser | null> {
+    const db = await getPingoraDb()
+    if (!db) {
+      console.warn('Pingora database not available')
+      return null
+    }
+    
+    const collection = db.collection('users')
+    
+    return await collection.findOne({
+      username,
+      password
+    }) as PingoraUser | null
+  }
+
+  // Get all Pingora users
+  static async getAllPingoraUsers(): Promise<PingoraUser[]> {
+    const db = await getPingoraDb()
+    if (!db) {
+      console.warn('Pingora database not available')
+      return []
+    }
+    
+    const collection = db.collection('users')
+    
+    return await collection.find({}).toArray() as any as PingoraUser[]
+  }
+}
+
+// CRM Database Operations
+export class CrmDatabaseService {
+  // Create CRM user
+  static async createCrmUser(userData: Omit<CrmUser, '_id' | 'createdAt' | 'updatedAt'>): Promise<CrmUser | null> {
+    const db = await getCrmDb()
+    if (!db) {
+      console.warn('CRM database not available, skipping user creation')
+      return null
+    }
+    
+    const collection = db.collection('admins') // Using 'admins' collection as specified
+    
+    const now = new Date().toISOString()
+    const user: CrmUser = {
+      ...userData,
+      createdAt: now,
+      updatedAt: now
+    }
+    
+    const result = await collection.insertOne(user as any)
+    user._id = result.insertedId.toString()
+    
+    return user
+  }
+
+  // Get CRM user by credentials
+  static async getCrmUser(email: string, password: string): Promise<CrmUser | null> {
+    const db = await getCrmDb()
+    if (!db) {
+      console.warn('CRM database not available')
+      return null
+    }
+    
+    const collection = db.collection('admins') // Using 'admins' collection as specified
+    
+    return await collection.findOne({
+      email,
+      password
+    }) as CrmUser | null
+  }
+
+  // Get all CRM users
+  static async getAllCrmUsers(): Promise<CrmUser[]> {
+    const db = await getCrmDb()
+    if (!db) {
+      console.warn('CRM database not available')
+      return []
+    }
+    
+    const collection = db.collection('admins') // Using 'admins' collection as specified
+    
+    return await collection.find({}).toArray() as any as CrmUser[]
   }
 }

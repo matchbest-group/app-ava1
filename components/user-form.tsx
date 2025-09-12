@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
@@ -14,22 +14,32 @@ interface UserFormData {
   password: string
   firstName: string
   lastName: string
-  role: 'admin' | 'user' | 'employee'
+  username: string // For Pingora integration
+  displayName: string // For Pingora integration
+  role: 'admin' | 'user' | 'employee' | 'Account Owner' | 'Super Admin' | 'Manager' | 'Create Only' | 'Read Only' // Extended for CRM
   department: string
   position: string
 }
 
 interface UserFormProps {
-  onSubmit: (data: UserFormData) => void
+  onSubmit: (data: UserFormData & { organizationId: string }) => void
   onCancel: () => void
   currentUserCount: number
   userLimit: string
+  organizations?: Array<{ id: string; name: string }>
 }
 
 const roles = [
+  // Standard roles
   { value: 'admin', label: 'Admin', description: 'Full access to all features' },
   { value: 'user', label: 'User', description: 'Standard user access' },
-  { value: 'employee', label: 'Employee', description: 'Limited access' }
+  { value: 'employee', label: 'Employee', description: 'Limited access' },
+  // CRM-specific roles
+  { value: 'Account Owner', label: 'Account Owner', description: 'Complete control over the account' },
+  { value: 'Super Admin', label: 'Super Admin', description: 'Super administrative privileges' },
+  { value: 'Manager', label: 'Manager', description: 'Management level access' },
+  { value: 'Create Only', label: 'Create Only', description: 'Can only create records' },
+  { value: 'Read Only', label: 'Read Only', description: 'View-only access' }
 ]
 
 const departments = [
@@ -45,21 +55,59 @@ const departments = [
   'Other'
 ]
 
-export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: UserFormProps) {
+export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit, organizations = [] }: UserFormProps) {
+  console.log('UserForm rendered with props:', { currentUserCount, userLimit, organizations })
+  
   const [formData, setFormData] = useState<UserFormData>({
     email: '',
     password: '',
     firstName: '',
     lastName: '',
+    username: '',
+    displayName: '',
     role: 'user',
     department: '',
     position: ''
   })
 
-  const [errors, setErrors] = useState<Partial<UserFormData>>({})
+  // Auto-select the first/only organization available
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState<string>(
+    organizations.length > 0 ? organizations[0].id : ''
+  )
+  const [errors, setErrors] = useState<Partial<UserFormData & { organizationId: string }>>({})
+
+  // Auto-select organization when organizations are loaded
+  useEffect(() => {
+    if (organizations.length > 0 && !selectedOrganizationId) {
+      console.log('Auto-selecting organization:', organizations[0])
+      setSelectedOrganizationId(organizations[0].id)
+    }
+  }, [organizations, selectedOrganizationId])
 
   const handleInputChange = (field: keyof UserFormData, value: string) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value }
+      
+      // Auto-fill display name when first or last name changes
+      if (field === 'firstName' || field === 'lastName') {
+        const firstName = field === 'firstName' ? value : prev.firstName
+        const lastName = field === 'lastName' ? value : prev.lastName
+        if (firstName && lastName) {
+          newData.displayName = `${firstName} ${lastName}`
+        }
+      }
+      
+      // Auto-fill username from email prefix if username is empty
+      if (field === 'email' && !prev.username) {
+        const emailPrefix = value.split('@')[0]
+        if (emailPrefix) {
+          newData.username = emailPrefix.replace(/[^a-zA-Z0-9_]/g, '') // Remove special chars except underscore
+        }
+      }
+      
+      return newData
+    })
+    
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: undefined }))
@@ -67,7 +115,12 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: Us
   }
 
   const validateForm = (): boolean => {
-    const newErrors: Partial<UserFormData> = {}
+    const newErrors: Partial<UserFormData & { organizationId: string }> = {}
+
+    // Organization validation - should be auto-selected
+    if (!selectedOrganizationId && organizations.length === 0) {
+      newErrors.organizationId = 'No organization available'
+    }
 
     if (!formData.email.trim()) {
       newErrors.email = 'Email is required'
@@ -89,8 +142,20 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: Us
       newErrors.lastName = 'Last name is required'
     }
 
+    if (!formData.username.trim()) {
+      newErrors.username = 'Username is required' as any
+    } else if (formData.username.includes(' ')) {
+      newErrors.username = 'Username cannot contain spaces' as any
+    } else if (formData.username.length < 3) {
+      newErrors.username = 'Username must be at least 3 characters' as any
+    }
+
+    if (!formData.displayName.trim()) {
+      newErrors.displayName = 'Display name is required' as any
+    }
+
     if (!formData.role) {
-      newErrors.role = 'Role is required'
+      newErrors.role = 'Role is required' as any
     }
 
     if (!formData.department.trim()) {
@@ -107,8 +172,14 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: Us
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    console.log('Form submitted with data:', { ...formData, organizationId: selectedOrganizationId })
+    console.log('Form validation result:', validateForm())
+    
     if (validateForm()) {
-      onSubmit(formData)
+      console.log('Calling onSubmit with data:', { ...formData, organizationId: selectedOrganizationId })
+      onSubmit({ ...formData, organizationId: selectedOrganizationId })
+    } else {
+      console.log('Form validation failed, errors:', errors)
     }
   }
 
@@ -147,6 +218,21 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: Us
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Organization Auto-Selected (Hidden) */}
+            {organizations.length > 0 && (
+              <div className="p-3 bg-blue-50 border border-blue-200 rounded-lg">
+                <p className="text-sm text-blue-600">
+                  <strong>Organization:</strong> {organizations.find(org => org.id === selectedOrganizationId)?.name || 'Auto-selected'}
+                </p>
+              </div>
+            )}
+            
+            {organizations.length === 0 && (
+              <div className="p-3 bg-yellow-50 border border-yellow-200 rounded-lg">
+                <p className="text-sm text-yellow-600">No organizations available. Please create an organization first.</p>
+              </div>
+            )}
+
             <div className="grid grid-cols-2 gap-4">
               <div className="space-y-2">
                 <Label htmlFor="firstName">First Name *</Label>
@@ -173,6 +259,34 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: Us
                 />
                 {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
               </div>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="username">Username *</Label>
+              <Input
+                id="username"
+                value={formData.username}
+                onChange={(e) => handleInputChange('username', e.target.value)}
+                placeholder="Enter username (no spaces)"
+                className={errors.username ? 'border-red-500' : ''}
+                disabled={!canCreateUser}
+              />
+              {errors.username && <p className="text-sm text-red-500">{errors.username}</p>}
+              <p className="text-xs text-gray-500">Used for Pingora system login (no spaces, minimum 3 characters)</p>
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="displayName">Display Name *</Label>
+              <Input
+                id="displayName"
+                value={formData.displayName}
+                onChange={(e) => handleInputChange('displayName', e.target.value)}
+                placeholder="Enter display name"
+                className={errors.displayName ? 'border-red-500' : ''}
+                disabled={!canCreateUser}
+              />
+              {errors.displayName && <p className="text-sm text-red-500">{errors.displayName}</p>}
+              <p className="text-xs text-gray-500">Full name as it will appear in the system</p>
             </div>
 
             <div className="space-y-2">
@@ -257,7 +371,15 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit }: Us
               <Button type="button" variant="outline" onClick={onCancel}>
                 Cancel
               </Button>
-              <Button type="submit" disabled={!canCreateUser}>
+              <Button 
+                type="submit" 
+                disabled={!canCreateUser}
+                onClick={(e) => {
+                  console.log('Create User button clicked in form')
+                  console.log('Form data:', formData)
+                  console.log('Selected organization:', selectedOrganizationId)
+                }}
+              >
                 Create User
               </Button>
             </div>

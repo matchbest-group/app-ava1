@@ -66,24 +66,75 @@ export default function WorkspaceTeamPage() {
       setUser(userObj)
       setIsAuthenticated(true)
       
-      // Create admin user from the logged-in user data
-      const adminUser: TeamUser = {
-        _id: 'admin-1',
-        email: userObj.email,
-        password: userObj.password,
-        firstName: userObj.email.split('@')[0], // Use email prefix as first name
-        lastName: 'Admin',
-        role: 'admin',
-        department: 'Administration',
-        position: 'System Administrator',
-        organizationId: userObj.accountId,
-        organizationName: userObj.organizationName,
-        isActive: true,
-        createdAt: userObj.createdAt || new Date().toISOString(),
-        updatedAt: new Date().toISOString()
+      // Load existing team users from database
+      const loadTeamUsers = async () => {
+        try {
+          const response = await fetch(`/api/team-users?organizationName=${encodeURIComponent(userObj.organizationName)}`)
+          if (response.ok) {
+            const users = await response.json()
+            console.log('Loaded team users from database:', users)
+            
+            // Convert to TeamUser format
+            const teamUsers: TeamUser[] = users.map((user: any) => ({
+              _id: user._id,
+              email: user.email,
+              password: user.password,
+              firstName: user.firstName || user.email.split('@')[0],
+              lastName: user.lastName || 'User',
+              role: user.role,
+              department: user.department || 'General',
+              position: user.position || 'Team Member',
+              organizationId: user.organizationId,
+              organizationName: user.organizationName,
+              isActive: user.isActive,
+              createdAt: user.createdAt,
+              updatedAt: user.updatedAt
+            }))
+            
+            setTeamUsers(teamUsers)
+          } else {
+            console.error('Failed to load team users, using admin-only mode')
+            // Fallback to admin user only
+            const adminUser: TeamUser = {
+              _id: 'admin-1',
+              email: userObj.email,
+              password: userObj.password,
+              firstName: userObj.email.split('@')[0],
+              lastName: 'Admin',
+              role: 'admin',
+              department: 'Administration',
+              position: 'System Administrator',
+              organizationId: userObj.accountId,
+              organizationName: userObj.organizationName,
+              isActive: true,
+              createdAt: userObj.createdAt || new Date().toISOString(),
+              updatedAt: new Date().toISOString()
+            }
+            setTeamUsers([adminUser])
+          }
+        } catch (error) {
+          console.error('Error loading team users:', error)
+          // Fallback to admin user only
+          const adminUser: TeamUser = {
+            _id: 'admin-1',
+            email: userObj.email,
+            password: userObj.password,
+            firstName: userObj.email.split('@')[0],
+            lastName: 'Admin',
+            role: 'admin',
+            department: 'Administration',
+            position: 'System Administrator',
+            organizationId: userObj.accountId,
+            organizationName: userObj.organizationName,
+            isActive: true,
+            createdAt: userObj.createdAt || new Date().toISOString(),
+            updatedAt: new Date().toISOString()
+          }
+          setTeamUsers([adminUser])
+        }
       }
       
-      setTeamUsers([adminUser])
+      loadTeamUsers()
       setSelectedProducts([])
     } else {
       router.push('/workspace/login')
@@ -93,25 +144,60 @@ export default function WorkspaceTeamPage() {
     setIsLoading(false)
   }, [router])
 
-  const handleCreateUser = (userData: any) => {
-    const newUser: TeamUser = {
-      _id: Date.now().toString(),
-      email: userData.email,
-      password: userData.password,
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      role: userData.role,
-      department: userData.department,
-      position: userData.position,
-      organizationId: user?.accountId || '',
-      organizationName: user?.organizationName || '',
-      isActive: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+  const handleCreateUser = async (userData: any) => {
+    try {
+      console.log('Creating team user with data:', userData)
+      
+      // Prepare user data for API
+      const userPayload = {
+        ...userData,
+        organizationId: user?.accountId || '',
+        organizationName: user?.organizationName || '',
+      }
+      
+      console.log('Sending user data to team API:', userPayload)
+
+      const response = await fetch('/api/team-users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userPayload),
+      })
+
+      if (response.ok) {
+        const newUser = await response.json()
+        console.log('Team user created successfully:', newUser)
+        
+        // Convert to TeamUser format for display
+        const teamUser: TeamUser = {
+          _id: newUser._id,
+          email: newUser.email,
+          password: newUser.password,
+          firstName: newUser.firstName,
+          lastName: newUser.lastName,
+          role: newUser.role,
+          department: newUser.department || 'General',
+          position: newUser.position || 'Team Member',
+          organizationId: newUser.organizationId,
+          organizationName: newUser.organizationName,
+          isActive: newUser.isActive,
+          createdAt: newUser.createdAt,
+          updatedAt: newUser.updatedAt
+        }
+        
+        setTeamUsers(prev => [...prev, teamUser])
+        setShowUserForm(false)
+        alert('User created successfully in all databases!')
+      } else {
+        const errorData = await response.json()
+        console.error('Failed to create team user:', errorData)
+        alert(`Failed to create user: ${errorData.error || 'Unknown error'}`)
+      }
+    } catch (error) {
+      console.error('Error creating team user:', error)
+      alert(`Error creating user: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
-    
-    setTeamUsers(prev => [...prev, newUser])
-    setShowUserForm(false)
   }
 
   const handleDeleteUser = (userId: string) => {
@@ -467,6 +553,7 @@ export default function WorkspaceTeamPage() {
           onCancel={() => setShowUserForm(false)}
           currentUserCount={currentUserCount}
           userLimit={userLimit}
+          organizations={user ? [{ id: user.accountId, name: user.organizationName }] : []}
         />
       )}
     </WorkspaceLayout>

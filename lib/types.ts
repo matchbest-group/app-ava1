@@ -48,6 +48,7 @@ export interface OrganizationAdmin {
 // Organization User/Employee (stored in organization-specific database)
 export interface OrganizationUser {
   _id?: string
+  accountId?: string // Optional account ID for compatibility
   email: string
   password: string
   organizationId: string // This matches the actual DB structure
@@ -88,6 +89,30 @@ export interface TeamUser {
   organizationId: string
   organizationName: string
   isActive: boolean
+  createdAt: string
+  updatedAt: string
+}
+
+// Pingora User Schema
+export interface PingoraUser {
+  _id?: string
+  username: string // Unique identifier, no spaces (required)
+  password: string // Will be auto-hashed with bcrypt (required)
+  email: string // Valid email format (required)
+  displayName?: string // Full name for display, defaults to username (optional)
+  role?: 'user' | 'admin' | 'hr' // Defaults to "user" (optional)
+  createdAt: string
+  updatedAt: string
+}
+
+// CRM User Schema (based on the form image)
+export interface CrmUser {
+  _id?: string
+  firstName: string // Required
+  lastName: string // Required
+  email: string // Required
+  password: string // Required
+  role: 'Account Owner' | 'Super Admin' | 'Manager' | 'Employee' | 'Create Only' | 'Read Only' // Required
   createdAt: string
   updatedAt: string
 }

@@ -2,64 +2,76 @@ import { NextRequest, NextResponse } from 'next/server'
 import { OrganizationDatabaseService, PingoraDatabaseService, CrmDatabaseService } from '@/lib/database'
 import { OrganizationUser, PingoraUser, CrmUser } from '@/lib/types'
 
-// GET - Get all users in organization
-export async function GET(
-  request: NextRequest,
-  { params }: { params: { orgName: string } }
-) {
+// GET - Get all team users for an organization
+export async function GET(request: NextRequest) {
   try {
-    const users = await OrganizationDatabaseService.getAllOrganizationUsers(params.orgName)
+    const searchParams = request.nextUrl.searchParams
+    const organizationName = searchParams.get('organizationName')
+    
+    if (!organizationName) {
+      return NextResponse.json(
+        { error: 'Organization name is required' },
+        { status: 400 }
+      )
+    }
+
+    const users = await OrganizationDatabaseService.getAllOrganizationUsers(organizationName)
     return NextResponse.json(users)
   } catch (error) {
-    console.error('Error fetching organization users:', error)
+    console.error('Error fetching team users:', error)
     return NextResponse.json(
-      { error: 'Failed to fetch users' },
+      { error: 'Failed to fetch team users' },
       { status: 500 }
     )
   }
 }
 
-// POST - Create new user in organization
-export async function POST(
-  request: NextRequest,
-  { params }: { params: { orgName: string } }
-) {
+// POST - Create new team user in all 3 databases
+export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    console.log('Organization user creation API called with:', { orgName: params.orgName, body })
+    console.log('Team user creation API called with:', body)
     
+    // Validate required fields
+    if (!body.firstName || !body.lastName || !body.email || !body.password || !body.organizationName) {
+      return NextResponse.json(
+        { error: 'Missing required fields: firstName, lastName, email, password, organizationName' },
+        { status: 400 }
+      )
+    }
+
     // Generate unique account ID
     const timestamp = Date.now().toString(36)
     const randomStr = Math.random().toString(36).substring(2, 8)
     const accountId = `USER_${timestamp}_${randomStr}`.toUpperCase()
     
-    // Create user in main organization database
+    // 1. Create user in main organization database (AVA ONE)
     const userData: Omit<OrganizationUser, '_id' | 'createdAt' | 'updatedAt'> & { accountId: string } = {
       accountId,
       email: body.email,
       password: body.password,
       firstName: body.firstName,
       lastName: body.lastName,
-      organizationId: body.organizationId,
-      organizationName: params.orgName,
+      organizationId: body.organizationId || 'DEFAULT_ORG',
+      organizationName: body.organizationName,
       role: body.role || 'user',
-      department: body.department,
-      position: body.position,
+      department: body.department || 'General',
+      position: body.position || 'Team Member',
       isActive: true
     }
     
     console.log('Creating user in organization database with data:', userData)
-    const user = await OrganizationDatabaseService.createOrganizationUser(params.orgName, userData)
+    const user = await OrganizationDatabaseService.createOrganizationUser(body.organizationName, userData)
     console.log('User created in organization database:', user)
     
-    // Create user in Pingora database
+    // 2. Create user in Pingora database
     try {
       const pingoraUserData: Omit<PingoraUser, '_id' | 'createdAt' | 'updatedAt'> = {
         username: body.username || body.email.split('@')[0], // Use provided username or email prefix as fallback
         password: body.password, // Will be hashed if bcrypt is available
         email: body.email,
         displayName: body.displayName || `${body.firstName} ${body.lastName}`, // Use provided displayName or construct from names
-        role: body.role === 'admin' ? 'admin' : 'user' // Map admin role, default to user
+        role: body.role === 'admin' ? 'admin' : 'user' // Map to Pingora roles
       }
       
       console.log('Creating user in Pingora database with data:', pingoraUserData)
@@ -70,19 +82,13 @@ export async function POST(
       // Continue execution even if Pingora fails
     }
     
-    // Create user in CRM database
+    // 3. Create user in CRM database
     try {
-      // CRM-specific roles or map organization roles to CRM roles
+      // Map organization roles to CRM roles
       const crmRoleMapping: { [key: string]: CrmUser['role'] } = {
         'admin': 'Super Admin',
-        'user': 'Employee', 
-        'employee': 'Employee',
-        // Direct CRM roles (already valid)
-        'Account Owner': 'Account Owner',
-        'Super Admin': 'Super Admin',
-        'Manager': 'Manager',
-        'Create Only': 'Create Only',
-        'Read Only': 'Read Only'
+        'user': 'Employee',
+        'employee': 'Employee'
       }
       
       const crmUserData: Omit<CrmUser, '_id' | 'createdAt' | 'updatedAt'> = {
@@ -103,9 +109,9 @@ export async function POST(
     
     return NextResponse.json(user, { status: 201 })
   } catch (error) {
-    console.error('Error creating organization user:', error)
+    console.error('Error creating team user:', error)
     return NextResponse.json(
-      { error: 'Failed to create user' },
+      { error: 'Failed to create team user' },
       { status: 500 }
     )
   }

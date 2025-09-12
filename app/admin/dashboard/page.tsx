@@ -47,6 +47,7 @@ export default function AdminDashboardPage() {
   const [showSuccess, setShowSuccess] = useState(false)
   const [lastCreatedOrg, setLastCreatedOrg] = useState<{ id: string; name: string } | null>(null)
   const [lastCreatedUser, setLastCreatedUser] = useState<{ accountId: string; email: string } | null>(null)
+  const [selectedOrganizationId, setSelectedOrganizationId] = useState<string>('')
   const { isAuthenticated, isLoading, logout } = useAuth()
   const router = useRouter()
   
@@ -128,29 +129,82 @@ export default function AdminDashboardPage() {
     }
   }
 
-  const handleAddUser = async (newUser: Omit<WorkspaceUser, 'accountId' | 'createdAt'>) => {
+  const handleAddUser = async (newUser: any) => {
     try {
-      const response = await fetch('/api/workspace-users', {
+      console.log('🚀 handleAddUser called with data:', newUser)
+      console.log('🏢 Available organizations:', organizations.length)
+      
+      // Get the selected organization from the form data
+      const selectedOrg = organizations.find(org => org.id === newUser.organizationId)
+      if (!selectedOrg) {
+        console.error('No organization selected or organization not found:', newUser.organizationId)
+        alert('Please select a valid organization')
+        return
+      }
+
+      console.log('Selected organization:', selectedOrg)
+
+      // Prepare user data for organization user creation
+      const userData = {
+        ...newUser,
+        organizationId: selectedOrg.id,
+        organizationName: selectedOrg.name
+      }
+
+      console.log('Sending user data to API:', userData)
+
+      console.log('📡 Sending API request to:', `/api/organization/${selectedOrg.name}/users`)
+      console.log('📦 Request payload:', userData)
+
+      const response = await fetch(`/api/organization/${selectedOrg.name}/users`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(newUser),
+        body: JSON.stringify(userData),
       })
+
+      console.log('📡 API Response status:', response.status)
+      console.log('📡 API Response headers:', Object.fromEntries(response.headers.entries()))
 
       if (response.ok) {
         const user = await response.json()
-        setWorkspaceUsers(prev => [...prev, user])
+        console.log('User created successfully:', user)
+        
+        // Refresh the workspace users list
+        const fetchWorkspaceUsers = async () => {
+          try {
+            const response = await fetch('/api/workspace-users')
+            if (response.ok) {
+              const users = await response.json()
+              setWorkspaceUsers(users)
+            }
+          } catch (error) {
+            console.error('Error fetching workspace users:', error)
+          }
+        }
+        await fetchWorkspaceUsers()
+        
         setShowUserForm(false)
         
         // Show success notification
-        setLastCreatedUser({ accountId: user.accountId, email: user.email })
+        setLastCreatedUser({ accountId: user.accountId || user._id, email: user.email })
         setShowSuccess(true)
+        
+        alert('User created successfully!')
       } else {
-        console.error('Failed to create workspace user')
+        let errorData
+        try {
+          errorData = await response.json()
+        } catch (e) {
+          errorData = { error: await response.text() }
+        }
+        console.error('❌ Failed to create organization user:', errorData)
+        alert(`Failed to create user: ${errorData.error || 'Unknown error'}`)
       }
     } catch (error) {
-      console.error('Error creating workspace user:', error)
+      console.error('❌ Error creating organization user:', error)
+      alert(`Error creating user: ${error instanceof Error ? error.message : 'Unknown error'}`)
     }
   }
 
@@ -243,7 +297,19 @@ export default function AdminDashboardPage() {
         <div className="flex justify-between items-center mb-6">
           <h2 className="text-2xl font-bold text-gray-900">Organizations</h2>
           <div className="flex space-x-3">
-            <Button onClick={() => setShowUserForm(true)}>
+            <Button 
+              onClick={() => {
+                console.log('Add User button clicked')
+                console.log('Organizations available:', organizations)
+                if (organizations.length === 0) {
+                  alert('Please create an organization first before adding users.')
+                  return
+                }
+                console.log('Setting showUserForm to true')
+                setShowUserForm(true)
+              }}
+              disabled={organizations.length === 0}
+            >
               <UserPlus className="h-4 w-4 mr-2" />
               Add User
             </Button>
@@ -322,11 +388,23 @@ export default function AdminDashboardPage() {
 
         {/* User Form Modal */}
         {showUserForm && (
-          <UserForm 
-            onSubmit={handleAddUser}
-            onCancel={() => setShowUserForm(false)}
-            organizations={organizations}
-          />
+          <div>
+            <UserForm 
+              onSubmit={handleAddUser}
+              onCancel={() => {
+                console.log('UserForm cancelled')
+                setShowUserForm(false)
+              }}
+              currentUserCount={workspaceUsers.length}
+              userLimit="1-100"
+              organizations={organizations}
+            />
+            {/* Debug info */}
+            <div style={{display: 'none'}}>
+              <pre>Debug: Organizations count: {organizations.length}</pre>
+              <pre>Debug: Organizations: {JSON.stringify(organizations, null, 2)}</pre>
+            </div>
+          </div>
         )}
 
         {/* Success Notification */}
