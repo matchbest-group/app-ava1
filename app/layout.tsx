@@ -1,5 +1,6 @@
 import type React from "react"
 import type { Metadata } from "next"
+import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -16,6 +17,7 @@ export default function RootLayout({
     <html lang="en" className="scroll-smooth">
       <body className="antialiased">
         {children}
+        <Toaster />
       </body>
     </html>
   )

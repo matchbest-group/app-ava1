@@ -84,11 +84,11 @@ export async function POST(request: NextRequest) {
     
     // 3. Create user in CRM database
     try {
-      // Map organization roles to CRM roles
+      // Map organization roles to CRM roles (all lowercase)
       const crmRoleMapping: { [key: string]: CrmUser['role'] } = {
-        'admin': 'Super Admin',
-        'user': 'Employee',
-        'employee': 'Employee'
+        'admin': 'super admin',
+        'user': 'employee',
+        'employee': 'employee'
       }
       
       const crmUserData: Omit<CrmUser, '_id' | 'createdAt' | 'updatedAt'> = {
@@ -96,7 +96,8 @@ export async function POST(request: NextRequest) {
         lastName: body.lastName,
         email: body.email,
         password: body.password,
-        role: crmRoleMapping[body.role] || 'Employee'
+        role: crmRoleMapping[body.role] || 'employee',
+        enabled: true
       }
       
       console.log('Creating user in CRM database with data:', crmUserData)

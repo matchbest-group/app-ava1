@@ -1,0 +1,401 @@
+[
+  {
+    "id": "test-1757066863300",
+    "source": "matchbest_chatbot",
+    "timestamp": "2025-09-05T10:07:48.195Z",
+    "analytics": {
+      "conversationId": "test-1757066863300",
+      "websiteId": "akashdth",
+      "sessionDuration": 300,
+      "messageCount": 8,
+      "userMessages": 4,
+      "aiMessages": 4,
+      "startTime": "2025-09-05T10:02:43.300Z",
+      "endTime": "2025-09-05T10:07:43.300Z",
+      "userIntent": "support",
+      "topicsDiscussed": [
+        "DTH subscription",
+        "channel issues",
+        "buffering",
+        "signal strength",
+        "technician visit"
+      ],
+      "sentimentAnalysis": {
+        "overall": "positive",
+        "score": 0.8
+      },
+      "issueResolved": true,
+      "resolutionType": "escalation_needed",
+      "userSatisfaction": "high",
+      "frequentQuestions": [
+        "Why are my channels not working?",
+        "How do I schedule a technician visit?"
+      ],
+      "technicalIssues": [
+        "channels not working",
+        "buffering",
+        "signal strength issue"
+      ],
+      "featureRequests": [],
+      "commonKeywords": [
+        "DTH",
+        "channels",
+        "sports",
+        "buffering",
+        "signal",
+        "technician",
+        "support ticket"
+      ],
+      "conversationQuality": {
+        "coherence": 9,
+        "helpfulness": 9,
+        "completeness": 8
+      },
+      "businessMetrics": {
+        "leadGenerated": false,
+        "demoRequested": false,
+        "supportTicketCreated": true,
+        "planInquiry": null
+      },
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "deviceType": "desktop",
+        "location": "test-location",
+        "referrer": "test-referrer"
+      }
+    },
+    "version": "1.0",
+    "processedAt": "2025-09-05T10:07:49.991Z"
+  },
+  {
+    "id": "99cf12c2-d53c-4076-84ce-dcc461a7ac1c",
+    "source": "matchbest_chatbot",
+    "timestamp": "2025-09-05T10:12:11.390Z",
+    "analytics": {
+      "conversationId": "99cf12c2-d53c-4076-84ce-dcc461a7ac1c",
+      "websiteId": "akashdth",
+      "sessionDuration": 0,
+      "messageCount": 22,
+      "userMessages": 4,
+      "aiMessages": 18,
+      "userIntent": "information",
+      "topicsDiscussed": [
+        "Trace origin",
+        "Trace headquarters location",
+        "Trace+ features"
+      ],
+      "sentimentAnalysis": {
+        "overall": "positive",
+        "score": 0.8
+      },
+      "issueResolved": true,
+      "resolutionType": "self_service",
+      "userSatisfaction": "high",
+      "frequentQuestions": [
+        "What is the origin of Trace?",
+        "Where is Trace's headquarters located?"
+      ],
+      "technicalIssues": [],
+      "featureRequests": [],
+      "commonKeywords": [
+        "Trace",
+        "Afro-Urban",
+        "music",
+        "videos",
+        "education",
+        "France",
+        "London",
+        "headquarters",
+        "Academia"
+      ],
+      "conversationQuality": {
+        "coherence": 8,
+        "helpfulness": 9,
+        "completeness": 7
+      },
+      "businessMetrics": {
+        "leadGenerated": false,
+        "demoRequested": false,
+        "supportTicketCreated": false,
+        "planInquiry": null
+      },
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "deviceType": "desktop",
+        "location": "localhost",
+        "referrer": ""
+      },
+      "startTime": "2025-09-05T10:12:11.390Z",
+      "endTime": "2025-09-05T10:12:11.390Z"
+    },
+    "version": "1.0",
+    "processedAt": "2025-09-05T10:12:11.438Z"
+  },
+  {
+    "id": "6d319b17-0f6f-41df-9184-ad5160bc671f",
+    "source": "matchbest_chatbot",
+    "timestamp": "2025-09-05T10:28:48.279Z",
+    "analytics": {
+      "conversationId": "6d319b17-0f6f-41df-9184-ad5160bc671f",
+      "websiteId": "akashdth",
+      "sessionDuration": 0,
+      "messageCount": 39,
+      "userMessages": 4,
+      "aiMessages": 35,
+      "userIntent": "support",
+      "topicsDiscussed": [
+        "streaming quality",
+        "internet connection",
+        "device troubleshooting",
+        "Trace+ service"
+      ],
+      "sentimentAnalysis": {
+        "overall": "negative",
+        "score": 0.2
+      },
+      "issueResolved": false,
+      "resolutionType": "escalation_needed",
+      "userSatisfaction": "low",
+      "frequentQuestions": [
+        "Why is my streaming quality bad?",
+        "How do I fix streaming issues on Trace+?"
+      ],
+      "technicalIssues": [
+        "poor streaming quality",
+        "buffering",
+        "low resolution",
+        "video freezing",
+        "pixelation"
+      ],
+      "featureRequests": [],
+      "commonKeywords": [
+        "Trace+",
+        "streaming",
+        "quality",
+        "internet",
+        "device",
+        "buffering",
+        "resolution",
+        "problem",
+        "issue",
+        "unhappy"
+      ],
+      "conversationQuality": {
+        "coherence": 8,
+        "helpfulness": 9,
+        "completeness": 7
+      },
+      "businessMetrics": {
+        "leadGenerated": false,
+        "demoRequested": false,
+        "supportTicketCreated": false,
+        "planInquiry": null
+      },
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "deviceType": "desktop",
+        "location": "localhost",
+        "referrer": ""
+      },
+      "startTime": "2025-09-05T10:28:48.279Z",
+      "endTime": "2025-09-05T10:28:48.279Z"
+    },
+    "version": "1.0",
+    "processedAt": "2025-09-05T10:28:50.331Z"
+  },
+  {
+    "id": "affe2773-690f-4a34-87d4-84ce30d3247c",
+    "source": "matchbest_chatbot",
+    "timestamp": "2025-09-06T05:40:02.134Z",
+    "analytics": {
+      "conversationId": "affe2773-690f-4a34-87d4-84ce30d3247c",
+      "websiteId": "akashdth",
+      "sessionDuration": 0,
+      "messageCount": 30,
+      "userMessages": 5,
+      "aiMessages": 25,
+      "userIntent": "information",
+      "topicsDiscussed": [
+        "Instagram account",
+        "Headquarters location",
+        "AI limitations"
+      ],
+      "sentimentAnalysis": {
+        "overall": "neutral",
+        "score": 0
+      },
+      "issueResolved": false,
+      "resolutionType": "partial",
+      "userSatisfaction": "low",
+      "frequentQuestions": [
+        "What is your Instagram ID?",
+        "Where are you headquartered?",
+        "Why don't you know about this?"
+      ],
+      "technicalIssues": [],
+      "featureRequests": [],
+      "commonKeywords": [
+        "Instagram",
+        "headquarters",
+        "AVA",
+        "matchbestsoftware.com",
+        "large language model"
+      ],
+      "conversationQuality": {
+        "coherence": 8,
+        "helpfulness": 6,
+        "completeness": 5
+      },
+      "businessMetrics": {
+        "leadGenerated": false,
+        "demoRequested": false,
+        "supportTicketCreated": false,
+        "planInquiry": null
+      },
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "deviceType": "desktop",
+        "location": "localhost",
+        "referrer": ""
+      },
+      "startTime": "2025-09-06T05:40:02.134Z",
+      "endTime": "2025-09-06T05:40:02.134Z"
+    },
+    "version": "1.0",
+    "processedAt": "2025-09-06T05:40:04.615Z"
+  },
+  {
+    "id": "51e310b9-a202-4d70-bd27-1eefcb4d87ae",
+    "source": "matchbest_chatbot",
+    "timestamp": "2025-09-09T06:23:52.127Z",
+    "analytics": {
+      "conversationId": "51e310b9-a202-4d70-bd27-1eefcb4d87ae",
+      "websiteId": "akashdth",
+      "sessionDuration": 0,
+      "messageCount": 7,
+      "userMessages": 1,
+      "aiMessages": 6,
+      "userIntent": "support",
+      "topicsDiscussed": [
+        "account access",
+        "technical issues",
+        "subscription management",
+        "streaming",
+        "app functionality",
+        "content library",
+        "educational courses"
+      ],
+      "sentimentAnalysis": {
+        "overall": "neutral",
+        "score": 0.5
+      },
+      "issueResolved": false,
+      "resolutionType": "unresolved",
+      "userSatisfaction": "unknown",
+      "frequentQuestions": [
+        "Account access issues?",
+        "Technical problems with streaming or app?",
+        "Questions about content or courses?"
+      ],
+      "technicalIssues": [
+        "streaming issues",
+        "app functionality issues"
+      ],
+      "featureRequests": [],
+      "commonKeywords": [
+        "support",
+        "account",
+        "technical",
+        "issues",
+        "streaming",
+        "app",
+        "content",
+        "courses",
+        "subscription"
+      ],
+      "conversationQuality": {
+        "coherence": 6,
+        "helpfulness": 7,
+        "completeness": 4
+      },
+      "businessMetrics": {
+        "leadGenerated": false,
+        "demoRequested": false,
+        "supportTicketCreated": false,
+        "planInquiry": null
+      },
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "deviceType": "desktop",
+        "location": "localhost",
+        "referrer": "http://localhost:3001/?websiteId=traceplus"
+      },
+      "startTime": "2025-09-09T06:23:52.127Z",
+      "endTime": "2025-09-09T06:23:52.127Z"
+    },
+    "version": "1.0",
+    "processedAt": "2025-09-09T06:23:57.410Z"
+  },
+  {
+    "id": "e97f715f-0a11-48b2-b25c-63b3728fe0d5",
+    "source": "matchbest_chatbot",
+    "timestamp": "2025-09-09T06:56:38.404Z",
+    "analytics": {
+      "conversationId": "e97f715f-0a11-48b2-b25c-63b3728fe0d5",
+      "websiteId": "akashdth",
+      "sessionDuration": 0,
+      "messageCount": 6,
+      "userMessages": 1,
+      "aiMessages": 5,
+      "userIntent": "demo",
+      "topicsDiscussed": [
+        "Trace+ features",
+        "live TV channels",
+        "video-on-demand",
+        "radio stations",
+        "SHORTS videos",
+        "Trace Academia"
+      ],
+      "sentimentAnalysis": {
+        "overall": "positive",
+        "score": 0.8
+      },
+      "issueResolved": false,
+      "resolutionType": "unresolved",
+      "userSatisfaction": "unknown",
+      "frequentQuestions": [],
+      "technicalIssues": [],
+      "featureRequests": [],
+      "commonKeywords": [
+        "Trace+",
+        "Afro-Urban culture",
+        "live TV",
+        "video-on-demand",
+        "radio stations",
+        "SHORTS videos",
+        "Trace Academia"
+      ],
+      "conversationQuality": {
+        "coherence": 7,
+        "helpfulness": 8,
+        "completeness": 6
+      },
+      "businessMetrics": {
+        "leadGenerated": false,
+        "demoRequested": true,
+        "supportTicketCreated": false,
+        "planInquiry": null
+      },
+      "metadata": {
+        "userAgent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/139.0.0.0 Safari/537.36",
+        "deviceType": "desktop",
+        "location": "localhost",
+        "referrer": "http://localhost:3001/?websiteId=traceplus"
+      },
+      "startTime": "2025-09-09T06:56:38.404Z",
+      "endTime": "2025-09-09T06:56:38.404Z"
+    },
+    "version": "1.0",
+    "processedAt": "2025-09-09T06:56:39.582Z"
+  }
+]

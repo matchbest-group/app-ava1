@@ -58,7 +58,7 @@ if (process.env.NODE_ENV === 'development') {
       globalWithMongo._pingoraClientPromise = null
     }
   }
-  pingoraClientPromise = globalWithMongo._pingoraClientPromise
+  pingoraClientPromise = globalWithMongo._pingoraClientPromise || null
 
   // Only create CRM connection if URI is provided
   if (crmUri && !globalWithMongo._crmClientPromise) {
@@ -71,7 +71,7 @@ if (process.env.NODE_ENV === 'development') {
       globalWithMongo._crmClientPromise = null
     }
   }
-  crmClientPromise = globalWithMongo._crmClientPromise
+  crmClientPromise = globalWithMongo._crmClientPromise || null
 } else {
   // In production mode, it's best to not use a global variable.
   client = new MongoClient(uri, options)

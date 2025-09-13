@@ -73,7 +73,8 @@ export async function POST(request: NextRequest) {
         lastName: 'User', // Default last name
         email: body.email,
         password: body.password,
-        role: 'Employee' // Default to Employee for workspace users
+        role: 'employee', // Default to employee for workspace users
+        enabled: true
       }
       
       await CrmDatabaseService.createCrmUser(crmUserData)

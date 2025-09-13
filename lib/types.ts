@@ -112,7 +112,8 @@ export interface CrmUser {
   lastName: string // Required
   email: string // Required
   password: string // Required
-  role: 'Account Owner' | 'Super Admin' | 'Manager' | 'Employee' | 'Create Only' | 'Read Only' // Required
+  role: 'account owner' | 'super admin' | 'manager' | 'employee' | 'create only' | 'read only' // Required
+  enabled: boolean // Required - user account status
   createdAt: string
   updatedAt: string
 }
