@@ -148,6 +148,28 @@ export default function WorkspaceTeamPage() {
     try {
       console.log('Creating team user with data:', userData)
       
+      // Sync to CRM first
+      const crmResponse = await fetch('/api/sync-to-crm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: userData.firstName,
+          lastName: userData.lastName,
+          email: userData.email,
+          password: userData.password,
+          role: userData.role || 'user'
+        })
+      })
+
+      const crmResult = await crmResponse.json()
+      
+      if (!crmResult.success) {
+        console.warn('CRM sync failed:', crmResult.error)
+        // Continue with local user creation even if CRM sync fails
+      } else {
+        console.log('User successfully synced to CRM')
+      }
+      
       // Prepare user data for API
       const userPayload = {
         ...userData,
