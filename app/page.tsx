@@ -4,10 +4,13 @@ import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { ProductOverview } from "@/components/product-overview"
 import { FeaturedBundles } from "@/components/featured-bundles"
-import { BusinessIntelligenceSection } from "@/components/business-intelligence-section"
-import { DynamicPricingSection } from "@/components/dynamic-pricing-section"
-import { DynamicContactSection } from "@/components/dynamic-contact-section"
+// import { BusinessIntelligenceSection } from "@/components/business-intelligence-section"
+// import { DynamicPricingSection } from "@/components/dynamic-pricing-section"
+// import { DynamicContactSection } from "@/components/dynamic-contact-section"
 import { Footer } from "@/components/footer"
+import { FAQs } from "@/components/FAQs"
+import { GetInTouch } from "@/components/getintouch"
+import { Blogs } from "@/components/blogs"
 
 export default function HomePage() {
   return (
@@ -16,15 +19,18 @@ export default function HomePage() {
       <HeroSection />
       <ProductOverview />
       <FeaturedBundles />
+      <FAQs />
+      <GetInTouch />
+      <Blogs />
 
       {/* Business Intelligence Section */}
-      <BusinessIntelligenceSection />
+      {/* <BusinessIntelligenceSection /> */}
 
       {/* Dynamic Pricing Section */}
-      <DynamicPricingSection />
+      {/* <DynamicPricingSection /> */}
 
       {/* Dynamic Contact Section */}
-      <DynamicContactSection />
+      {/* <DynamicContactSection /> */}
 
       <Footer />
     </main>

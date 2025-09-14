@@ -1,12 +1,18 @@
 import { Header } from "@/components/header"
-import { ProductCatalog } from "@/components/product-catalog"
 import { Footer } from "@/components/footer"
+import { SimpleProductCatalog } from "@/components/simple-product-catalog"
+import { FeaturedBundles } from "@/components/featured-bundles"
+import { FAQs } from "@/components/FAQs"
+import { Blogs } from "@/components/blogs"
 
 export default function ProductsPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <ProductCatalog />
+      <SimpleProductCatalog />
+      <FeaturedBundles />
+      <FAQs />
+      <Blogs />
       <Footer />
     </main>
   )

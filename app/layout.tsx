@@ -15,6 +15,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+      </head>
       <body className="antialiased">
         {children}
         <Toaster />

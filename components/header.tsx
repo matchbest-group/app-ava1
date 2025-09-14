@@ -58,17 +58,14 @@ export function Header() {
     <>
       {/* Promotional Banner */}
       <PromotionalBanner />
-      
-      <header className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+
+      <header className="sticky top-0 z-50 bg-white border border-border rounded-lg p-2 w-[92%] max-w-7xl mx-auto shadow-sm ">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center">
               <Link href="/" className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                  <span className="text-primary-foreground font-bold text-lg">P</span>
-                </div>
-                <span className="font-heading font-bold text-xl text-foreground">AvaOne</span>
+                <img src="/logo.png" alt="AvaOne Logo" className="h-8 w-auto" />
               </Link>
             </div>
 
@@ -135,7 +132,11 @@ export function Header() {
                 <User className="h-4 w-4 mr-2" />
                 Sign In
               </Button>
-              <Button size="sm">Get Started</Button>
+              <a href="/contacts">
+                <Button size="sm" className="flex-1">
+                  Get Started
+                </Button>
+              </a>
             </div>
 
             {/* Mobile menu button */}
@@ -204,9 +205,11 @@ export function Header() {
                   <Button variant="ghost" size="sm" className="flex-1">
                     Sign In
                   </Button>
-                  <Button size="sm" className="flex-1">
-                    Get Started
-                  </Button>
+                  <a href="/contacts">
+                    <Button size="sm" className="flex-1">
+                      Get Started
+                    </Button>
+                  </a>
                 </div>
               </div>
             </div>
