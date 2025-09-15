@@ -6,9 +6,9 @@ import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { ShoppingCartComponent } from "@/components/shopping-cart"
 import { PromotionalBanner } from "@/components/promotional-banner"
-import { Menu, X, User, Briefcase, Building2 } from "lucide-react"
+import { Menu, X, LogIn } from "lucide-react"
+import { motion, AnimatePresence } from "framer-motion"
 
-// Mock cart data - in a real app this would come from state management
 const mockCartItems = [
   {
     id: 1,
@@ -31,18 +31,16 @@ const mockCartItems = [
 ]
 
 export function Header() {
-  const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [cartItems, setCartItems] = useState(mockCartItems)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const pathname = usePathname()
 
-  const isActive = (path: string) => pathname === path
-
   const handleUpdateQuantity = (id: number, quantity: number) => {
-    if (quantity === 0) {
-      setCartItems((items) => items.filter((item) => item.id !== id))
-    } else {
-      setCartItems((items) => items.map((item) => (item.id === id ? { ...item, quantity } : item)))
-    }
+    setCartItems((items) =>
+      quantity === 0
+        ? items.filter((item) => item.id !== id)
+        : items.map((item) => (item.id === id ? { ...item, quantity } : item))
+    )
   }
 
   const handleRemoveItem = (id: number) => {
@@ -50,62 +48,50 @@ export function Header() {
   }
 
   const handleCheckout = () => {
-    // Navigate to checkout
     window.location.href = "/checkout"
   }
 
+  const navLinks = [
+    { name: "AVA CX", href: "/services/ava-cx" },
+    { name: "AVA Flow", href: "/services/ava-flow" },
+    { name: "AVA Pingora", href: "/services/ava-pingora" },
+    { name: "AVA SmartBill", href: "/services/ava-smartbill" },
+    { name: "Pricing", href: "/services/pricing" },
+    { name: "Contact", href: "/contact" },
+  ]
+
   return (
     <>
-      {/* Promotional Banner */}
+      {/* Top Promo Banner */}
       <PromotionalBanner />
 
-      <header className="sticky top-0 z-50 bg-white border border-border rounded-lg p-2 w-[92%] max-w-7xl mx-auto shadow-sm ">
+      <header className="sticky top-0 z-50 bg-white border-b border-border shadow-sm">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-14 md:h-16">
             {/* Logo */}
-            <div className="flex items-center">
-              <Link href="/" className="flex items-center space-x-2">
-                <img src="/logo.png" alt="AvaOne Logo" className="h-8 w-auto" />
-              </Link>
-            </div>
+            <Link href="/" className="flex items-center">
+              <img
+                src="/logo.png"
+                alt="AvaOne Logo"
+                className="h-8 md:h-10 w-auto"
+              />
+            </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden md:flex items-center space-x-8">
-              <Link
-                href="/products"
-                className={`transition-colors ${isActive("/products") ? "text-primary font-medium" : "text-foreground hover:text-primary"
+            {/* Desktop Nav */}
+            <nav className="hidden md:flex items-center space-x-6">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    pathname === link.href
+                      ? "text-primary"
+                      : "text-muted-foreground"
                   }`}
-              >
-                Products
-              </Link>
-              <Link
-                href="/bundles"
-                className={`transition-colors ${isActive("/bundles") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                  }`}
-              >
-                Bundles
-              </Link>
-              <Link
-                href="/pricing"
-                className={`transition-colors ${isActive("/pricing") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                  }`}
-              >
-                Pricing
-              </Link>
-              <Link
-                href="/enterprise"
-                className={`transition-colors ${isActive("/enterprise") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                  }`}
-              >
-                Enterprise
-              </Link>
-              <Link
-                href="/support"
-                className={`transition-colors ${isActive("/support") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                  }`}
-              >
-                Support
-              </Link>
+                >
+                  {link.name}
+                </Link>
+              ))}
             </nav>
 
             {/* Desktop Actions */}
@@ -116,106 +102,101 @@ export function Header() {
                 onRemoveItem={handleRemoveItem}
                 onCheckout={handleCheckout}
               />
-              <Link href="/organization/login">
-                <Button variant="ghost" size="sm">
-                  <Building2 className="h-4 w-4 mr-2" />
-                  Organization
-                </Button>
-              </Link>
-              <Link href="/workspace/login">
-                <Button variant="ghost" size="sm">
-                  <Briefcase className="h-4 w-4 mr-2" />
-                  Workspace
-                </Button>
-              </Link>
-              <Button variant="ghost" size="sm">
-                <User className="h-4 w-4 mr-2" />
-                Sign In
+              <Button asChild className="space-x-2">
+                <Link href="/signin">
+                  <LogIn className="h-4 w-4" />
+                  <span>Get Started</span>
+                </Link>
               </Button>
-              <a href="/contacts">
-                <Button size="sm" className="flex-1">
-                  Get Started
-                </Button>
-              </a>
             </div>
 
-            {/* Mobile menu button */}
-            <div className="md:hidden flex items-center space-x-2">
+            {/* Mobile Actions */}
+            <div className="flex items-center md:hidden space-x-3">
               <ShoppingCartComponent
                 items={cartItems}
                 onUpdateQuantity={handleUpdateQuantity}
                 onRemoveItem={handleRemoveItem}
                 onCheckout={handleCheckout}
               />
-              <Button variant="ghost" size="sm" onClick={() => setIsMenuOpen(!isMenuOpen)}>
-                {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-              </Button>
+              <button
+                onClick={() => setIsMobileMenuOpen(true)}
+                className="p-2 rounded-md hover:bg-gray-100"
+                aria-label="Open mobile menu"
+              >
+                <Menu className="h-6 w-6" />
+              </button>
             </div>
           </div>
-
-          {/* Mobile Navigation */}
-          {isMenuOpen && (
-            <div className="md:hidden">
-              <div className="px-2 pt-2 pb-3 space-y-1 bg-card border-t border-border">
-                <Link
-                  href="/products"
-                  className={`block px-3 py-2 transition-colors ${isActive("/products") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                    }`}
-                >
-                  Products
-                </Link>
-                <Link
-                  href="/bundles"
-                  className={`block px-3 py-2 transition-colors ${isActive("/bundles") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                    }`}
-                >
-                  Bundles
-                </Link>
-                <Link
-                  href="/pricing"
-                  className={`block px-3 py-2 transition-colors ${isActive("/pricing") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                    }`}
-                >
-                  Pricing
-                </Link>
-                <Link
-                  href="/enterprise"
-                  className={`block px-3 py-2 transition-colors ${isActive("/enterprise") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                    }`}
-                >
-                  Enterprise
-                </Link>
-                <Link
-                  href="/support"
-                  className={`block px-3 py-2 transition-colors ${isActive("/support") ? "text-primary font-medium" : "text-foreground hover:text-primary"
-                    }`}
-                >
-                  Support
-                </Link>
-                <Link
-                  href="/workspace/login"
-                  className="block px-3 py-2 transition-colors text-foreground hover:text-primary"
-                >
-                  <div className="flex items-center">
-                    <Briefcase className="h-4 w-4 mr-2" />
-                    Workspace
-                  </div>
-                </Link>
-                <div className="flex items-center space-x-2 px-3 py-2">
-                  <Button variant="ghost" size="sm" className="flex-1">
-                    Sign In
-                  </Button>
-                  <a href="/contacts">
-                    <Button size="sm" className="flex-1">
-                      Get Started
-                    </Button>
-                  </a>
-                </div>
-              </div>
-            </div>
-          )}
         </div>
       </header>
+
+      {/* Sliding Mobile Drawer */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.5 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black z-40"
+              onClick={() => setIsMobileMenuOpen(false)}
+            />
+
+            {/* Drawer */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ type: "tween", duration: 0.3 }}
+              className="fixed top-0 right-0 w-4/5 max-w-xs h-full bg-white shadow-lg z-50 flex flex-col"
+            >
+              {/* Header */}
+              <div className="flex items-center justify-between p-4 border-b">
+                <img
+                  src="/logo.png"
+                  alt="AvaOne Logo"
+                  className="h-8 w-auto"
+                />
+                <button
+                  onClick={() => setIsMobileMenuOpen(false)}
+                  className="p-2 rounded-md hover:bg-gray-100"
+                  aria-label="Close menu"
+                >
+                  <X className="h-6 w-6" />
+                </button>
+              </div>
+
+              {/* Navigation */}
+              <nav className="flex-1 flex flex-col p-4 space-y-3">
+                {navLinks.map((link) => (
+                  <Link
+                    key={link.name}
+                    href={link.href}
+                    className={`block rounded-md px-3 py-2 text-base font-medium transition-colors ${
+                      pathname === link.href
+                        ? "bg-gray-100 text-primary"
+                        : "text-gray-700 hover:bg-gray-100"
+                    }`}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                ))}
+
+                {/* Sign In Button (Mobile same as Desktop) */}
+                <Link href="/signin" onClick={() => setIsMobileMenuOpen(false)}>
+                  <Button className="w-full flex items-center justify-center space-x-2 mt-4">
+                    <LogIn className="h-4 w-4" />
+                    <span>Get Started</span>
+                  </Button>
+                </Link>
+              </nav>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
     </>
   )
 }

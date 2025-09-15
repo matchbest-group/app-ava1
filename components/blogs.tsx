@@ -28,7 +28,7 @@ export function Blogs() {
   ]
 
   return (
-    <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-16">
+    <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       {/* Heading */}
       <h2 className="text-4xl font-bold mb-4 text-center">
         Latest <span className="text-[#4B6CEB]">Insights</span> & Blogs

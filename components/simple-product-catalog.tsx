@@ -7,7 +7,7 @@ export function SimpleProductCatalog() {
   return (
     <>
       {/* Hero section */}
-      <section className="pt-16 pb-12 px-6 sm:px-8 lg:px-12 max-w-7xl mx-auto">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side content */}
           <div className="space-y-6 text-left">
@@ -40,7 +40,7 @@ export function SimpleProductCatalog() {
       </section>
 
       {/* section 1 */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side logo and text */}
           <div className="space-y-6">
@@ -90,7 +90,7 @@ export function SimpleProductCatalog() {
       </section>
 
       {/* section 2 */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side image */}
           <div className="flex justify-center">
@@ -140,7 +140,7 @@ export function SimpleProductCatalog() {
       </section>
 
       {/* section 3 */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side logo and text */}
           <div className="space-y-6">
@@ -190,7 +190,7 @@ export function SimpleProductCatalog() {
       </section>
 
       {/* section 4 */}
-      <section className="max-w-7xl mx-auto px-6 sm:px-8 lg:px-12 py-12">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side image */}
           <div className="flex justify-center">

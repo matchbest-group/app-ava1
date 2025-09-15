@@ -35,9 +35,9 @@ export function GetInTouch() {
   }
 
   return (
-    <section className="max-w-6xl mx-auto p-6">
+    <section className="container mx-auto p-6">
       {/* Heading */}
-      <h2 className="text-4xl font-bold mb-2 text-center">
+      <h2 className="text-6xl font-bold mb-2 text-center">
         Get in <span className="text-[#4B6CEB]">Touch</span>
       </h2>
       <p className="text-center text-gray-600 mb-12">
@@ -104,7 +104,7 @@ export function GetInTouch() {
           </div>
         </div>
 
-        {/* Right form */}
+        {/* Right form */} 
         <form onSubmit={handleSubmit} className="md:w-1/2 bg-white p-8">
           <div className="grid grid-cols-2 gap-4 mb-4">
             <input
