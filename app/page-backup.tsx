@@ -207,6 +207,16 @@ export default function HomePage() {
       
       {/* Dynamic Contact Section */}
       <DynamicContactSection />
+      
+      {/* Stats Section */}
+      <section className="py-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div 
+            ref={statsAnimation.elementRef}
+            className={`text-center mb-16 transition-all duration-1000 ${
+              statsAnimation.isVisible 
+                ? 'opacity-100 translate-y-0' 
+                : 'opacity-0 translate-y-10'
             }`}
           >
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">

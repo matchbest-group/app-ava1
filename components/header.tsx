@@ -45,21 +45,21 @@ const productDropdownItems = [
     description: "Customer Experience Platform",
     href: "/products/ava-cx",
     icon: Users,
-    color: "text-blue-500"
-  },
-  {
-    name: "AVA Flow", 
-    description: "Workflow Automation Suite",
-    href: "/products/ava-flow", 
-    icon: Workflow,
-    color: "text-purple-500"
+    color: "text-green-500"
   },
   {
     name: "AVA Pingora",
     description: "Global Communication Platform", 
     href: "/products/ava-pingora",
     icon: Globe,
-    color: "text-green-500"
+    color: "text-pink-500"
+  },
+  {
+    name: "AVA Flow",
+    description: "Workflow Automation Suite",
+    href: "/products/ava-flow", 
+    icon: Workflow,
+    color: "text-blue-600"
   },
   {
     name: "AVA SmartBill",
@@ -177,16 +177,43 @@ export function Header() {
                     className="absolute top-full left-0 w-80 mt-2 bg-white/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-slate-200/50 p-6 z-50"
                   >
                     <div className="space-y-4">
+                      {/* Main Products Link */}
+                      <motion.div
+                        initial={{ opacity: 0, x: -20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0 }}
+                      >
+                        <Link
+                          href="/products"
+                          className="group flex items-center space-x-3 p-3 rounded-xl hover:bg-primary/5 transition-all duration-300 border-b border-slate-100"
+                          onClick={() => setIsProductDropdownOpen(false)}
+                        >
+                          <div className="p-2 rounded-lg bg-primary/10 group-hover:scale-110 transition-transform duration-300">
+                            <Calculator className="w-5 h-5 text-primary" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-slate-900 group-hover:text-primary transition-colors">
+                              All Products
+                            </h3>
+                            <p className="text-sm text-slate-600 mt-1">
+                              Explore our complete suite
+                            </p>
+                          </div>
+                        </Link>
+                      </motion.div>
+
+                      {/* Individual Product Links */}
                       {productDropdownItems.map((product, index) => (
                         <motion.div
                           key={product.name}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.1 }}
+                          transition={{ delay: (index + 1) * 0.1 }}
                         >
                           <Link
                             href={product.href}
                             className="group flex items-start space-x-4 p-3 rounded-xl hover:bg-slate-50/50 transition-all duration-300"
+                            onClick={() => setIsProductDropdownOpen(false)}
                           >
                             <div className="p-2 rounded-lg bg-slate-100 group-hover:scale-110 transition-transform duration-300">
                               <product.icon className={`w-5 h-5 ${product.color}`} />

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { motion, AnimatePresence } from "motion/react"
+import { motion, AnimatePresence } from "framer-motion"
 
 export function FAQs() {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
