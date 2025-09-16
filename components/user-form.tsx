@@ -193,8 +193,8 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit, orga
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <Card className="w-full max-w-md">
-        <CardHeader>
+      <Card className="w-full max-w-md max-h-[80vh] flex flex-col">
+        <CardHeader className="flex-shrink-0">
           <div className="flex justify-between items-center">
             <div>
               <CardTitle>Add New User</CardTitle>
@@ -207,7 +207,7 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit, orga
             </Button>
           </div>
         </CardHeader>
-        <CardContent>
+        <CardContent className="flex-1 overflow-y-auto p-6 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 relative">
           {!canCreateUser && (
             <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-lg">
               <p className="text-sm text-red-600">
@@ -367,24 +367,27 @@ export function UserForm({ onSubmit, onCancel, currentUserCount, userLimit, orga
               {errors.position && <p className="text-sm text-red-500">{errors.position}</p>}
             </div>
 
-            <div className="flex justify-end space-x-3 pt-4">
-              <Button type="button" variant="outline" onClick={onCancel}>
-                Cancel
-              </Button>
-              <Button 
-                type="submit" 
-                disabled={!canCreateUser}
-                onClick={(e) => {
-                  console.log('Create User button clicked in form')
-                  console.log('Form data:', formData)
-                  console.log('Selected organization:', selectedOrganizationId)
-                }}
-              >
-                Create User
-              </Button>
-            </div>
           </form>
         </CardContent>
+        <div className="flex-shrink-0 border-t bg-white p-4">
+          <div className="flex justify-end space-x-3">
+            <Button type="button" variant="outline" onClick={onCancel}>
+              Cancel
+            </Button>
+            <Button 
+              type="submit" 
+              disabled={!canCreateUser}
+              onClick={(e) => {
+                console.log('Create User button clicked in form')
+                console.log('Form data:', formData)
+                console.log('Selected organization:', selectedOrganizationId)
+                handleSubmit(e as any)
+              }}
+            >
+              Create User
+            </Button>
+          </div>
+        </div>
       </Card>
     </div>
   )

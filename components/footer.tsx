@@ -1,151 +1,102 @@
+"use client"
+
+import Image from "next/image"
 import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Separator } from "@/components/ui/separator"
-import { Facebook, Twitter, Linkedin, Github, Mail, Phone, Settings } from "lucide-react"
+import { Phone, Mail, MapPin } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="bg-card border-t border-border">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <div className="grid lg:grid-cols-4 gap-8">
-          {/* Company Info */}
-          <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-primary-foreground font-bold text-lg">P</span>
-              </div>
-              <span className="font-heading font-bold text-xl text-foreground">ProductSuite</span>
+    <footer className="relative bg-gradient-to-b from-white to-gray-50 rounded-t-3xl shadow-inner mt-20 pt-12 pb-10">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Top: Left (Logo/About) + Right (Links) */}
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
+          {/* Left: Logo + About */}
+          <div className="md:col-span-2">
+            <div className="flex items-center mb-4">
+              <Image
+                src="/logo.png"
+                alt="AVAONE Logo"
+                width={140}
+                height={50}
+                className="object-contain"
+              />
             </div>
-            <p className="text-muted-foreground text-sm">
-              Empowering businesses with professional-grade software solutions. Trusted by thousands of companies
-              worldwide.
+            <p className="text-sm text-gray-600 max-w-sm leading-relaxed">
+              Empowering businesses with AI-driven solutions for customer
+              support, sales, billing, and team collaboration.
             </p>
-            <div className="flex space-x-4">
-              <Button variant="ghost" size="sm">
-                <Facebook className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Twitter className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Linkedin className="h-4 w-4" />
-              </Button>
-              <Button variant="ghost" size="sm">
-                <Github className="h-4 w-4" />
-              </Button>
-            </div>
           </div>
 
-          {/* Products */}
-          <div>
-            <h3 className="font-heading font-semibold text-foreground mb-4">Products</h3>
-            <div className="space-y-2">
-              <Link
-                href="/products/analytics"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Analytics Pro
-              </Link>
-              <Link
-                href="/products/security"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                SecureVault
-              </Link>
-              <Link
-                href="/products/communication"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                TeamChat Pro
-              </Link>
-              <Link
-                href="/products/compliance"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Compliance Manager
-              </Link>
-              <Link href="/products" className="block text-sm text-primary hover:underline">
-                View All Products →
-              </Link>
+          {/* Right: 4 Link Sections */}
+          <div className="md:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-8">
+            {/* Solutions */}
+            <div className="text-left">
+              <h4 className="font-semibold text-gray-800 mb-4 text-base">Solutions</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/products" className="hover:text-[#4B6CEB] transition">All Products</Link></li>
+                <li><Link href="/bundles" className="hover:text-[#4B6CEB] transition">Bundled Offers</Link></li>
+                <li><Link href="/pricing" className="hover:text-[#4B6CEB] transition">Pricing Plans</Link></li>
+              </ul>
             </div>
-          </div>
 
-          {/* Support */}
-          <div>
-            <h3 className="font-heading font-semibold text-foreground mb-4">Support</h3>
-            <div className="space-y-2">
-              <Link href="/help" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-                Help Center
-              </Link>
-              <Link
-                href="/documentation"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Documentation
-              </Link>
-              <Link href="/api" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-                API Reference
-              </Link>
-              <Link href="/status" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-                System Status
-              </Link>
-              <Link
-                href="/contact"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
-                Contact Support
-              </Link>
+            {/* Resources */}
+            <div className="text-left">
+              <h4 className="font-semibold text-gray-800 mb-4 text-base">Resources</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/enterprise" className="hover:text-[#4B6CEB] transition">Enterprise</Link></li>
+                <li><Link href="/support" className="hover:text-[#4B6CEB] transition">Documentation</Link></li>
+              </ul>
             </div>
-          </div>
 
-          {/* Newsletter */}
-          <div>
-            <h3 className="font-heading font-semibold text-foreground mb-4">Stay Updated</h3>
-            <p className="text-sm text-muted-foreground mb-4">Get the latest product updates and industry insights.</p>
-            <div className="space-y-2">
-              <Input placeholder="Enter your email" />
-              <Button className="w-full" size="sm">
-                Subscribe
-              </Button>
+            {/* Access */}
+            <div className="text-left">
+              <h4 className="font-semibold text-gray-800 mb-4 text-base">Access</h4>
+              <ul className="space-y-2 text-sm text-gray-600">
+                <li><Link href="/organization/login" className="hover:text-[#4B6CEB] transition">Organization Login</Link></li>
+                <li><Link href="/workspace/login" className="hover:text-[#4B6CEB] transition">Workspace Login</Link></li>
+                <li><Link href="#" className="hover:text-[#4B6CEB] transition">Sign In</Link></li>
+              </ul>
             </div>
-            <div className="mt-6 space-y-2">
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Mail className="h-4 w-4" />
-                <span>support@productsuite.com</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                <Phone className="h-4 w-4" />
-                <span>+1 (555) 123-4567</span>
+
+            {/* Contact */}
+            <div className="text-left">
+              <h4 className="font-semibold text-gray-800 mb-4 text-base">Contact Us</h4>
+              <div className="space-y-4 text-sm text-gray-600">
+                <div className="flex items-center space-x-2">
+                  <Phone className="w-4 h-4 text-[#4B6CEB]" />
+                  <span>+91 8585858585</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Mail className="w-4 h-4 text-[#4B6CEB]" />
+                  <span>contact@avasuit.com</span>
+                </div>
+                <div className="flex items-center space-x-2">
+                  <MapPin className="w-4 h-4 text-[#4B6CEB]" />
+                  <span>132 Las Vegas, United States</span>
+                </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <Separator className="my-8" />
-
-        <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-          <div className="text-sm text-muted-foreground">© 2024 ProductSuite. All rights reserved.</div>
-          <div className="flex items-center space-x-6">
-            <div className="flex space-x-6 text-sm">
-              <Link href="/privacy" className="text-muted-foreground hover:text-primary transition-colors">
-                Privacy Policy
-              </Link>
-              <Link href="/terms" className="text-muted-foreground hover:text-primary transition-colors">
-                Terms of Service
-              </Link>
-              <Link href="/cookies" className="text-muted-foreground hover:text-primary transition-colors">
-                Cookie Policy
-              </Link>
-            </div>
-            <Link href="/admin/login">
-              <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-primary">
-                <Settings className="h-3 w-3 mr-1" />
-                Admin
-              </Button>
-            </Link>
-          </div>
+      {/* CTA Section */}
+      <div className="mt-16 w-full px-4">
+        <div className="max-w-4xl mx-auto rounded-3xl bg-[#060426] py-12 px-6 sm:px-10 text-center shadow-2xl">
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-white tracking-wide mb-6">
+            Grow Your Business with AI
+          </h3>
+          <a href="/contacts">
+            <button className="px-8 py-3 bg-[#4B6CEB] text-white rounded-full text-sm sm:text-base font-medium hover:bg-[#3653cb] transition">
+              Get Started
+            </button>
+          </a>
         </div>
+
+        {/* All rights reserved */}
+        <p className="text-center text-xs text-gray-500 mt-6">
+          © {new Date().getFullYear()} AVAONE. All rights reserved.
+        </p>
       </div>
     </footer>
   )

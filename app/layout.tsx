@@ -14,11 +14,16 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
-      <body className="antialiased">
+    <html lang="en" className="scroll-smooth overflow-x-hidden">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
+      </head>
+      <body className="antialiased font-sans"  style={{ fontFamily: "'DM Sans', sans-serif" }}>
         {children}
         <Toaster />
       </body>
     </html>
   )
 }
+

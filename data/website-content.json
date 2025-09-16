@@ -2,7 +2,7 @@
   "hero": {
     "title": "Welcome to AVA ONE",
     "subtitle": "Empowering businesses with cutting-edge solutions",
-    "backgroundImage": "/uploads/hero-backgroundImage-1756981589001.jpeg",
+    "backgroundImage": "/uploads/hero-backgroundImage-1758022380193.webp",
     "ctaText": "Get Started"
   },
   "businessIntelligence": {
@@ -62,7 +62,7 @@
     "address": "123 Business St, Tech City, TC 12345"
   },
   "promoBanner": {
-    "isVisible": true,
+    "isVisible": false,
     "text": "🎉 Limited Time Offer: Get 50% OFF on all Premium Plans! Use code SAVE50",
     "backgroundColor": "#30a16c",
     "textColor": "#f0efef",

@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { 
   Briefcase, 
   LogOut, 
@@ -14,8 +15,12 @@ import {
   FileText,
   Menu,
   X,
-  ExternalLink
+  ExternalLink,
+  Shield,
+  Lock,
+  Edit3
 } from 'lucide-react'
+import { isAdmin, canManageTeam, canManageProducts, hasPermission, PERMISSIONS, getRoleDisplayName, getRoleBadgeVariant } from '@/lib/permissions'
 
 interface WorkspaceLayoutProps {
   children: React.ReactNode
@@ -25,8 +30,17 @@ interface WorkspaceLayoutProps {
 
 export default function WorkspaceLayout({ children, user, selectedProducts }: WorkspaceLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [profilePicture, setProfilePicture] = useState<string>('')
   const router = useRouter()
   const pathname = usePathname()
+
+  // Load profile picture from localStorage
+  useEffect(() => {
+    const savedProfilePicture = localStorage.getItem('workspaceProfilePicture')
+    if (savedProfilePicture) {
+      setProfilePicture(savedProfilePicture)
+    }
+  }, [])
 
   const handleLogout = () => {
     localStorage.removeItem('workspaceAuthenticated')
@@ -40,42 +54,81 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
       name: 'Dashboard',
       icon: LayoutDashboard,
       href: '/workspace/dashboard',
-      current: pathname === '/workspace/dashboard'
+      current: pathname === '/workspace/dashboard',
+      permission: null, // Always accessible
+      description: 'Overview and metrics'
     },
     {
       name: 'Products',
       icon: Briefcase,
       href: '/workspace/products',
-      current: pathname === '/workspace/products'
+      current: pathname === '/workspace/products',
+      permission: PERMISSIONS.PRODUCTS_VIEW,
+      adminOnly: false,
+      description: 'Manage product access'
     },
     {
       name: 'Team',
       icon: Users,
       href: '/workspace/team',
-      current: pathname === '/workspace/team'
+      current: pathname === '/workspace/team',
+      permission: PERMISSIONS.TEAM_VIEW,
+      adminOnly: true, // Only admins can manage team
+      description: 'Team management (Admin only)'
     },
     {
       name: 'Analytics',
       icon: BarChart3,
       href: '/workspace/analytics',
-      current: pathname === '/workspace/analytics'
+      current: pathname === '/workspace/analytics',
+      permission: PERMISSIONS.ANALYTICS_VIEW,
+      adminOnly: false,
+      description: 'View analytics and insights'
     },
     {
       name: 'Reports',
       icon: FileText,
       href: '/workspace/reports',
-      current: pathname === '/workspace/reports'
+      current: pathname === '/workspace/reports',
+      permission: PERMISSIONS.REPORTS_VIEW,
+      adminOnly: false,
+      description: 'Generate and view reports'
     },
     {
       name: 'Settings',
       icon: Settings,
       href: '/workspace/settings',
-      current: pathname === '/workspace/settings'
+      current: pathname === '/workspace/settings',
+      permission: PERMISSIONS.SETTINGS_MANAGE,
+      adminOnly: true, // Only admins can access settings
+      description: 'System settings (Admin only)'
+    },
+    {
+      name: 'Website CMS',
+      icon: Edit3,
+      href: '/admin/cms',
+      current: pathname.startsWith('/admin/cms'),
+      permission: null,
+      adminOnly: true, // Only admins can access CMS
+      description: 'Manage website content (Admin only)',
+      external: true
     }
   ]
 
+  // Filter navigation items based on user permissions
+  const filteredNavigationItems = navigationItems.filter(item => {
+    // Dashboard is always accessible
+    if (!item.permission) return true
+    
+    // Check admin-only items
+    if (item.adminOnly && !isAdmin(user)) return false
+    
+    // Check specific permissions
+    return hasPermission(user, item.permission)
+  })
+
   const getPageTitle = () => {
-    const currentItem = navigationItems.find(item => item.current)
+    const currentItem = filteredNavigationItems.find(item => item.current)
     return currentItem ? currentItem.name : 'Dashboard'
   }
 
@@ -115,22 +168,80 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
             </button>
           </div>
 
+          {/* User info with role */}
+          <div className="px-4 py-4 border-b border-gray-200 flex-shrink-0">
+            <div className="flex items-center space-x-3">
+              <div className="flex-shrink-0">
+                <Avatar className="w-10 h-10">
+                  {profilePicture ? (
+                    <AvatarImage src={profilePicture} alt="Profile" />
+                  ) : (
+                    <AvatarFallback className="bg-blue-500 text-white">
+                      {user.email.charAt(0).toUpperCase()}
+                    </AvatarFallback>
+                  )}
+                </Avatar>
+              </div>
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center space-x-2 mb-1">
+                  <p className="text-sm font-medium text-gray-900 truncate">
+                    Welcome back
+                  </p>
+                  {isAdmin(user) && (
+                    <div title="Administrator">
+                      <Shield className="w-3 h-3 text-red-500" />
+                    </div>
+                  )}
+                </div>
+                <div className="flex items-center space-x-2">
+                  <Badge variant={getRoleBadgeVariant(user.role)} className="text-xs">
+                    {getRoleDisplayName(user.role)}
+                  </Badge>
+                  <p className="text-xs text-gray-500 truncate">{user.organizationName}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* Navigation */}
           <nav className="flex-1 px-4 py-6 space-y-2 overflow-y-auto">
-            {navigationItems.map((item) => (
-              <a
-                key={item.name}
-                href={item.href}
-                className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  item.current
-                    ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
-                    : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
-                }`}
-              >
-                <item.icon className="w-5 h-5 mr-3 flex-shrink-0" />
-                <span className="truncate">{item.name}</span>
-              </a>
+            {filteredNavigationItems.map((item) => (
+              <div key={item.name} className="relative">
+                <a
+                  href={item.href}
+                  className={`flex items-center px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    item.current
+                      ? 'bg-blue-50 text-blue-700 border-r-2 border-blue-700'
+                      : 'text-gray-700 hover:bg-gray-100 hover:text-gray-900'
+                  }`}
+                  title={item.description}
+                >
+                  <item.icon className="w-5 h-5 mr-3 flex-shrink-0" />
+                  <span className="truncate flex-1">{item.name}</span>
+                  {item.adminOnly && (
+                    <div title="Admin Only">
+                      <Lock className="w-3 h-3 text-gray-400 ml-2 flex-shrink-0" />
+                    </div>
+                  )}
+                </a>
+              </div>
             ))}
+            
+            {/* Show restricted items for non-admin users */}
+            {!isAdmin(user) && (
+              <div className="pt-4 border-t border-gray-200">
+                <p className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">
+                  Restricted Access
+                </p>
+                {navigationItems.filter(item => item.adminOnly && !hasPermission(user, item.permission || '')).map((item) => (
+                  <div key={`restricted-${item.name}`} className="flex items-center px-3 py-2 text-sm text-gray-400 cursor-not-allowed">
+                    <item.icon className="w-5 h-5 mr-3 flex-shrink-0 opacity-50" />
+                    <span className="truncate flex-1 opacity-50">{item.name}</span>
+                    <Lock className="w-3 h-3 ml-2 flex-shrink-0" />
+                  </div>
+                ))}
+              </div>
+            )}
           </nav>
 
           {/* Selected Products */}
@@ -169,14 +280,15 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
           <div className="px-4 py-4 border-t border-gray-200 flex-shrink-0">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3 min-w-0 flex-1">
-                <div className="w-8 h-8 bg-gray-300 rounded-full flex items-center justify-center flex-shrink-0">
-                  <span className="text-sm font-medium text-gray-700">
-                    {user?.email?.charAt(0).toUpperCase()}
-                  </span>
-                </div>
+                <Avatar className="w-8 h-8 border-2 border-white shadow-sm">
+                  <AvatarImage src={profilePicture} alt={user?.organizationName} className="object-cover" />
+                  <AvatarFallback className="text-sm font-medium bg-gradient-to-br from-blue-500 to-purple-500 text-white">
+                    {user?.organizationName?.substring(0, 2).toUpperCase() || user?.email?.charAt(0).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-medium text-gray-900 truncate">
-                    {user?.email}
+                    {user?.organizationName || user?.email}
                   </p>
                   <Badge variant="secondary" className="text-xs">
                     {user?.plan} Plan
