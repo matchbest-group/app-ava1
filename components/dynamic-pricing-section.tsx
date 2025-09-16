@@ -22,8 +22,8 @@ interface PricingContent {
 
 export function DynamicPricingSection() {
   const [pricingContent, setPricingContent] = useState<PricingContent>({
-    title: "Choose Your Plan",
-    subtitle: "Select the perfect plan for your business needs",
+    title: "",
+    subtitle: "",
     plans: [
       {
         name: "Starter",
@@ -67,13 +67,17 @@ export function DynamicPricingSection() {
   return (
     <section className="py-20 bg-background">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            {pricingContent.title}
-          </h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-            {pricingContent.subtitle}
-          </p>
+        <div className="text-center mb-10">
+          {pricingContent.title && (
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">
+              {pricingContent.title}
+            </h2>
+          )}
+          {pricingContent.subtitle && (
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-6">
+              {pricingContent.subtitle}
+            </p>
+          )}
 
           <div className="flex items-center justify-center space-x-4">
             <span className={`text-sm ${!isAnnual ? 'font-semibold' : 'text-muted-foreground'}`}>

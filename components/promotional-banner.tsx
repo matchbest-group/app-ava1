@@ -13,8 +13,8 @@ interface PromoBannerContent {
 
 export function PromotionalBanner() {
   const [bannerContent, setBannerContent] = useState<PromoBannerContent>({
-    isVisible: false,
-    text: "🎉 Limited Time Offer: Get 50% OFF on all Premium Plans! Use code SAVE50",
+    isVisible: true,
+    text: "🚀 New Platform v3.5 Released! Experience AI-powered automation with 60% improved performance",
     backgroundColor: "#6366f1",
     textColor: "#ffffff",
     link: "/pricing"

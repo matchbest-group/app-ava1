@@ -46,7 +46,7 @@ import {
   EyeOff
 } from 'lucide-react'
 import WorkspaceLayout from '@/components/workspace-layout'
-import { AVAILABLE_PRODUCTS } from '@/lib/products'
+import { AVAILABLE_PRODUCTS, Product } from '@/lib/products'
 
 interface WorkspaceUser {
   accountId: string
@@ -89,29 +89,47 @@ export default function WorkspaceProductsPage() {
   const [productUsage, setProductUsage] = useState<ProductUsage[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all')
-  const [selectedProduct, setSelectedProduct] = useState<any | null>(null)
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null)
   const [showUserManagement, setShowUserManagement] = useState(false)
-  const [teamMembers, setTeamMembers] = useState<any[]>([])
-  const router = useRouter()
-
-  // Function to fetch team members from database
-  const fetchTeamMembers = async (organizationName: string) => {
-    try {
-      const response = await fetch(`/api/team-members?organization=${encodeURIComponent(organizationName)}`)
-      if (response.ok) {
-        const users = await response.json()
-        setTeamMembers(users)
-      } else {
-        console.error('Failed to fetch team members')
-        // Fallback to empty array if database fails
-        setTeamMembers([])
-      }
-    } catch (error) {
-      console.error('Error fetching team members:', error)
-      // Fallback to empty array if database fails
-      setTeamMembers([])
+  const [teamMembers, setTeamMembers] = useState([
+    { 
+      id: '1', 
+      name: 'John Smith', 
+      email: 'john.smith@company.com', 
+      avatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
+      role: 'Manager',
+      joinedAt: '2024-01-15',
+      status: 'active'
+    },
+    { 
+      id: '2', 
+      name: 'Sarah Johnson', 
+      email: 'sarah.johnson@company.com', 
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b2e7c24b?w=150&h=150&fit=crop&crop=face',
+      role: 'Analyst',
+      joinedAt: '2024-02-20',
+      status: 'active'
+    },
+    { 
+      id: '3', 
+      name: 'Mike Chen', 
+      email: 'mike.chen@company.com', 
+      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
+      role: 'Developer',
+      joinedAt: '2024-03-10',
+      status: 'active'
+    },
+    { 
+      id: '4', 
+      name: 'Emily Davis', 
+      email: 'emily.davis@company.com', 
+      avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face',
+      role: 'Support',
+      joinedAt: '2024-04-05',
+      status: 'pending'
     }
-  }
+  ])
+  const router = useRouter()
 
   // Initialize real product data
   const realProductsData = [
@@ -240,15 +258,12 @@ export default function WorkspaceProductsPage() {
           status: 'active'
         }
       ])
-
-      // Fetch team members from database
-      fetchTeamMembers(userObj.organizationName).then(() => {
-        setIsLoading(false)
-      })
     } else {
       router.push('/workspace/login')
       return
     }
+    
+    setIsLoading(false)
   }, [router])
 
   const handleProductToggle = (productId: string) => {
@@ -295,8 +310,8 @@ export default function WorkspaceProductsPage() {
             <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
             <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-400 rounded-full animate-spin absolute top-2 left-2"></div>
           </div>
-          <p className="mt-6 text-slate-600 font-medium animate-pulse">Loading workspace...</p>
-          <p className="mt-2 text-sm text-slate-500">Setting up products and team members</p>
+          <p className="mt-6 text-slate-600 font-medium animate-pulse">Loading products...</p>
+          <p className="mt-2 text-sm text-slate-500">Please wait while we prepare your products</p>
         </div>
       </div>
     )
@@ -632,23 +647,14 @@ export default function WorkspaceProductsPage() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {teamMembers.length === 0 ? (
-                  <div className="text-center py-12">
-                    <Users className="w-12 h-12 text-slate-400 mx-auto mb-4" />
-                    <p className="text-slate-600 mb-2">No team members found</p>
-                    <p className="text-sm text-slate-500">
-                      Team members will appear here once they are added to your organization
-                    </p>
-                  </div>
-                ) : (
-                  <div className="space-y-6">
-                    {teamMembers.map((member) => (
+                <div className="space-y-6">
+                  {teamMembers.map((member) => (
                     <div key={member.id} className="border rounded-lg p-4 space-y-4">
                       <div className="flex items-center justify-between">
                         <div className="flex items-center space-x-4">
                           <Avatar className="w-12 h-12">
                             <AvatarImage src={member.avatar} alt={member.name} />
-                            <AvatarFallback>{member.name.split(' ').map((n: string) => n[0]).join('')}</AvatarFallback>
+                            <AvatarFallback>{member.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
                           </Avatar>
                           <div>
                             <h4 className="font-semibold">{member.name}</h4>
@@ -717,8 +723,7 @@ export default function WorkspaceProductsPage() {
                       </div>
                     </div>
                   ))}
-                  </div>
-                )}
+                </div>
               </CardContent>
             </Card>
           </TabsContent>

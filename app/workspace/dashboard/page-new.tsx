@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
@@ -9,7 +9,6 @@ import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
 import { 
   Building2,
   Calendar, 
@@ -59,10 +58,7 @@ import {
   ChevronRight,
   ChevronDown,
   Heart,
-  Bookmark,
-  Camera,
-  Upload,
-  Image as ImageIcon
+  Bookmark
 } from 'lucide-react'
 import WorkspaceLayout from '@/components/workspace-layout'
 import { getProductsByIds, AVAILABLE_PRODUCTS } from '@/lib/products'
@@ -82,9 +78,6 @@ export default function WorkspaceDashboardPage() {
   const [isLoading, setIsLoading] = useState(true)
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
   const [searchTerm, setSearchTerm] = useState('')
-  const [profilePicture, setProfilePicture] = useState<string>('')
-  const [showProfileDialog, setShowProfileDialog] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
   const [notifications, setNotifications] = useState([
     { id: 1, type: 'success', message: 'System backup completed successfully', time: '2 min ago', read: false },
     { id: 2, type: 'warning', message: 'Storage usage is at 85%', time: '1 hour ago', read: false },
@@ -103,55 +96,15 @@ export default function WorkspaceDashboardPage() {
   ])
   const router = useRouter()
 
-  // Default profile pictures
-  const defaultProfilePictures = [
-    '/placeholder-logo.svg',
-    'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1494790108755-2616b2e7c24b?w=150&h=150&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&h=150&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&h=150&fit=crop&crop=face',
-    'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
-  ]
-
-  // Handle profile picture change
-  const handleProfilePictureChange = (newPicture: string) => {
-    setProfilePicture(newPicture)
-    localStorage.setItem('workspaceProfilePicture', newPicture)
-    setShowProfileDialog(false)
-  }
-
-  // Handle file upload
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const result = e.target?.result as string
-        handleProfilePictureChange(result)
-      }
-      reader.readAsDataURL(file)
-    }
-  }
-
   useEffect(() => {
     // Check authentication
     const auth = localStorage.getItem('workspaceAuthenticated')
     const userData = localStorage.getItem('workspaceUser')
-    const savedProfilePicture = localStorage.getItem('workspaceProfilePicture')
     
     if (auth === 'true' && userData) {
       const userObj = JSON.parse(userData)
       setUser(userObj)
       setIsAuthenticated(true)
-      
-      // Load saved profile picture or use default
-      if (savedProfilePicture) {
-        setProfilePicture(savedProfilePicture)
-      } else {
-        setProfilePicture(defaultProfilePictures[0])
-      }
       
       // For now, set all products as selected (default behavior)
       setSelectedProducts(AVAILABLE_PRODUCTS)
@@ -167,7 +120,10 @@ export default function WorkspaceDashboardPage() {
     return (
       <div className="h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
+          <div className="relative">
+            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
+            <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-400 rounded-full animate-spin absolute top-2 left-2"></div>
+          </div>
           <p className="mt-6 text-slate-600 font-medium animate-pulse">Loading your workspace...</p>
           <p className="mt-2 text-sm text-slate-500">Please wait while we prepare your dashboard</p>
         </div>
@@ -186,76 +142,12 @@ export default function WorkspaceDashboardPage() {
         <div className="bg-gradient-to-r from-slate-50 via-blue-50 to-purple-50 rounded-2xl p-8 border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
-              <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
-                <DialogTrigger asChild>
-                  <div className="relative cursor-pointer group">
-                    <Avatar className="h-16 w-16 border-4 border-white shadow-lg group-hover:shadow-xl transition-shadow">
-                      <AvatarImage src={profilePicture} alt={user.organizationName} className="object-cover" />
-                      <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 text-white">
-                        {user.organizationName.substring(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Camera className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold">Choose Profile Picture</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-6">
-                    {/* Default Pictures */}
-                    <div>
-                      <h3 className="font-medium text-slate-700 mb-3">Select from defaults</h3>
-                      <div className="grid grid-cols-4 gap-3">
-                        {defaultProfilePictures.map((pic, index) => (
-                          <div
-                            key={index}
-                            className={`relative cursor-pointer rounded-full overflow-hidden border-4 transition-all hover:scale-110 ${
-                              profilePicture === pic ? 'border-blue-500 shadow-lg' : 'border-slate-200 hover:border-slate-300'
-                            }`}
-                            onClick={() => handleProfilePictureChange(pic)}
-                          >
-                            <Avatar className="w-16 h-16">
-                              <AvatarImage src={pic} alt={`Option ${index + 1}`} className="object-cover" />
-                              <AvatarFallback className="bg-gradient-to-br from-slate-400 to-slate-600 text-white">
-                                {index + 1}
-                              </AvatarFallback>
-                            </Avatar>
-                            {profilePicture === pic && (
-                              <div className="absolute inset-0 bg-blue-500 bg-opacity-20 flex items-center justify-center">
-                                <CheckCircle className="w-6 h-6 text-blue-600" />
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Upload Custom Picture */}
-                    <div className="pt-4 border-t">
-                      <h3 className="font-medium text-slate-700 mb-3">Upload custom picture</h3>
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileUpload}
-                        accept="image/*"
-                        className="hidden"
-                      />
-                      <Button
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full"
-                      >
-                        <Upload className="w-4 h-4 mr-2" />
-                        Upload Image
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
-              
+              <Avatar className="h-16 w-16 border-4 border-white shadow-lg">
+                <AvatarImage src="/placeholder-logo.svg" alt={user.organizationName} />
+                <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 text-white">
+                  {user.organizationName.substring(0, 2).toUpperCase()}
+                </AvatarFallback>
+              </Avatar>
               <div>
                 <h1 className="text-3xl font-bold text-slate-900 mb-1">
                   Welcome back, {user.organizationName}
