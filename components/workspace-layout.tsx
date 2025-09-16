@@ -120,6 +120,9 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
     // Dashboard is always accessible
     if (!item.permission) return true
     
+    // If user is not loaded yet, show basic items only
+    if (!user) return !item.adminOnly
+    
     // Check admin-only items
     if (item.adminOnly && !isAdmin(user)) return false
     
@@ -177,7 +180,7 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
                     <AvatarImage src={profilePicture} alt="Profile" />
                   ) : (
                     <AvatarFallback className="bg-blue-500 text-white">
-                      {user.email.charAt(0).toUpperCase()}
+                      {user?.email?.charAt(0).toUpperCase() || 'U'}
                     </AvatarFallback>
                   )}
                 </Avatar>
@@ -194,10 +197,12 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
                   )}
                 </div>
                 <div className="flex items-center space-x-2">
-                  <Badge variant={getRoleBadgeVariant(user.role)} className="text-xs">
-                    {getRoleDisplayName(user.role)}
-                  </Badge>
-                  <p className="text-xs text-gray-500 truncate">{user.organizationName}</p>
+                  {user?.role && (
+                    <Badge variant={getRoleBadgeVariant(user.role)} className="text-xs">
+                      {getRoleDisplayName(user.role)}
+                    </Badge>
+                  )}
+                  <p className="text-xs text-gray-500 truncate">{user?.organizationName || 'Loading...'}</p>
                 </div>
               </div>
             </div>

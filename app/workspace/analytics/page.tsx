@@ -89,6 +89,16 @@ export default function AnalyticsPage() {
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
 
   useEffect(() => {
+    // Load user data from localStorage
+    const savedUser = localStorage.getItem('workspaceUser')
+    if (savedUser) {
+      try {
+        setUser(JSON.parse(savedUser))
+      } catch (error) {
+        console.error('Failed to parse user data:', error)
+      }
+    }
+    
     loadAnalytics()
   }, [])
 
@@ -247,7 +257,7 @@ export default function AnalyticsPage() {
     }
   }
 
-  if (loading) {
+  if (loading || !user) {
     return (
       <WorkspaceLayout user={user} selectedProducts={selectedProducts}>
         <div className="flex items-center justify-center min-h-screen">
