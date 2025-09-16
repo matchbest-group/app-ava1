@@ -28,9 +28,6 @@ export default function HomePage() {
       <ProductOverview />
       <FeaturedBundles />
       
-      {/* Dynamic Pricing Section */}
-      <DynamicPricingSection />
-      
       {/* Customer Testimonials */}
       <TestimonialsSection />
       

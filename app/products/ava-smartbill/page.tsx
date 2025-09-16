@@ -11,7 +11,7 @@ export default function AVASmartbillPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative min-h-screen">
       <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:min-h-[80vh] mb-20">
         {/* Left side */}
         <div className="flex-1 w-full max-w-lg flex flex-col justify-center">
@@ -48,29 +48,34 @@ export default function AVASmartbillPage() {
 
       {/* Subtitle and buttons centered full width */}
       <div className="w-full flex flex-col items-center space-y-4 mt-8 lg:mt-0 lg:absolute lg:bottom-16 lg:left-0 lg:right-0">
-         <p className="text-xl sm:text-2xl text-gray-700 font-medium max-w-1xl mb-8">
+        <p className="text-xl sm:text-2xl text-gray-700 font-medium max-w-1xl mb-8 text-center">
           A future-ready billing platform that blends flexibility, automation, and AI to power global 
           <br />
           payments and revenue growth for modern businesses.
         </p>
-        <div className="flex justify-center space-x-10 w-full max-w-md">
+        <div className="flex justify-center space-x-6 w-full max-w-md">
           <Link
-            href="#"
-            className="px-10 py-4 border border-yellow-600 text-yellow-600 rounded-md text-lg font-semibold hover:bg-yellow-50 transition"
+            href="https://master.d398n21nztipdq.amplifyapp.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-3 border border-yellow-600 text-yellow-600 rounded-md text-lg font-semibold hover:bg-yellow-50 transition"
           >
             Watch Demo
           </Link>
           <Link
-            href="/signup"
-            className="px-10 py-4 bg-yellow-600 text-white rounded-md text-lg font-semibold hover:bg-yellow-700 transition"
+            href="https://master.d398n21nztipdq.amplifyapp.com/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-8 py-3 bg-yellow-600 text-white rounded-md text-lg font-semibold hover:bg-yellow-700 transition"
           >
             Get Started
           </Link>
         </div>
       </div>
+      </div>
 
-    {/* New Section: Why Choose AVA SmartBill */}
-    <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      {/* New Section: Why Choose AVA SmartBill */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
       <h2 className="text-4xl font-extrabold text-center mb-12">
         Why Choose AVA <span className="text-yellow-600">SmartBill</span>?
       </h2>
@@ -188,9 +193,14 @@ export default function AVASmartbillPage() {
         <p className="text-gray-700 mb-6">
           AVA SmartBill takes the complexity out of billing and revenue management. From automated invoicing to AI-driven optimization, it ensures your business collects faster, scales smarter, and grows globally.
         </p>
-        <button className="px-6 py-2 border border-gray-400 rounded-md hover:bg-gray-100 transition">
+        <Link
+          href="https://master.d398n21nztipdq.amplifyapp.com/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="px-6 py-2 border border-gray-400 rounded-md hover:bg-gray-100 transition inline-block"
+        >
           See How It Works
-        </button>
+        </Link>
       </div>
     </section>
 
@@ -217,7 +227,6 @@ export default function AVASmartbillPage() {
     <FAQs />
     <GetInTouch />
     <Footer />
-    </div>
     </main>
   )
 }

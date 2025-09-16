@@ -61,7 +61,9 @@ export default function AVAflowPage() {
               Watch Demo
             </Link>
             <Link
-              href="/signup"
+              href="https://matchbest-crm.vercel.app/"
+              target="_blank"
+              rel="noopener noreferrer"
               className="px-10 py-4 bg-blue-600 text-white rounded-md text-lg font-semibold hover:bg-blue-700 transition"
             >
               Get Started

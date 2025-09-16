@@ -12,7 +12,7 @@ export default function AVAPingoraPage() {
     <main className="min-h-screen bg-background">
       <Header />
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
-      <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:min-h-[80vh] mb-20">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:min-h-[80vh] mb-20">
         {/* Left side */}
         <div className="flex-1 w-full max-w-lg flex flex-col justify-center">
           {/* Top left logo */}
@@ -61,15 +61,19 @@ export default function AVAPingoraPage() {
             Watch Demo
           </Link>
           <Link
-            href="/signup"
+            href="https://pingora.ai"
+            target="_blank"
+            rel="noopener noreferrer"
             className="px-10 py-4 bg-pink-600 text-white rounded-md text-lg font-semibold hover:bg-pink-700 transition"
           >
             Get Started
           </Link>
         </div>
       </div>
-    {/* New Section: Why Choose AVA Pingora */ }
-  <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      </div>
+
+      {/* New Section: Why Choose AVA Pingora */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
     <h2 className="text-4xl font-extrabold text-center mb-12">
       Why Choose AVA <span className="text-pink-600">Pingora</span>?
     </h2>
@@ -216,7 +220,6 @@ export default function AVAPingoraPage() {
     <FAQs />
     <GetInTouch />
     <Footer />
-    </div>
     </main>
   )
 }
