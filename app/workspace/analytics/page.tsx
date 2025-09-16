@@ -81,6 +81,9 @@ const COLORS = {
   gradient: ['#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899']
 }
 
+// Force dynamic rendering to prevent SSR issues
+export const dynamic = 'force-dynamic'
+
 export default function AnalyticsPage() {
   const [analytics, setAnalytics] = useState<AnalyticsEntry[]>([])
   const [loading, setLoading] = useState(true)

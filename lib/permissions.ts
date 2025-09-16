@@ -66,7 +66,11 @@ export const ROLE_PERMISSIONS: Record<string, string[]> = {
 }
 
 // Check if user has specific permission
-export const hasPermission = (user: WorkspaceUser, permission: string): boolean => {
+export const hasPermission = (user: WorkspaceUser | null, permission: string): boolean => {
+  if (!user) {
+    return false
+  }
+  
   if (!user.role) {
     // For backward compatibility, if no role is set, assume admin for existing users
     return true
@@ -77,19 +81,23 @@ export const hasPermission = (user: WorkspaceUser, permission: string): boolean 
 }
 
 // Check if user is admin
-export const isAdmin = (user: WorkspaceUser): boolean => {
+export const isAdmin = (user: WorkspaceUser | null): boolean => {
+  if (!user) {
+    return false
+  }
+  
   return user.role === 'admin' || !user.role // Backward compatibility
 }
 
 // Check if user can manage team
-export const canManageTeam = (user: WorkspaceUser): boolean => {
+export const canManageTeam = (user: WorkspaceUser | null): boolean => {
   return hasPermission(user, PERMISSIONS.TEAM_CREATE) || 
          hasPermission(user, PERMISSIONS.TEAM_EDIT) ||
          hasPermission(user, PERMISSIONS.TEAM_MANAGE_ROLES)
 }
 
 // Check if user can manage products
-export const canManageProducts = (user: WorkspaceUser): boolean => {
+export const canManageProducts = (user: WorkspaceUser | null): boolean => {
   return hasPermission(user, PERMISSIONS.PRODUCTS_MANAGE) ||
          hasPermission(user, PERMISSIONS.PRODUCTS_ASSIGN)
 }

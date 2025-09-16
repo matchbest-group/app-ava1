@@ -25,6 +25,9 @@ interface WorkspaceUser {
   createdAt: string
 }
 
+// Force dynamic rendering to prevent SSR issues
+export const dynamic = 'force-dynamic'
+
 export default function WorkspaceProductsPage() {
   const [user, setUser] = useState<WorkspaceUser | null>(null)
   const [isAuthenticated, setIsAuthenticated] = useState(false)
