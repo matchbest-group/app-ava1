@@ -12,10 +12,17 @@ const uri = 'mongodb+srv://avaone_matchbest:t8u4pg47@cluster0.y6exufq.mongodb.ne
 const pingoraUri = 'mongodb+srv://aayushhmishra2003:t8u4pg47@cluster0.jroy3k9.mongodb.net/matchbest_new?retryWrites=true&w=majority&appName=Cluster0';
 const crmUri = 'mongodb+srv://prathammatchbest:RJzRDv3ttJ5ihNsq@matchbest.6d8mq44.mongodb.net/?retryWrites=true&w=majority&appName=matchbest';
 
+// Set RESEND_API_KEY if not already set
+if (!process.env.RESEND_API_KEY) {
+  process.env.RESEND_API_KEY = 're_LcuLk8Qz_JgHWm5tnSXk6VcdkdSADBC22';
+  console.log('📁 Set RESEND_API_KEY directly');
+}
+
 console.log('Environment variables status:')
 console.log('MONGODB_URI:', process.env.MONGODB_URI ? 'LOADED' : 'NOT LOADED')
 console.log('MONGODB_URI_PINGORA:', process.env.MONGODB_URI_PINGORA ? 'LOADED' : 'NOT LOADED')
 console.log('MONGODB_URI_CRM:', process.env.MONGODB_URI_CRM ? 'LOADED' : 'NOT LOADED')
+console.log('RESEND_API_KEY:', process.env.RESEND_API_KEY ? 'LOADED' : 'NOT LOADED')
 const options = {}
 
 // Ensure we have a valid URI before proceeding

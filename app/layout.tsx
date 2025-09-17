@@ -2,6 +2,7 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Toaster } from "@/components/ui/toaster"
 import "./globals.css"
+import "../styles/smooth-scroll.css"
 
 export const metadata: Metadata = {
   title: "Ava Workspace - Enterprise Solutions",

@@ -67,7 +67,7 @@ export function CTADemoSection() {
   return (
     <section className="py-20 px-4 bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white">
       <div className="max-w-7xl mx-auto">
-        {/* Main CTA */}
+        {/* Main CTA - Commented Out
         <div className="text-center mb-16">
           <Badge variant="secondary" className="mb-4 px-4 py-2 bg-white/10 text-white border-white/20">
             <Zap className="w-4 h-4 mr-2" />
@@ -81,7 +81,7 @@ export function CTADemoSection() {
             boost productivity, and drive growth.
           </p>
 
-          {/* Quick Email Signup */}
+          Quick Email Signup
           <div className="max-w-md mx-auto mb-12">
             <div className="flex gap-2">
               <Input
@@ -104,6 +104,7 @@ export function CTADemoSection() {
             </p>
           </div>
         </div>
+        */}
 
         {/* Demo Video Section */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">

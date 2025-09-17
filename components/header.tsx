@@ -4,7 +4,6 @@ import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { Button } from "@/components/ui/button"
-import { ShoppingCartComponent } from "@/components/shopping-cart"
 import { 
   Menu, 
   X, 
@@ -13,31 +12,11 @@ import {
   Workflow, 
   Globe, 
   Receipt,
-  Calculator,
+  // Calculator,
   Users
 } from "lucide-react"
 import { motion, AnimatePresence } from "framer-motion"
 
-const mockCartItems = [
-  {
-    id: 1,
-    name: "Analytics Pro",
-    description: "Real-time business intelligence dashboard",
-    price: 49,
-    quantity: 1,
-    billingCycle: "monthly" as const,
-    image: "/images/dashboard-1.png",
-  },
-  {
-    id: 2,
-    name: "SecureVault",
-    description: "Advanced data encryption and storage",
-    price: 39,
-    quantity: 2,
-    billingCycle: "monthly" as const,
-    image: "/cybersecurity-dashboard-with-encryption-and-protec.png",
-  },
-]
 
 const productDropdownItems = [
   {
@@ -71,11 +50,13 @@ const productDropdownItems = [
 ]
 
 export function Header() {
-  const [cartItems, setCartItems] = useState(mockCartItems)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [isProductDropdownOpen, setIsProductDropdownOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const pathname = usePathname()
+
+  // Check if we're on pricing page for white header styling
+  const isPricingPage = pathname === '/pricing'
 
   useEffect(() => {
     const handleScroll = () => {
@@ -85,36 +66,24 @@ export function Header() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const handleUpdateQuantity = (id: number, quantity: number) => {
-    setCartItems((items) =>
-      quantity === 0
-        ? items.filter((item) => item.id !== id)
-        : items.map((item) => (item.id === id ? { ...item, quantity } : item))
-    )
-  }
-
-  const handleRemoveItem = (id: number) => {
-    setCartItems((items) => items.filter((item) => item.id !== id))
-  }
-
-  const handleCheckout = () => {
-    window.location.href = "/checkout"
-  }
 
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Pricing", href: "/pricing" },
     { name: "Contact", href: "/contacts" }, 
-    { name: "Custom Bundle", href: "/custom-bundle" },
-    { name: "Workspace", href: "/workspace/login" },
+    // { name: "Custom Bundle", href: "/custom-bundle" },
   ]
 
   return (
     <motion.header 
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        isScrolled 
-          ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-slate-200/50' 
-          : 'bg-transparent'
+        isPricingPage
+          ? isScrolled 
+            ? 'bg-white/10 backdrop-blur-xl border-b border-white/20'
+            : 'bg-transparent'
+          : isScrolled 
+            ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-slate-200/50' 
+            : 'bg-transparent'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
@@ -144,7 +113,11 @@ export function Header() {
             <Link
               href="/"
               className={`relative text-sm font-semibold transition-all duration-300 hover:text-primary group ${
-                pathname === "/" ? "text-primary" : "text-slate-700"
+                pathname === "/" 
+                  ? "text-primary" 
+                  : isPricingPage 
+                    ? "text-white" 
+                    : "text-slate-700"
               }`}
             >
               Home
@@ -156,7 +129,11 @@ export function Header() {
               <button
                 onMouseEnter={() => setIsProductDropdownOpen(true)}
                 onMouseLeave={() => setIsProductDropdownOpen(false)}
-                className="flex items-center space-x-1 text-sm font-semibold text-slate-700 hover:text-primary transition-all duration-300 group"
+                className={`flex items-center space-x-1 text-sm font-semibold transition-all duration-300 group ${
+                  isPricingPage 
+                    ? "text-white hover:text-blue-200" 
+                    : "text-slate-700 hover:text-primary"
+                }`}
               >
                 <span>Products</span>
                 <ChevronDown className={`w-4 h-4 transition-transform duration-300 ${
@@ -189,7 +166,7 @@ export function Header() {
                           onClick={() => setIsProductDropdownOpen(false)}
                         >
                           <div className="p-2 rounded-lg bg-primary/10 group-hover:scale-110 transition-transform duration-300">
-                            <Calculator className="w-5 h-5 text-primary" />
+                            <Users className="w-5 h-5 text-primary" />
                           </div>
                           <div className="flex-1">
                             <h3 className="font-semibold text-slate-900 group-hover:text-primary transition-colors">
@@ -231,6 +208,8 @@ export function Header() {
                       ))}
                     </div>
                     
+                    {/* Custom Bundle Builder - Commented Out */}
+                    {/*
                     <div className="border-t border-slate-200/50 mt-4 pt-4">
                       <Link
                         href="/bundles"
@@ -246,6 +225,7 @@ export function Header() {
                         <ChevronDown className="w-4 h-4 text-primary rotate-[-90deg] group-hover:translate-x-1 transition-transform" />
                       </Link>
                     </div>
+                    */}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -257,11 +237,23 @@ export function Header() {
                 key={link.name}
                 href={link.href}
                 className={`relative text-sm font-semibold transition-all duration-300 hover:text-primary group ${
-                  pathname === link.href ? "text-primary" : "text-slate-700"
+                  pathname === link.href 
+                    ? isPricingPage 
+                      ? "text-white" 
+                      : "text-primary"
+                    : isPricingPage 
+                      ? "text-white" 
+                      : "text-slate-700"
                 }`}
               >
                 {link.name}
-                <span className="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-300 group-hover:w-full" />
+                <span className={`absolute -bottom-1 left-0 h-0.5 transition-all duration-300 ${
+                  pathname === link.href
+                    ? isPricingPage
+                      ? "w-full bg-white"
+                      : "w-full bg-primary"
+                    : "w-0 bg-primary group-hover:w-full"
+                }`} />
               </Link>
             ))}
           </nav>
@@ -269,29 +261,35 @@ export function Header() {
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
             
-            {/* Shopping Cart */}
-            <ShoppingCartComponent
-              items={cartItems}
-              onUpdateQuantity={handleUpdateQuantity}
-              onRemoveItem={handleRemoveItem}
-              onCheckout={handleCheckout}
-            />
-
-            {/* Login Button */}
-            <Button
-              variant="outline"
-              size="sm"
-              className="hidden md:flex items-center space-x-2 bg-transparent border-slate-300 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-            >
-              <LogIn className="w-4 h-4" />
-              <span>Login</span>
-            </Button>
+            {/* Workspace Button */}
+            <Link href="/workspace/login">
+              <Button
+                variant="outline"
+                size="sm"
+                className={`hidden md:flex items-center space-x-2 bg-transparent transition-all duration-300 relative overflow-hidden group ${
+                  isPricingPage
+                    ? "border-white/30 text-white hover:text-white hover:border-white"
+                    : "border-slate-300 hover:text-white hover:border-primary"
+                }`}
+              >
+                {/* Loading fill animation */}
+                <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                
+                {/* Button content */}
+                <div className="relative z-10 flex items-center space-x-2">
+                  <LogIn className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
+                  <span className="font-medium">Workspace</span>
+                </div>
+              </Button>
+            </Link>
 
             {/* Mobile Menu Button */}
             <Button
               variant="ghost"
               size="sm"
-              className="lg:hidden p-2"
+              className={`lg:hidden p-2 ${
+                isPricingPage ? "text-white hover:text-blue-200" : ""
+              }`}
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <motion.div
@@ -361,14 +359,23 @@ export function Header() {
                   </Link>
                 ))}
 
-                {/* Mobile Login */}
-                <Button
-                  variant="outline"
-                  className="w-full mt-4 bg-transparent border-slate-300 hover:bg-primary hover:text-white hover:border-primary transition-all duration-300"
-                >
-                  <LogIn className="w-4 h-4 mr-2" />
-                  Login
-                </Button>
+                {/* Mobile Workspace */}
+                <Link href="/workspace/login" className="block">
+                  <Button
+                    variant="outline"
+                    className="w-full mt-4 bg-transparent border-slate-300 hover:text-white hover:border-primary transition-all duration-300 relative overflow-hidden group"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    {/* Loading fill animation */}
+                    <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
+                    
+                    {/* Button content */}
+                    <div className="relative z-10 flex items-center justify-center space-x-2">
+                      <LogIn className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
+                      <span className="font-medium">Workspace</span>
+                    </div>
+                  </Button>
+                </Link>
               </nav>
             </div>
           </motion.div>
