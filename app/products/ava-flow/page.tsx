@@ -11,36 +11,38 @@ export default function AVAflowPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:min-h-[80vh] mb-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 relative">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 lg:min-h-[80vh] mb-20">
           {/* Left side */}
-          <div className="flex-1 w-full max-w-lg flex flex-col justify-center">
+          <div className="flex-1 w-full max-w-lg flex flex-col justify-center order-2 lg:order-1">
             {/* Top left logo */}
-            <div className="mb-10">
+            <div className="mb-6 lg:mb-10">
               <Image
                 src="/logo2.png"
                 alt="AVA Flow Logo"
-                width={220}
-                height={60}
+                width={180}
+                height={50}
+                className="sm:w-[220px] sm:h-[60px]"
                 priority
               />
             </div>
 
             {/* Heading */}
-            <h1 className="text-5xl sm:text-5xl font-extrabold leading-tight mb-16">
-              <span className="text-blue-600">AVA </span> Flow – AI CRM  <br />
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-8 lg:mb-16">
+              <span className="text-blue-600">AVA</span> Flow – AI CRM  <br />
               that Accelerates  <span className="text-blue-600">Growth</span> <br />
               
             </h1>
           </div>
 
           {/* Right side image */}
-          <div className="flex-1 w-full max-w-md flex justify-center">
+          <div className="flex-1 w-full max-w-md flex justify-center order-1 lg:order-2">
             <Image
               src="/avaflow/icon1.png"
-              alt="AVACX Icon"
-              width={400}
-              height={400}
+              alt="AVA Flow Icon"
+              width={300}
+              height={300}
+              className="sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px]"
               priority
             />
           </div>

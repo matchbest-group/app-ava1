@@ -4,7 +4,7 @@ import { useState } from "react"
 import {
   EnvelopeClosedIcon, // keep for consistency if you want
 } from "@radix-ui/react-icons"
-import { Phone, MapPin, Mail } from "lucide-react"
+import { Phone, MapPin, Mail, Loader2, CheckCircle, AlertCircle } from "lucide-react"
 
 export function GetInTouch() {
   const [formData, setFormData] = useState({
@@ -15,6 +15,8 @@ export function GetInTouch() {
     tool: "AVA CX",
     message: "",
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
 
   const tools = ["AVA CX", "AVA SmartBill", "AVA Flow", "AVA Pingora"]
 
@@ -29,9 +31,46 @@ export function GetInTouch() {
     setFormData((prev) => ({ ...prev, tool: e.target.value }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    alert("Message sent!")
+    setIsSubmitting(true)
+    setSubmitStatus("idle")
+
+    try {
+      const response = await fetch("/api/send-contact-form", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          timestamp: new Date().toISOString()
+        }),
+      })
+
+      if (response.ok) {
+        setSubmitStatus("success")
+        // Reset form after successful submission
+        setTimeout(() => {
+          setFormData({
+            firstName: "",
+            lastName: "",
+            email: "",
+            phone: "",
+            tool: "AVA CX",
+            message: "",
+          })
+          setSubmitStatus("idle")
+        }, 3000)
+      } else {
+        setSubmitStatus("error")
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error)
+      setSubmitStatus("error")
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   return (
@@ -179,10 +218,53 @@ export function GetInTouch() {
 
           <button
             type="submit"
-            className="bg-black text-white py-2 px-6 rounded-md hover:bg-gray-900 transition"
+            disabled={isSubmitting}
+            className="bg-black text-white py-2 px-6 rounded-md hover:bg-gray-900 transition disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
           >
-            Send Message
+            {isSubmitting ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Sending...</span>
+              </>
+            ) : submitStatus === "success" ? (
+              <>
+                <CheckCircle className="w-4 h-4" />
+                <span>Sent!</span>
+              </>
+            ) : submitStatus === "error" ? (
+              <>
+                <AlertCircle className="w-4 h-4" />
+                <span>Try Again</span>
+              </>
+            ) : (
+              "Send Message"
+            )}
           </button>
+
+          {/* Success/Error Messages */}
+          {submitStatus === "success" && (
+            <div className="mt-4 p-4 bg-green-50 border border-green-200 rounded-md">
+              <div className="flex items-center space-x-2 text-green-800">
+                <CheckCircle className="w-5 h-5" />
+                <span className="font-medium">Thank you for your message!</span>
+              </div>
+              <p className="text-sm text-green-700 mt-1">
+                We'll get back to you within 24 hours.
+              </p>
+            </div>
+          )}
+
+          {submitStatus === "error" && (
+            <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-md">
+              <div className="flex items-center space-x-2 text-red-800">
+                <AlertCircle className="w-5 h-5" />
+                <span className="font-medium">Something went wrong</span>
+              </div>
+              <p className="text-sm text-red-700 mt-1">
+                Please try again or contact us directly.
+              </p>
+            </div>
+          )}
         </form>
       </div>
     </section>

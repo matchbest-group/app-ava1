@@ -1,9 +1,25 @@
 "use client"
 
 import { useState } from "react"
+import { PricingContactForm } from "./pricing-contact-form"
 
 export function FeaturedBundles() {
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null)
+  const [isContactFormOpen, setIsContactFormOpen] = useState(false)
+  const [selectedPlanData, setSelectedPlanData] = useState<{
+    name: string;
+    price: string;
+    billingCycle: string;
+  } | null>(null)
+
+  const handleChoosePlan = (planName: string, price: number) => {
+    setSelectedPlanData({
+      name: planName,
+      price: `$${price}`,
+      billingCycle: "month"
+    })
+    setIsContactFormOpen(true)
+  }
 
   const plans = [
     {
@@ -158,7 +174,7 @@ export function FeaturedBundles() {
                   </span>
                 </div>
                 <button
-                  onClick={() => setSelectedPlan(plan.name)}
+                  onClick={() => handleChoosePlan(plan.name, plan.price)}
                   className={`mt-6 w-full rounded-md py-2 font-semibold transition-colors ${
                     plan.highlight
                       ? "bg-[#4B6CEB] text-white hover:bg-[#3a56c1]"
@@ -178,6 +194,13 @@ export function FeaturedBundles() {
           "Every plan comes with AI at its core — automate, optimize, and scale smarter."
         </blockquote>
       </div>
+
+      {/* Contact Form Modal */}
+      <PricingContactForm 
+        isOpen={isContactFormOpen}
+        onClose={() => setIsContactFormOpen(false)}
+        selectedPlan={selectedPlanData}
+      />
     </section>
   )
 }

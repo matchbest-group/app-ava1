@@ -11,23 +11,24 @@ export default function AVACXPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 relative">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-12 lg:min-h-[80vh] mb-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 relative">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 lg:min-h-[80vh] mb-20">
           {/* Left side */}
-          <div className="flex-1 w-full max-w-lg flex flex-col justify-center">
+          <div className="flex-1 w-full max-w-lg flex flex-col justify-center order-2 lg:order-1">
             {/* Top left logo */}
-            <div className="mb-10">
+            <div className="mb-6 lg:mb-10">
               <Image
                 src="/logo3.png"
                 alt="AVA CX Logo"
-                width={220}
-                height={60}
+                width={180}
+                height={50}
+                className="sm:w-[220px] sm:h-[60px]"
                 priority
               />
             </div>
 
             {/* Heading */}
-            <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight mb-16">
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-8 lg:mb-16">
               <span className="text-green-600">AI</span> Agent that <br />
               Assists, <span className="text-green-600">Answers</span> <br />
               &amp; Resolves
@@ -35,12 +36,13 @@ export default function AVACXPage() {
           </div>
 
           {/* Right side image */}
-          <div className="flex-1 w-full max-w-md flex justify-center">
+          <div className="flex-1 w-full max-w-md flex justify-center order-1 lg:order-2">
             <Image
               src="/avacx/icon1.png"
               alt="AVACX Icon"
-              width={400}
-              height={400}
+              width={300}
+              height={300}
+              className="sm:w-[350px] sm:h-[350px] lg:w-[400px] lg:h-[400px]"
               priority
             />
           </div>
@@ -48,21 +50,21 @@ export default function AVACXPage() {
 
         {/* Subtitle and buttons centered full width */}
         <div className="w-full flex flex-col items-center space-y-4 mt-8 lg:mt-0 lg:absolute lg:bottom-16 lg:left-0 lg:right-0">
-          <p className="text-xl sm:text-2xl text-gray-700 font-medium max-w-1xl mb-8">
+          <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 font-medium max-w-4xl text-center mb-8 px-4">
             AI-driven customer support that's affordable, scalable, and multilingual.
-            <br />
+            <br className="hidden sm:block" />
             Designed to grow with your business and deliver exceptional customer experiences.
           </p>
-          <div className="flex justify-center space-x-10 w-full max-w-md">
+          <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-10 w-full max-w-md px-4">
             <Link
               href="#"
-              className="px-10 py-4 border border-green-600 text-green-600 rounded-md text-lg font-semibold hover:bg-green-50 transition"
+              className="px-6 sm:px-10 py-3 sm:py-4 border border-green-600 text-green-600 rounded-md text-base sm:text-lg font-semibold hover:bg-green-50 transition text-center"
             >
               Watch Demo
             </Link>
             <Link
               href="https://matchbest-crm.vercel.app/"
-              className="px-10 py-4 bg-green-600 text-white rounded-md text-lg font-semibold hover:bg-green-700 transition"
+              className="px-6 sm:px-10 py-3 sm:py-4 bg-green-600 text-white rounded-md text-base sm:text-lg font-semibold hover:bg-green-700 transition text-center"
             >
               Get Started
             </Link>
