@@ -35,6 +35,14 @@ This is a comprehensive admin panel for managing multiple organizations. The sys
 - **Interactive Elements**: Hover effects, loading states, and smooth animations
 - **Form Validation**: Comprehensive input validation with error messages
 
+### 🎤 Voice Assistant (AVA)
+- **AI-Powered Voice Bot**: Integrated voice assistant for navigation and support
+- **Cartesia TTS/STT**: High-quality text-to-speech and speech-to-text using Cartesia API
+- **Smart Navigation**: Voice commands to navigate between pages and sections
+- **Form Assistance**: Voice-guided form filling and data collection
+- **Multi-language Support**: Supports multiple languages for voice interactions
+- **Fallback Support**: Browser-based speech recognition as fallback option
+
 ## Getting Started
 
 ### Prerequisites
@@ -56,14 +64,27 @@ This is a comprehensive admin panel for managing multiple organizations. The sys
    pnpm install
    ```
 
-3. **Run the development server**
+3. **Set up environment variables**
+   Create a `.env.local` file in the project root:
+   ```bash
+   # Cartesia API Configuration
+   CARTESIA_API_KEY=your_cartesia_api_key_here
+   ```
+   
+   **Get your Cartesia API key:**
+   - Visit [https://cartesia.ai/](https://cartesia.ai/)
+   - Sign up for an account
+   - Get your API key from the dashboard
+   - Replace `your_cartesia_api_key_here` with your actual API key
+
+4. **Run the development server**
    ```bash
    npm run dev
    # or
    pnpm dev
    ```
 
-4. **Access the admin panel**
+5. **Access the admin panel**
    - Open [http://localhost:3000](http://localhost:3000)
    - You'll be redirected to the login page
    - Use password: `t8u4pg47`

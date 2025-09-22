@@ -63,7 +63,7 @@ export default function AVACXPage() {
               Watch Demo
             </Link>
             <Link
-              href="https://matchbest-crm.vercel.app/"
+              href="/pricing"
               className="px-6 sm:px-10 py-3 sm:py-4 bg-green-600 text-white rounded-md text-base sm:text-lg font-semibold hover:bg-green-700 transition text-center"
             >
               Get Started

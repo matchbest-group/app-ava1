@@ -63,9 +63,7 @@ export default function AVAPingoraPage() {
             Watch Demo
           </Link>
           <Link
-            href="https://pingora.ai"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/pricing"
             className="px-6 sm:px-10 py-3 sm:py-4 bg-pink-600 text-white rounded-md text-base sm:text-lg font-semibold hover:bg-pink-700 transition text-center"
           >
             Get Started

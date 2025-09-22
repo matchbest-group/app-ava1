@@ -178,14 +178,16 @@ export default function WorkspaceTeamPage() {
         }
       }
       
+      // Load team users (non-blocking)
       loadTeamUsers()
       setSelectedProducts([])
+      
+      // Set loading to false immediately since core authentication is done
+      setIsLoading(false)
     } else {
       router.push('/workspace/login')
       return
     }
-    
-    setIsLoading(false)
   }, [router])
 
   const handleCreateUser = async (userData: any) => {
@@ -336,10 +338,7 @@ export default function WorkspaceTeamPage() {
     return (
       <div className="h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
-            <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-400 rounded-full animate-spin absolute top-2 left-2"></div>
-          </div>
+          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
           <p className="mt-6 text-slate-600 font-medium animate-pulse">Loading team members...</p>
           <p className="mt-2 text-sm text-slate-500">Setting up your team management workspace</p>
         </div>

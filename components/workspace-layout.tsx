@@ -21,6 +21,8 @@ import {
   Edit3
 } from 'lucide-react'
 import { isAdmin, canManageTeam, canManageProducts, hasPermission, PERMISSIONS, getRoleDisplayName, getRoleBadgeVariant } from '@/lib/permissions'
+import { VoiceBot } from '@/components/voice-bot'
+import { VoiceBotProvider } from '@/components/voice-bot-context'
 
 interface WorkspaceLayoutProps {
   children: React.ReactNode
@@ -31,21 +33,102 @@ interface WorkspaceLayoutProps {
 export default function WorkspaceLayout({ children, user, selectedProducts }: WorkspaceLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
   const [profilePicture, setProfilePicture] = useState<string>('')
+  const [isVoiceBotOpen, setIsVoiceBotOpen] = useState(false)
   const router = useRouter()
   const pathname = usePathname()
 
-  // Load profile picture from localStorage
+  // Load profile picture from database
   useEffect(() => {
-    const savedProfilePicture = localStorage.getItem('workspaceProfilePicture')
-    if (savedProfilePicture) {
-      setProfilePicture(savedProfilePicture)
+    const loadProfilePicture = async () => {
+      if (!user?.email) {
+        console.log('⚠️ No user email available for profile picture loading')
+        return
+      }
+      
+      // First, ensure user exists in database
+      console.log('👤 Ensuring user exists in database:', user.email)
+      try {
+        await fetch('/api/workspace/ensure-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: user.email,
+            name: user.name,
+            organizationName: user.organizationName,
+            plan: user.plan
+          }),
+        })
+        console.log('✅ User existence ensured in database')
+      } catch (ensureError) {
+        console.warn('⚠️ Could not ensure user exists in database:', ensureError)
+      }
+      
+      console.log('🔍 Loading profile image from database for workspace layout:', user.email)
+      
+      try {
+        const response = await fetch(`/api/workspace/profile-image?email=${encodeURIComponent(user.email)}`)
+        
+        if (!response.ok) {
+          console.warn('⚠️ API response not OK:', response.status, response.statusText)
+          console.warn('📱 Skipping database, will use localStorage or default')
+          
+          // Don't throw error, just handle gracefully
+          const savedProfilePicture = localStorage.getItem('workspaceProfilePicture')
+          if (savedProfilePicture) {
+            setProfilePicture(savedProfilePicture)
+            console.log('📱 Using profile image from localStorage (API failed)')
+          } else {
+            console.log('📷 Using default avatar (API failed, no localStorage)')
+            setProfilePicture('/avatars/avatar-1.png')
+          }
+          return // Exit early, don't try to parse response
+        }
+        
+        const data = await response.json()
+        console.log('📡 Profile image API response:', data)
+        
+        if (data.success && data.profileImage) {
+          setProfilePicture(data.profileImage)
+          // Also update localStorage for consistency
+          localStorage.setItem('workspaceProfilePicture', data.profileImage)
+          console.log('✅ Profile image loaded in workspace layout from database')
+        } else {
+          console.warn('⚠️ No profile image in database response, checking localStorage...')
+          // Fallback to localStorage
+          const savedProfilePicture = localStorage.getItem('workspaceProfilePicture')
+          if (savedProfilePicture) {
+            setProfilePicture(savedProfilePicture)
+            console.log('📱 Using profile image from localStorage in layout')
+          } else {
+            console.log('📷 No profile image found anywhere, using default')
+            setProfilePicture('/avatars/avatar-1.png')
+          }
+        }
+      } catch (error) {
+        console.error('❌ Error loading profile image in workspace layout:', error)
+        // Fallback to localStorage
+        const savedProfilePicture = localStorage.getItem('workspaceProfilePicture')
+        if (savedProfilePicture) {
+          setProfilePicture(savedProfilePicture)
+          console.log('📱 Fallback: Using profile image from localStorage')
+        } else {
+          console.log('📷 Fallback: Using default avatar')
+          setProfilePicture('/avatars/avatar-1.png')
+        }
+      }
     }
-  }, [])
+
+    loadProfilePicture()
+  }, [user?.email])
 
   const handleLogout = () => {
     localStorage.removeItem('workspaceAuthenticated')
     localStorage.removeItem('workspaceUser')
     localStorage.removeItem('currentOrganization')
+    localStorage.removeItem('workspaceProfilePicture') // Clear profile picture on logout
+    console.log('🔴 Logout: Cleared all workspace data including profile picture')
     router.push('/workspace/login')
   }
 
@@ -102,16 +185,6 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
       permission: PERMISSIONS.SETTINGS_MANAGE,
       adminOnly: true, // Only admins can access settings
       description: 'System settings (Admin only)'
-    },
-    {
-      name: 'Website CMS',
-      icon: Edit3,
-      href: '/admin/cms',
-      current: pathname.startsWith('/admin/cms'),
-      permission: null,
-      adminOnly: true, // Only admins can access CMS
-      description: 'Manage website content (Admin only)',
-      external: true
     }
   ]
 
@@ -136,7 +209,8 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
   }
 
   return (
-    <div className="h-screen flex overflow-hidden bg-gray-50">
+    <VoiceBotProvider>
+      <div className="h-screen flex overflow-hidden bg-gray-50">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
         <div 
@@ -334,6 +408,20 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
                 <Badge variant="outline" className="text-sm">
                   {selectedProducts.length} Products Active
                 </Badge>
+                <Button
+                  onClick={() => setIsVoiceBotOpen(!isVoiceBotOpen)}
+                  className={`relative transition-all duration-200 ${
+                    isVoiceBotOpen 
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg' 
+                      : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg'
+                  }`}
+                  size="sm"
+                >
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-2 h-2 rounded-full ${isVoiceBotOpen ? 'bg-green-400 animate-pulse' : 'bg-white'}`}></div>
+                    <span className="font-medium">Talk to AVA</span>
+                  </div>
+                </Button>
               </div>
             </div>
           </div>
@@ -346,6 +434,14 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
           </div>
         </main>
       </div>
+
+      {/* Voice Bot */}
+      <VoiceBot 
+        isOpen={isVoiceBotOpen} 
+        onToggle={() => setIsVoiceBotOpen(!isVoiceBotOpen)}
+        isHeaderTriggered={true}
+      />
     </div>
+    </VoiceBotProvider>
   )
 }

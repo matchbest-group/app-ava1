@@ -9,7 +9,7 @@ import { Progress } from '@/components/ui/progress'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Input } from '@/components/ui/input'
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog'
+// Dialog imports removed - profile change moved to Settings
 import { 
   Building2,
   Calendar, 
@@ -60,8 +60,6 @@ import {
   ChevronDown,
   Heart,
   Bookmark,
-  Camera,
-  Upload,
   Image as ImageIcon
 } from 'lucide-react'
 import WorkspaceLayout from '@/components/workspace-layout'
@@ -86,8 +84,7 @@ export default function WorkspaceDashboardPage() {
   const [selectedProducts, setSelectedProducts] = useState<any[]>([])
   const [searchTerm, setSearchTerm] = useState('')
   const [profilePicture, setProfilePicture] = useState<string>('')
-  const [showProfileDialog, setShowProfileDialog] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  // Profile dialog removed - users should change profile in Settings
   const [notifications, setNotifications] = useState([
     { id: 1, type: 'success', message: 'System backup completed successfully', time: '2 min ago', read: false },
     { id: 2, type: 'warning', message: 'Storage usage is at 85%', time: '1 hour ago', read: false },
@@ -118,25 +115,83 @@ export default function WorkspaceDashboardPage() {
     'https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&h=150&fit=crop&crop=face',
   ]
 
-  // Handle profile picture change
-  const handleProfilePictureChange = (newPicture: string) => {
-    setProfilePicture(newPicture)
-    localStorage.setItem('workspaceProfilePicture', newPicture)
-    setShowProfileDialog(false)
-  }
-
-  // Handle file upload
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0]
-    if (file) {
-      const reader = new FileReader()
-      reader.onload = (e) => {
-        const result = e.target?.result as string
-        handleProfilePictureChange(result)
+  // Load profile picture from database
+  const loadProfilePictureFromDatabase = async (email: string, fallbackPicture?: string, userData?: any) => {
+    // First, ensure user exists in database
+    if (userData) {
+      console.log('👤 Ensuring user exists in database for dashboard:', email)
+      try {
+        await fetch('/api/workspace/ensure-user', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: userData.email,
+            name: userData.name,
+            organizationName: userData.organizationName,
+            plan: userData.plan
+          }),
+        })
+        console.log('✅ User existence ensured in database for dashboard')
+      } catch (ensureError) {
+        console.warn('⚠️ Could not ensure user exists in database for dashboard:', ensureError)
       }
-      reader.readAsDataURL(file)
+    }
+    
+    console.log('🔍 Loading profile image from database for dashboard:', email)
+    
+    try {
+      const response = await fetch(`/api/workspace/profile-image?email=${encodeURIComponent(email)}`)
+      
+      if (!response.ok) {
+        console.warn('⚠️ Dashboard API response not OK:', response.status, response.statusText)
+        console.warn('📱 Dashboard skipping database, using fallback')
+        
+        // Don't throw error, just handle gracefully
+        if (fallbackPicture) {
+          setProfilePicture(fallbackPicture)
+          console.log('📱 Dashboard using localStorage fallback (API failed)')
+        } else {
+          setProfilePicture(defaultProfilePictures[0])
+          console.log('📷 Dashboard using default avatar (API failed)')
+        }
+        return // Exit early
+      }
+      
+      const data = await response.json()
+      console.log('📡 Dashboard profile image API response:', data)
+      
+      if (data.success && data.profileImage) {
+        setProfilePicture(data.profileImage)
+        // Also update localStorage for consistency
+        localStorage.setItem('workspaceProfilePicture', data.profileImage)
+        console.log('✅ Profile image loaded in dashboard from database')
+      } else {
+        console.warn('⚠️ No profile image in database for dashboard, using fallback...')
+        // Fallback to localStorage or default
+        if (fallbackPicture) {
+          setProfilePicture(fallbackPicture)
+          console.log('📱 Dashboard using localStorage fallback')
+        } else {
+          setProfilePicture(defaultProfilePictures[0])
+          console.log('📷 Dashboard using default avatar')
+        }
+      }
+    } catch (error) {
+      console.error('❌ Error loading profile image in dashboard:', error)
+      // Fallback to localStorage or default
+      if (fallbackPicture) {
+        setProfilePicture(fallbackPicture)
+        console.log('📱 Dashboard fallback: Using localStorage')
+      } else {
+        setProfilePicture(defaultProfilePictures[0])
+        console.log('📷 Dashboard fallback: Using default avatar')
+      }
     }
   }
+
+  // Profile picture change functionality removed - users should use Settings page
 
   useEffect(() => {
     // Check authentication
@@ -149,12 +204,8 @@ export default function WorkspaceDashboardPage() {
       setUser(userObj)
       setIsAuthenticated(true)
       
-      // Load saved profile picture or use default
-      if (savedProfilePicture) {
-        setProfilePicture(savedProfilePicture)
-      } else {
-        setProfilePicture(defaultProfilePictures[0])
-      }
+      // Load profile image from database
+      loadProfilePictureFromDatabase(userObj.email, savedProfilePicture, userObj)
       
       // For now, set all products as selected (default behavior)
       setSelectedProducts(AVAILABLE_PRODUCTS)
@@ -189,75 +240,17 @@ export default function WorkspaceDashboardPage() {
         <div className="bg-gradient-to-r from-slate-50 via-blue-50 to-purple-50 rounded-2xl p-8 border border-slate-200 shadow-sm">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center space-x-4">
-              <Dialog open={showProfileDialog} onOpenChange={setShowProfileDialog}>
-                <DialogTrigger asChild>
-                  <div className="relative cursor-pointer group">
-                    <Avatar className="h-16 w-16 border-4 border-white shadow-lg group-hover:shadow-xl transition-shadow">
-                      <AvatarImage src={profilePicture} alt={user.organizationName} className="object-cover" />
-                      <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 text-white">
-                        {user.organizationName.substring(0, 2).toUpperCase()}
-                      </AvatarFallback>
-                    </Avatar>
-                    <div className="absolute inset-0 bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                      <Camera className="w-6 h-6 text-white" />
-                    </div>
-                  </div>
-                </DialogTrigger>
-                <DialogContent className="sm:max-w-md">
-                  <DialogHeader>
-                    <DialogTitle className="text-xl font-semibold">Choose Profile Picture</DialogTitle>
-                  </DialogHeader>
-                  <div className="space-y-6">
-                    {/* Default Pictures */}
-                    <div>
-                      <h3 className="font-medium text-slate-700 mb-3">Select from defaults</h3>
-                      <div className="grid grid-cols-4 gap-3">
-                        {defaultProfilePictures.map((pic, index) => (
-                          <div
-                            key={index}
-                            className={`relative cursor-pointer rounded-full overflow-hidden border-4 transition-all hover:scale-110 ${
-                              profilePicture === pic ? 'border-blue-500 shadow-lg' : 'border-slate-200 hover:border-slate-300'
-                            }`}
-                            onClick={() => handleProfilePictureChange(pic)}
-                          >
-                            <Avatar className="w-16 h-16">
-                              <AvatarImage src={pic} alt={`Option ${index + 1}`} className="object-cover" />
-                              <AvatarFallback className="bg-gradient-to-br from-slate-400 to-slate-600 text-white">
-                                {index + 1}
-                              </AvatarFallback>
-                            </Avatar>
-                            {profilePicture === pic && (
-                              <div className="absolute inset-0 bg-blue-500 bg-opacity-20 flex items-center justify-center">
-                                <CheckCircle className="w-6 h-6 text-blue-600" />
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Upload Custom Picture */}
-                    <div className="pt-4 border-t">
-                      <h3 className="font-medium text-slate-700 mb-3">Upload custom picture</h3>
-                      <input
-                        type="file"
-                        ref={fileInputRef}
-                        onChange={handleFileUpload}
-                        accept="image/*"
-                        className="hidden"
-                      />
-                      <Button
-                        variant="outline"
-                        onClick={() => fileInputRef.current?.click()}
-                        className="w-full"
-                      >
-                        <Upload className="w-4 h-4 mr-2" />
-                        Upload Image
-                      </Button>
-                    </div>
-                  </div>
-                </DialogContent>
-              </Dialog>
+              <div className="relative">
+                <Avatar className="h-16 w-16 border-4 border-white shadow-lg">
+                  <AvatarImage src={profilePicture} alt={user.organizationName} className="object-cover" />
+                  <AvatarFallback className="text-xl font-bold bg-gradient-to-br from-blue-600 to-purple-600 text-white">
+                    {user.organizationName.substring(0, 2).toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="absolute -bottom-1 -right-1 w-8 h-8 bg-green-600 rounded-full flex items-center justify-center shadow-lg">
+                  <Settings className="w-4 h-4 text-white" />
+                </div>
+              </div>
               
               <div>
                 <h1 className="text-3xl font-bold text-slate-900 mb-1">

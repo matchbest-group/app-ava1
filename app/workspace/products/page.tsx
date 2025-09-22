@@ -95,10 +95,12 @@ export default function WorkspaceProductsPage() {
   const [selectedProduct, setSelectedProduct] = useState<any | null>(null)
   const [showUserManagement, setShowUserManagement] = useState(false)
   const [teamMembers, setTeamMembers] = useState<any[]>([])
+  const [isLoadingTeamMembers, setIsLoadingTeamMembers] = useState(false)
   const router = useRouter()
 
   // Function to fetch team members from database
   const fetchTeamMembers = async (organizationName: string) => {
+    setIsLoadingTeamMembers(true)
     try {
       const response = await fetch(`/api/team-members?organization=${encodeURIComponent(organizationName)}`)
       if (response.ok) {
@@ -113,6 +115,8 @@ export default function WorkspaceProductsPage() {
       console.error('Error fetching team members:', error)
       // Fallback to empty array if database fails
       setTeamMembers([])
+    } finally {
+      setIsLoadingTeamMembers(false)
     }
   }
 
@@ -121,7 +125,6 @@ export default function WorkspaceProductsPage() {
     {
       ...AVAILABLE_PRODUCTS[0],
       category: 'Customer Support',
-      pricing: '$99/month',
       features: ['AI-Powered Chat', '24/7 Support', 'Multi-language', 'Analytics Dashboard'],
       requirements: ['Internet Connection', 'Modern Browser'],
       uptime: '99.9%',
@@ -130,7 +133,6 @@ export default function WorkspaceProductsPage() {
     {
       ...AVAILABLE_PRODUCTS[1],
       category: 'Sales & Marketing',
-      pricing: '$149/month',
       features: ['Contact Management', 'Sales Pipeline', 'Email Integration', 'Reporting'],
       requirements: ['CRM Integration', 'Email Account'],
       uptime: '99.8%',
@@ -139,7 +141,6 @@ export default function WorkspaceProductsPage() {
     {
       ...AVAILABLE_PRODUCTS[2],
       category: 'Analytics',
-      pricing: '$199/month',
       features: ['Advanced Analytics', 'Real-time Data', 'Custom Reports', 'API Access'],
       requirements: ['Data Sources', 'API Keys'],
       uptime: '99.7%',
@@ -148,7 +149,6 @@ export default function WorkspaceProductsPage() {
     {
       ...AVAILABLE_PRODUCTS[3],
       category: 'Finance',
-      pricing: '$79/month',
       features: ['Automated Billing', 'Payment Processing', 'Tax Management', 'Invoicing'],
       requirements: ['Payment Gateway', 'Bank Account'],
       uptime: '99.9%',
@@ -244,10 +244,11 @@ export default function WorkspaceProductsPage() {
         }
       ])
 
-      // Fetch team members from database
-      fetchTeamMembers(userObj.organizationName).then(() => {
-        setIsLoading(false)
-      })
+      // Fetch team members from database (non-blocking)
+      fetchTeamMembers(userObj.organizationName)
+      
+      // Set loading to false immediately since core authentication is done
+      setIsLoading(false)
     } else {
       router.push('/workspace/login')
       return
@@ -294,10 +295,7 @@ export default function WorkspaceProductsPage() {
     return (
       <div className="h-screen bg-gradient-to-br from-slate-50 to-blue-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="relative">
-            <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
-            <div className="w-12 h-12 border-4 border-blue-100 border-t-blue-400 rounded-full animate-spin absolute top-2 left-2"></div>
-          </div>
+          <div className="w-16 h-16 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto"></div>
           <p className="mt-6 text-slate-600 font-medium animate-pulse">Loading workspace...</p>
           <p className="mt-2 text-sm text-slate-500">Setting up products and team members</p>
         </div>
@@ -391,16 +389,16 @@ export default function WorkspaceProductsPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-l-4 border-l-orange-500 bg-gradient-to-br from-orange-50 to-white hover:shadow-lg transition-all duration-300">
+          <Card className="border-l-4 border-l-purple-500 bg-gradient-to-br from-purple-50 to-white hover:shadow-lg transition-all duration-300">
             <CardContent className="p-6">
               <div className="flex items-center justify-between">
                 <div>
-                  <p className="text-sm font-medium text-slate-600 uppercase tracking-wide">Monthly Spend</p>
-                  <p className="text-3xl font-bold text-slate-900 mt-2">$526</p>
-                  <p className="text-sm text-orange-600 mt-1">Current billing</p>
+                  <p className="text-sm font-medium text-slate-600 uppercase tracking-wide">Team Members</p>
+                  <p className="text-3xl font-bold text-slate-900 mt-2">{teamMembers.length}</p>
+                  <p className="text-sm text-purple-600 mt-1">Active users</p>
                 </div>
-                <div className="w-16 h-16 bg-orange-100 rounded-full flex items-center justify-center">
-                  <DollarSign className="h-8 w-8 text-orange-600" />
+                <div className="w-16 h-16 bg-purple-100 rounded-full flex items-center justify-center">
+                  <Users className="h-8 w-8 text-purple-600" />
                 </div>
               </div>
             </CardContent>
@@ -530,10 +528,10 @@ export default function WorkspaceProductsPage() {
                         </div>
                       )}
 
-                      {/* Pricing and Actions */}
+                      {/* Product Status and Actions */}
                       <div className="flex items-center justify-between pt-2 border-t">
                         <div>
-                          <p className="text-lg font-bold text-slate-900">{product.pricing}</p>
+                          <p className="text-sm font-medium text-green-600">✓ Available</p>
                           <p className="text-xs text-slate-500">Uptime: {product.uptime}</p>
                         </div>
                         
@@ -586,9 +584,9 @@ export default function WorkspaceProductsPage() {
                                 </div>
                                 
                                 <div className="bg-slate-50 rounded-lg p-4 space-y-2">
-                                  <div className="flex justify-between">
-                                    <span className="font-medium">Pricing:</span>
-                                    <span className="text-lg font-bold text-blue-600">{product.pricing}</span>
+                                  <div className="flex justify-between text-sm">
+                                    <span>Status:</span>
+                                    <span className="text-green-600 font-medium">✓ Active</span>
                                   </div>
                                   <div className="flex justify-between text-sm">
                                     <span>Uptime:</span>

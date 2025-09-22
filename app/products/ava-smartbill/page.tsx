@@ -65,9 +65,7 @@ export default function AVASmartbillPage() {
             Watch Demo
           </Link>
           <Link
-            href="https://master.d398n21nztipdq.amplifyapp.com/"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/pricing"
             className="px-8 py-3 bg-yellow-600 text-white rounded-md text-lg font-semibold hover:bg-yellow-700 transition"
           >
             Get Started

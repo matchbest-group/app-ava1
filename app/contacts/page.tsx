@@ -1,6 +1,8 @@
+"use client"
+
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
-import { GetInTouch} from "@/components/getintouch"
+import { GetInTouch } from "@/components/getintouch"
 
 export default function ProductsPage() {
   return (

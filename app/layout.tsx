@@ -1,6 +1,8 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Toaster } from "@/components/ui/toaster"
+import { VoiceBotProvider } from "@/components/voice-bot-context"
+import { GlobalVoiceBot } from "@/components/global-voice-bot"
 import "./globals.css"
 import "../styles/smooth-scroll.css"
 
@@ -21,8 +23,11 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=DM+Sans&display=swap" rel="stylesheet" />
       </head>
       <body className="antialiased font-sans"  style={{ fontFamily: "'DM Sans', sans-serif" }}>
-        {children}
-        <Toaster />
+        <VoiceBotProvider>
+          {children}
+          <Toaster />
+          <GlobalVoiceBot />
+        </VoiceBotProvider>
       </body>
     </html>
   )

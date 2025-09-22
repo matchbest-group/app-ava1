@@ -5,7 +5,7 @@ export const AVAILABLE_PRODUCTS: Product[] = [
     id: 'ava-cx-chatbot',
     name: 'Ava CX Chatbot',
     description: 'Intelligent customer service chatbot with AI-powered responses',
-    url: 'https://ava-cx-chatbot.ai',
+    url: 'https://chat-bot-match-best.vercel.app/?websiteId=suha',
     icon: '🤖',
     color: 'bg-blue-500',
     enabled: true
@@ -14,7 +14,7 @@ export const AVAILABLE_PRODUCTS: Product[] = [
     id: 'ava-crm',
     name: 'Ava CRM',
     description: 'Comprehensive customer relationship management system',
-    url: 'https://ava-crm.ai',
+    url: 'https://matchbest-crm.vercel.app/',
     icon: '👥',
     color: 'bg-green-500',
     enabled: true
@@ -32,7 +32,7 @@ export const AVAILABLE_PRODUCTS: Product[] = [
     id: 'ava-billing',
     name: 'Ava Billing',
     description: 'Automated billing and payment processing system',
-    url: 'https://ava-billing.ai',
+    url: 'https://master.d398n21nztipdq.amplifyapp.com/',
     icon: '💰',
     color: 'bg-orange-500',
     enabled: true
