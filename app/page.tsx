@@ -3,7 +3,7 @@
 import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { ProductOverview } from "@/components/product-overview"
-import { FeaturedBundles } from "@/components/featured-bundles"
+// import { FeaturedBundles } from "@/components/featured-bundles"
 import { DynamicContactSection } from "@/components/dynamic-contact-section"
 import { Footer } from "@/components/footer"
 import { FAQs } from "@/components/FAQs"
@@ -147,7 +147,7 @@ export default function HomePage() {
           bundlesAnimation.isVisible ? 'visible' : ''
         } relative z-10`}
       >
-        <FeaturedBundles />
+        {/* <FeaturedBundles /> */}
       </section>
 
       {/* Events & News */}

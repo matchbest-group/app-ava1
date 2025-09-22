@@ -3,7 +3,7 @@
 import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
 import { ProductOverview } from "@/components/product-overview"
-import { FeaturedBundles } from "@/components/featured-bundles"
+// import { FeaturedBundles } from "@/components/featured-bundles"
 import { BusinessIntelligenceSection } from "@/components/business-intelligence-section"
 import { DynamicPricingSection } from "@/components/dynamic-pricing-section"
 import { DynamicContactSection } from "@/components/dynamic-contact-section"
@@ -15,7 +15,7 @@ export default function HomePage() {
       <Header />
       <HeroSection />
       <ProductOverview />
-      <FeaturedBundles />
+      {/* <FeaturedBundles /> */}
 
       {/* Business Intelligence Section */}
       <BusinessIntelligenceSection />

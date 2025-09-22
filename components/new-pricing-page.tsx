@@ -53,7 +53,7 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan }
         <div className="space-y-2">
           <div className="font-bold text-4xl text-cyan-400">
             {billingCycle === "yearly" 
-              ? `₹${Math.round(plan.price * 10)}` 
+              ? `$${(plan.price * 12).toLocaleString()}` 
               : plan.priceText
             }
           </div>
@@ -161,8 +161,8 @@ const productPricing = {
       {
         name: "Basic",
         description: "Perfect for small teams getting started",
-        price: 1839,
-        priceText: "₹1,839",
+        price: 53,
+        priceText: "$53",
         period: "per user/month",
         minUsers: "Min 3 users",
         popular: false,
@@ -172,8 +172,8 @@ const productPricing = {
             "WhatsApp: 0"
           ]},
           { category: "Additional costs", items: [
-            "Web/App/Insta: 10¢/conversation",
-            "WhatsApp: 35¢/conversation"
+            "Web/App/Insta: $0.12/conversation",
+            "WhatsApp: $0.40/conversation"
           ]},
           { category: "AI CX Agent", items: [
             "Gen-AI Chatbot plugin (1 Web & 1 Mobile App)",
@@ -201,8 +201,8 @@ const productPricing = {
       {
         name: "Pro",
         description: "Most popular choice for growing businesses",
-        price: 3162,
-        priceText: "₹3,162",
+        price: 91,
+        priceText: "$91",
         period: "per user/month",
         minUsers: "Min 5 users",
         popular: true,
@@ -212,8 +212,8 @@ const productPricing = {
             "WhatsApp: 500"
           ]},
           { category: "Additional costs", items: [
-            "Web/App/Insta: 10¢/conversation",
-            "WhatsApp: 35¢/conversation"
+            "Web/App/Insta: $0.12/conversation",
+            "WhatsApp: $0.40/conversation"
           ]},
           { category: "AI CX Agent", items: [
             "Everything in Basic +",
@@ -243,8 +243,8 @@ const productPricing = {
       {
         name: "Advanced",
         description: "Advanced features for scaling teams",
-        price: 4663,
-        priceText: "₹4,663",
+        price: 134,
+        priceText: "$134",
         period: "per user/month",
         minUsers: "Min 10 users",
         popular: false,
@@ -254,8 +254,8 @@ const productPricing = {
             "WhatsApp: 1,000"
           ]},
           { category: "Additional costs", items: [
-            "Web/App/Insta: 10¢/conversation",
-            "WhatsApp: 35¢/conversation"
+            "Web/App/Insta: $0.12/conversation",
+            "WhatsApp: $0.40/conversation"
           ]},
           { category: "AI CX Agent", items: [
             "AI Assist (advanced bot for human agents)",
@@ -281,8 +281,8 @@ const productPricing = {
       {
         name: "Enterprise",
         description: "Full-scale solution for large organizations",
-        price: 5429,
-        priceText: "₹5,429",
+        price: 156,
+        priceText: "$156",
         period: "per user/month",
         minUsers: "Min 25 users",
         popular: false,
@@ -292,8 +292,8 @@ const productPricing = {
             "WhatsApp: 2,000"
           ]},
           { category: "Additional costs", items: [
-            "Web/App/Insta: 10¢/conversation",
-            "WhatsApp: 35¢/conversation"
+            "Web/App/Insta: $0.12/conversation",
+            "WhatsApp: $0.40/conversation"
           ]},
           { category: "AI CX Agent", items: [
             "Social listening",
