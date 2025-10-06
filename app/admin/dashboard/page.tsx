@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
-import { Plus, Building2, LogOut, Users, Calendar, UserPlus } from 'lucide-react'
+import { Plus, Building2, LogOut, Users, Calendar, UserPlus, Database, Activity } from 'lucide-react'
 import { OrganizationForm } from '@/components/organization-form'
 import { SuccessNotification } from '@/components/success-notification'
 import { useAuth } from '@/hooks/use-auth'
@@ -239,10 +239,16 @@ export default function AdminDashboardPage() {
               <Building2 className="h-8 w-8 text-blue-600" />
               <h1 className="text-xl font-semibold text-gray-900">Admin Panel</h1>
             </div>
-            <Button variant="outline" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-2" />
-              Logout
-            </Button>
+            <div className="flex gap-3">
+              <Button variant="outline" onClick={() => router.push('/admin/multi-database')}>
+                <Database className="h-4 w-4 mr-2" />
+                Multi-Database
+              </Button>
+              <Button variant="outline" onClick={handleLogout}>
+                <LogOut className="h-4 w-4 mr-2" />
+                Logout
+              </Button>
+            </div>
           </div>
         </div>
       </header>

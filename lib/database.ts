@@ -1,4 +1,5 @@
 import { getMainDb, getOrganizationDb, getPingoraDb, getCrmDb, clientPromise } from './mongodb'
+import { MultiDatabaseService } from './multi-database'
 import { Organization, OrganizationAdmin, OrganizationUser, WorkspaceUser, PingoraUser, CrmUser } from './types'
 
 // Main Database Operations (Organizations)
@@ -75,6 +76,20 @@ export class MainDatabaseService {
       console.log(`Deleted organization database: ${orgDbName}`)
     } catch (error) {
       console.error('Error deleting organization database:', error)
+    }
+
+    // 🗑️ Delete organization databases from all services (Billing, CRM, Pingora)
+    try {
+      console.log(`🌟 Deleting multi-service databases for organization: ${organization.name}`)
+      const multiDbResult = await MultiDatabaseService.deleteOrganizationDatabases(organization.name)
+      
+      if (multiDbResult.success) {
+        console.log(`✅ All service databases deleted successfully for ${organization.name}`)
+      } else {
+        console.warn(`⚠️ Some service databases failed to delete for ${organization.name}:`, multiDbResult.results)
+      }
+    } catch (error) {
+      console.error('❌ Error deleting multi-service databases:', error)
     }
     
     return result.deletedCount > 0

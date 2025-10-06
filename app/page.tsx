@@ -1,17 +1,12 @@
 'use client'
 
 import { Header } from "@/components/header"
-import { HeroSection } from "@/components/hero-section"
-import { ProductOverview } from "@/components/product-overview"
-// import { FeaturedBundles } from "@/components/featured-bundles"
-import { DynamicContactSection } from "@/components/dynamic-contact-section"
+import { ModernHeroSection } from "@/components/modern-hero-section"
+import { ModernStatsSection } from "@/components/modern-stats-section"
+import { ModernFeaturesSection } from "@/components/modern-features-section"
+import { ModernTestimonialsSection } from "@/components/modern-testimonials-section"
+import { ModernPricingSection } from "@/components/modern-pricing-section"
 import { Footer } from "@/components/footer"
-import { FAQs } from "@/components/FAQs"
-import { GetInTouch } from "@/components/getintouch"
-import { Blogs } from "@/components/blogs"
-import { PromotionalBanner } from "@/components/promotional-banner"
-import { EventsNewsSection } from "@/components/events-news-section"
-import { FuturisticBackground } from "@/components/futuristic-background"
 import { useState, useEffect, useRef } from 'react'
 
 // Custom hook for scroll-triggered animations
@@ -47,19 +42,16 @@ function useScrollAnimation(threshold = 0.1) {
 export default function HomePage() {
   // Animation refs for each section
   const heroAnimation = useScrollAnimation(0.1)
-  const productAnimation = useScrollAnimation(0.1)
-  const bundlesAnimation = useScrollAnimation(0.1)
-  const eventsAnimation = useScrollAnimation(0.1)
-  const contactAnimation = useScrollAnimation(0.1)
-  const dynamicContactAnimation = useScrollAnimation(0.1)
-  const blogsAnimation = useScrollAnimation(0.1)
-  const faqAnimation = useScrollAnimation(0.1)
+  const statsAnimation = useScrollAnimation(0.1)
+  const featuresAnimation = useScrollAnimation(0.1)
+  const testimonialsAnimation = useScrollAnimation(0.1)
+  const pricingAnimation = useScrollAnimation(0.1)
 
   useEffect(() => {
     // Smooth scroll setup
     document.documentElement.style.scrollBehavior = 'smooth'
 
-    // Add CSS for smooth scrolling
+    // Add CSS for smooth scrolling and modern animations
     const style = document.createElement('style')
     style.textContent = `
       * {
@@ -75,13 +67,6 @@ export default function HomePage() {
       body {
         scroll-behavior: smooth;
         overscroll-behavior: none;
-      }
-      
-      /* Smooth scrolling for all browsers */
-      @supports (scroll-behavior: smooth) {
-        html, body {
-          scroll-behavior: smooth;
-        }
       }
       
       /* Enhanced scroll animations */
@@ -114,90 +99,57 @@ export default function HomePage() {
   }, [])
 
   return (
-    <main className="min-h-screen bg-background relative overflow-hidden">
-      {/* Futuristic Animated Background */}
-      <FuturisticBackground />
-      
+    <main className="min-h-screen bg-white relative overflow-hidden">
       <Header />
 
-      {/* Hero Section */}
+      {/* Modern Hero Section */}
       <section
         ref={heroAnimation.elementRef}
         className={`scroll-animate ${
           heroAnimation.isVisible ? 'visible' : ''
         } relative z-10`}
       >
-        <HeroSection />
+        <ModernHeroSection />
       </section>
 
-      {/* Product Overview */}
+      {/* Stats Section */}
       <section
-        ref={productAnimation.elementRef}
+        ref={statsAnimation.elementRef}
         className={`scroll-animate ${
-          productAnimation.isVisible ? 'visible' : ''
+          statsAnimation.isVisible ? 'visible' : ''
         } relative z-10`}
       >
-        <ProductOverview />
+        <ModernStatsSection />
       </section>
 
-      {/* Featured Bundles */}
+      {/* Features Section */}
       <section
-        ref={bundlesAnimation.elementRef}
+        ref={featuresAnimation.elementRef}
         className={`scroll-animate ${
-          bundlesAnimation.isVisible ? 'visible' : ''
+          featuresAnimation.isVisible ? 'visible' : ''
         } relative z-10`}
       >
-        {/* <FeaturedBundles /> */}
+        <ModernFeaturesSection />
       </section>
 
-      {/* Events & News */}
+      {/* Testimonials Section */}
       <section
-        ref={eventsAnimation.elementRef}
+        ref={testimonialsAnimation.elementRef}
         className={`scroll-animate ${
-          eventsAnimation.isVisible ? 'visible' : ''
+          testimonialsAnimation.isVisible ? 'visible' : ''
         } relative z-10`}
       >
-        <EventsNewsSection />
+        <ModernTestimonialsSection />
       </section>
 
-      {/* Get In Touch */}
+      {/* Pricing Section */}
       <section
-        ref={contactAnimation.elementRef}
+        ref={pricingAnimation.elementRef}
         className={`scroll-animate ${
-          contactAnimation.isVisible ? 'visible' : ''
+          pricingAnimation.isVisible ? 'visible' : ''
         } relative z-10`}
       >
-        <GetInTouch />
-      </section>
-
-      {/* Dynamic Contact Section */}
-      <section
-        ref={dynamicContactAnimation.elementRef}
-        className={`scroll-animate scroll-animate-delayed ${
-          dynamicContactAnimation.isVisible ? 'visible' : ''
-        } relative z-10`}
-      >
-        <DynamicContactSection />
-      </section>
-
-      {/* Blogs Section */}
-      <section
-        ref={blogsAnimation.elementRef}
-        className={`scroll-animate scroll-animate-delayed-more ${
-          blogsAnimation.isVisible ? 'visible' : ''
-        } relative z-10`}
-      >
-        <Blogs />
-      </section>
-
-      {/* FAQ Section */}
-      <section
-        ref={faqAnimation.elementRef}
-        className={`scroll-animate ${
-          faqAnimation.isVisible ? 'visible' : ''
-        } relative z-10`}
-      >
-        <FAQs />
+        <ModernPricingSection />
       </section>
 
       <Footer />

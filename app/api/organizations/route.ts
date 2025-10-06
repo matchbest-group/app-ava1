@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { MainDatabaseService, OrganizationDatabaseService } from '@/lib/database'
 import { FallbackDatabaseService } from '@/lib/fallback-database'
+import { MultiDatabaseService } from '@/lib/multi-database'
 import { Organization } from '@/lib/types'
 
 // GET - Get all organizations
@@ -47,7 +48,9 @@ export async function POST(request: NextRequest) {
       adminEmail: body.adminEmail,
       adminPassword: body.adminPassword,
       licenseStatus: 'active',
-      licenseExpiry: body.licenseExpiry
+      licenseExpiry: body.licenseExpiry,
+      selectedProducts: body.selectedProducts || [], // Default to empty array
+      userLimit: body.userLimit || '10' // Default to 10 users
     }
     
     let organization
@@ -67,6 +70,28 @@ export async function POST(request: NextRequest) {
       } catch (error) {
         console.error('Error creating organization admin:', error)
       }
+
+      // 🚀 Create organization databases across all services (Billing, CRM, Pingora)
+      console.log(`🌟 Creating multi-service databases for organization: ${organization.name}`)
+      try {
+        const multiDbResult = await MultiDatabaseService.createOrganizationDatabases({
+          id: organization.id,
+          name: organization.name,
+          adminEmail: organization.adminEmail
+        })
+
+        console.log('Multi-database creation results:', multiDbResult)
+        
+        if (multiDbResult.success) {
+          console.log(`✅ All service databases created successfully for ${organization.name}`)
+        } else {
+          console.warn(`⚠️ Some service databases failed to create for ${organization.name}:`, multiDbResult.results)
+        }
+      } catch (error) {
+        console.error('❌ Error creating multi-service databases:', error)
+        // Don't fail the organization creation if service databases fail
+      }
+      
     } catch (error) {
       console.log('MongoDB failed, using fallback database')
       organization = await FallbackDatabaseService.createOrganization(organizationData)
