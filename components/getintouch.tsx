@@ -74,7 +74,7 @@ export function GetInTouch() {
   }
 
   return (
-    <section className="container mx-auto p-6">
+    <section className="container mx-auto p-6 mt-20">
       {/* Heading */}
       <h2 className="text-6xl font-bold mb-2 text-center">
         Get in <span className="text-[#4B6CEB]">Touch</span>

@@ -114,7 +114,7 @@ export function ModernPricingSection() {
           </p>
 
           {/* Billing Toggle */}
-          <div className="inline-flex items-center bg-white rounded-2xl p-2 shadow-lg border border-gray-200">
+          <div className="inline-flex items-center bg-white rounded-2xl p-2 mb-8 shadow-lg border border-gray-200">
             <button
               onClick={() => setIsYearly(false)}
               className={`px-8 py-3 rounded-xl font-semibold transition-all duration-300 ${
