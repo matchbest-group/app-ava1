@@ -84,7 +84,8 @@ export function Header({}: HeaderProps = {}) {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Contact", href: "/contacts" }, 
+    { name: "Contact", href: "/contacts" },
+    { name: "Sitemap", href: "/sitemap" },
     // { name: "Custom Bundle", href: "/custom-bundle" },
   ]
 
