@@ -34,7 +34,7 @@ export function Footer() {
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Solutions</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/products" className="hover:text-[#4B6CEB] transition">All Products</Link></li>
-                <li><Link href="/bundles" className="hover:text-[#4B6CEB] transition">Bundled Offers</Link></li>
+                {/* <li><Link href="/bundles" className="hover:text-[#4B6CEB] transition">Bundled Offers</Link></li> */}
                 <li><Link href="/pricing" className="hover:text-[#4B6CEB] transition">Pricing Plans</Link></li>
               </ul>
             </div>

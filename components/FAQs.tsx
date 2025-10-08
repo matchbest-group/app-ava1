@@ -80,7 +80,7 @@ export function FAQs() {
   ]
 
   return (
-    <section className="max-w-7xl mx-auto p-6 mt-20">
+    <section className="max-w-6xl mx-auto p-6 mt-20">
       <h2 className="text-5xl font-semibold mb-4 border-b border-gray-300 pb-2">FAQs</h2>
       <div className="divide-y divide-gray-300">
         {faqs.map((faq, index) => (

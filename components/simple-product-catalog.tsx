@@ -115,24 +115,24 @@ export function SimpleProductCatalog() {
               />
             </div>
             <h2 className="text-4xl font-bold leading-tight max-w-md text-yellow-900">
-              Your <span className="text-yellow-400">AI-Powered</span> Customer Support Agent
+              Your <span className="text-yellow-400">AI-Powered</span> Billing & Invoicing Assistant
             </h2>
             <ul className="space-y-6 max-w-md text-gray-900">
               <li>
-                <strong>Seamless Integration:</strong><br />
-                Works effortlessly with your CRM & tools.
+                <strong>Seamless Management:</strong><br />
+                Automate billing, invoicing, and payment tracking with ease.
               </li>
               <li>
-                <strong>Always Available:</strong><br />
-                24/7 multilingual support across channels.
+                <strong>Always Accurate:</strong><br />
+                Smart validation ensures zero manual errors.
               </li>
               <li>
-                <strong>Smarter Conversations:</strong><br />
-                AI that learns, improves, and reduces support load.
+                <strong>Faster Operations:</strong><br />
+                Generate, send, and reconcile bills in seconds.
               </li>
               <li>
-                <strong>Instant Insights:</strong><br />
-                Track customer interactions with AI-driven analytics.
+                <strong>Real-Time Insights:</strong><br />
+                Monitor cash flow and performance with AI-driven analytics.
               </li>
             </ul>
           </div>
@@ -154,24 +154,24 @@ export function SimpleProductCatalog() {
               />
             </div>
             <h2 className="text-4xl font-bold leading-tight max-w-md text-pink-900">
-              Your <span className="text-pink-400">AI-Powered</span> Customer Support Agent 
+              Your <span className="text-pink-400">Intelligent Business</span> Communication Hub 
             </h2>
             <ul className="space-y-6 max-w-md text-gray-900">
               <li>
-                <strong>Seamless Integration:</strong><br />
-                Works effortlessly with your CRM & tools.
+                <strong>Unified Connectivity:</strong><br />
+                Integrate chats, emails, and calls in one powerful dashboard.
               </li>
               <li>
-                <strong>Always Available:</strong><br />
-                24/7 multilingual support across channels.
+                <strong>Always Responsive:</strong><br />
+                AI ensures instant replies and smart follow-ups.
               </li>
               <li>
-                <strong>Smarter Conversations:</strong><br />
-                AI that learns, improves, and reduces support load.
+                <strong>Smarter Interactions:</strong><br />
+                Understands context to improve customer relationships.
               </li>
               <li>
-                <strong>Instant Insights:</strong><br />
-                Track customer interactions with AI-driven analytics.
+                <strong>Data-Driven Growth:</strong><br />
+                Gain actionable insights with communication analytics.
               </li>
             </ul>
           </div>
@@ -215,24 +215,24 @@ export function SimpleProductCatalog() {
               />
             </div>
             <h2 className="text-4xl font-bold leading-tight max-w-md text-blue-900">
-              Your <span className="text-blue-400">AI-Powered</span> Customer Support Agent
+              Your <span className="text-blue-400">AI-Driven</span> Workflow Automation Platform
             </h2>
             <ul className="space-y-6 max-w-md text-gray-900">
               <li>
                 <strong>Seamless Integration:</strong><br />
-                Works effortlessly with your CRM & tools.
+                Connect your tools, automate repetitive tasks, and save time.
               </li>
               <li>
-                <strong>Always Available:</strong><br />
-                24/7 multilingual support across channels.
+                <strong>Always Efficient:</strong><br />
+                AI ensures smooth process execution with no downtime.
               </li>
               <li>
-                <strong>Smarter Conversations:</strong><br />
-                AI that learns, improves, and reduces support load.
+                <strong>Smarter Workflows:</strong><br />
+                Optimize operations through intelligent task routing.
               </li>
               <li>
-                <strong>Instant Insights:</strong><br />
-                Track customer interactions with AI-driven analytics.
+                <strong>Instant Visibility:</strong><br />
+                Track team performance with real-time automation insights.
               </li>
             </ul>
           </div>
