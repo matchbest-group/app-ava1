@@ -1,13 +1,10 @@
-import { Header } from "@/components/header"
-import { BundleConfiguration } from "@/components/bundle-configuration"
-import { Footer } from "@/components/footer"
+// BUNDLES PAGE - TEMPORARILY DISABLED
+// This page has been commented out along with the bundle configuration component
+// To re-enable, uncomment the component in bundle-configuration.tsx and this page
+
+import { redirect } from 'next/navigation'
 
 export default function BundlesPage() {
-  return (
-    <main className="min-h-screen bg-background">
-      <Header />
-      <BundleConfiguration />
-      <Footer />
-    </main>
-  )
+  // Redirect to home page since bundles are disabled
+  redirect('/')
 }
