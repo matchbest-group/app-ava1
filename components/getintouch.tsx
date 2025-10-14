@@ -4,7 +4,7 @@ import { useState } from "react"
 import {
   EnvelopeClosedIcon, // keep for consistency if you want
 } from "@radix-ui/react-icons"
-import { Phone, MapPin, Mail, Loader2, CheckCircle, AlertCircle, Twitter, Instagram, Linkedin, Facebook } from "lucide-react"
+import { Phone, MapPin, Mail, Loader2, CheckCircle, AlertCircle, Instagram, Linkedin, Facebook } from "lucide-react"
 
 // Custom styles for bubble animations
 const bubbleAnimationStyles = `
@@ -126,7 +126,7 @@ export function GetInTouch() {
   return (
     <>
       <style jsx>{bubbleAnimationStyles}</style>
-      <section className="container mx-auto p-6 mt-20">
+      <section className="container mx-auto p-6 mt-20 -mb-10">
       {/* Heading */}
       <h2 className="text-6xl font-bold mb-2 text-center">
         Get in <span className="text-[#4B6CEB]">Touch</span>
@@ -190,31 +190,37 @@ export function GetInTouch() {
             <div className="absolute top-2/3 left-1/3 w-5 h-5 bg-white/15 rounded-full animate-bounce-slow-delayed-2"></div>
           </div>
           <div>
-            <h3 className="text-xl font-semibold mb-6 drop-shadow-lg">Contact Information</h3>
+            <h3 className="text-[3rem] font-bold mb-6 drop-shadow-lg">Contact <span className="text-blue-500">Information</span> </h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-center space-x-2">
-                <Phone className="w-5 h-5 drop-shadow-md" />
-                <span className="drop-shadow-md">+91 8585858585</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <Mail className="w-5 h-5 drop-shadow-md" />
-                <span className="drop-shadow-md">contact@avasuit.com</span>
-              </li>
-              <li className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5 drop-shadow-md" />
-                <span className="drop-shadow-md">132 Las Vegas, United States</span>
+                <Mail className="w-5 h-5 drop-shadow-md text-blue rounded-full" />
+                <span className="drop-shadow-md">contact@matchbestsoftware.com</span>
               </li>
             </ul>
           </div>
 
-          {/* Socials */}
-          <div className="flex space-x-4 mt-8">
+          {/* Socials - All in one row */}
+          <div className="flex space-x-6 mt-8">
             <a
               href="https://www.facebook.com/profile.php?id=61581973103795"
-              aria-label="Instagram"
-              className="hover:text-gray-200 transition"
+              aria-label="Facebook"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-all duration-300 hover:scale-110 inline-flex items-center justify-center"
             >
-              <Facebook className="w-6 h-6" />
+              <Facebook className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.instagram.com/matchbest.software?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw=="
+              aria-label="Instagram"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-all duration-300 hover:scale-110 inline-flex items-center justify-center"
+            >
+              <Instagram className="w-5 h-5" />
+            </a>
+            <a
+              href="https://www.linkedin.com/company/matchbestsoftwarepvtltd/"
+              aria-label="LinkedIn"
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded-full transition-all duration-300 hover:scale-110 inline-flex items-center justify-center"
+            >
+              <Linkedin className="w-5 h-5" />
             </a>
           </div>
         </div>

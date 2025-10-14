@@ -31,19 +31,21 @@ export function ModernHeroSection() {
   }
 
   const departments = [
-    {
-      id: 'sales',
-      name: 'Sales',
-      icon: <BarChart3 className="w-5 h-5" />,
-      title: 'CRM & Sales Management',
-      description: 'Complete customer relationship management with sales pipeline, lead tracking, and automated workflows.',
-      features: ['Lead Management', 'Pipeline Tracking', 'Sales Analytics', 'Customer Data'],
-      color: 'from-blue-500 to-blue-600',
-      screenshot: 'crm-dashboard'
+        {
+      id: 'cx',
+      head:'AVA CX',
+      name: '(Customer Experience)',
+      icon: <MessageSquare className="w-5 h-5" />,
+      title: 'AI-Powered Customer Support',
+      description: 'Intelligent chatbot and customer service tools for 24/7 support and enhanced customer satisfaction.',
+      features: ['AI Chatbot', '24/7 Support', 'Ticket Management', 'Customer Analytics'],
+      color: 'from-orange-500 to-orange-600',
+      screenshot: 'chatbot-interface'
     },
-    {
+        {
       id: 'collaboration',
-      name: 'Collaboration',
+      head:'AVA Pingora',
+      name: '(Collaboration)',
       icon: <Users className="w-5 h-5" />,
       title: 'Team Collaboration Hub',
       description: 'Advanced team collaboration tools with Pingora integration for seamless communication and project management.',
@@ -52,8 +54,21 @@ export function ModernHeroSection() {
       screenshot: 'pingora-interface'
     },
     {
+      id: 'sales',
+      head:'AVA Flow',
+      name: '(Sales)',
+      icon: <BarChart3 className="w-5 h-5" />,
+      title: 'CRM & Sales Management',
+      description: 'Complete customer relationship management with sales pipeline, lead tracking, and automated workflows.',
+      features: ['Lead Management', 'Pipeline Tracking', 'Sales Analytics', 'Customer Data'],
+      color: 'from-blue-500 to-blue-600',
+      screenshot: 'crm-dashboard'
+    },
+
+    {
       id: 'finance',
-      name: 'Finance',
+      head:'AVA SmartBill',
+      name: '(Finance)',
       icon: <DollarSign className="w-5 h-5" />,
       title: 'Smart Billing & Finance',
       description: 'Automated billing system with financial analytics, invoice management, and payment processing.',
@@ -61,16 +76,6 @@ export function ModernHeroSection() {
       color: 'from-green-500 to-green-600',
       screenshot: 'billing-system'
     },
-    {
-      id: 'cx',
-      name: 'Customer Experience',
-      icon: <MessageSquare className="w-5 h-5" />,
-      title: 'AI-Powered Customer Support',
-      description: 'Intelligent chatbot and customer service tools for 24/7 support and enhanced customer satisfaction.',
-      features: ['AI Chatbot', '24/7 Support', 'Ticket Management', 'Customer Analytics'],
-      color: 'from-orange-500 to-orange-600',
-      screenshot: 'chatbot-interface'
-    }
   ]
 
   const activeDepartment = departments.find(dept => dept.id === activeSection) || departments[0]
@@ -409,20 +414,19 @@ export function ModernHeroSection() {
                 onClick={() => setActiveSection(dept.id)}
                 className={`group relative flex items-center gap-3 px-6 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 ${
                   activeSection === dept.id
-                    ? 'bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-xl'
+                    ? 'bg-gradient-to-r bg-white text-gray shadow-xl'
                     : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white border border-gray-200 hover:border-blue-300 shadow-lg hover:shadow-xl'
                 }`}
               >
-                <div className={`p-2 rounded-lg ${
-                  activeSection === dept.id
-                    ? 'bg-white/20'
-                    : 'bg-gray-100 group-hover:bg-blue-50'
-                }`}>
+                <div className={`p-2 rounded-lg flex items-center justify-center -mt-4`}>
                   {dept.icon}
                 </div>
-                <span>{dept.name}</span>
+                <div className="flex flex-col">
+                  <span className="font-bold text-lg">{dept.head}</span>
+                  <span className="text-sm text-gray-600">{dept.name}</span>
+                </div>
                 {activeSection === dept.id && (
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-r from-blue-600/20 to-indigo-600/20 animate-pulse"></div>
+                  <div className="absolute inset-0 rounded-xl"></div>
                 )}
               </button>
             ))}
