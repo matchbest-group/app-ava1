@@ -4,7 +4,57 @@ import { useState } from "react"
 import {
   EnvelopeClosedIcon, // keep for consistency if you want
 } from "@radix-ui/react-icons"
-import { Phone, MapPin, Mail, Loader2, CheckCircle, AlertCircle } from "lucide-react"
+import { Phone, MapPin, Mail, Loader2, CheckCircle, AlertCircle, Twitter, Instagram, Linkedin, Facebook } from "lucide-react"
+
+// Custom styles for bubble animations
+const bubbleAnimationStyles = `
+  @keyframes bounce-slow {
+    0%, 100% {
+      transform: translateY(0px) scale(1);
+      opacity: 0.7;
+    }
+    50% {
+      transform: translateY(-20px) scale(1.1);
+      opacity: 0.9;
+    }
+  }
+
+  @keyframes bounce-slow-delayed {
+    0%, 100% {
+      transform: translateY(0px) scale(0.9);
+      opacity: 0.6;
+    }
+    50% {
+      transform: translateY(-15px) scale(1.05);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes bounce-slow-delayed-2 {
+    0%, 100% {
+      transform: translateY(0px) scale(1.1);
+      opacity: 0.8;
+    }
+    50% {
+      transform: translateY(-25px) scale(0.95);
+      opacity: 1;
+    }
+  }
+
+  .animate-bounce-slow {
+    animation: bounce-slow 4s ease-in-out infinite;
+  }
+
+  .animate-bounce-slow-delayed {
+    animation: bounce-slow-delayed 5s ease-in-out infinite;
+    animation-delay: 1s;
+  }
+
+  .animate-bounce-slow-delayed-2 {
+    animation: bounce-slow-delayed-2 6s ease-in-out infinite;
+    animation-delay: 2s;
+  }
+`
 
 export function GetInTouch() {
   const [formData, setFormData] = useState({
@@ -74,7 +124,9 @@ export function GetInTouch() {
   }
 
   return (
-    <section className="container mx-auto p-6">
+    <>
+      <style jsx>{bubbleAnimationStyles}</style>
+      <section className="container mx-auto p-6 mt-20">
       {/* Heading */}
       <h2 className="text-6xl font-bold mb-2 text-center">
         Get in <span className="text-[#4B6CEB]">Touch</span>
@@ -87,26 +139,70 @@ export function GetInTouch() {
       <div className="flex flex-col md:flex-row rounded-xl shadow-lg overflow-hidden">
         {/* Left gradient card */}
         <div
-          className="md:w-1/2 p-8 text-white flex flex-col justify-between"
+          className="md:w-1/2 p-8 text-white flex flex-col justify-between relative overflow-hidden bg-cover bg-center backdrop-blur-sm"
           style={{
-            background:
-              "linear-gradient(135deg, #4B6CEB 0%, #982ACC 50%, #FF6EC7 100%)",
+            backgroundImage: "url('/bg1.webp')",
           }}
         >
+          {/* Decorative Ellipses */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Ellipse 2: 269x269 - Color #86E3F0 (Light Blue) - Bottom Layer */}
+            <div
+              className="absolute -bottom-12 -right-12 rounded-full opacity-80 backdrop-blur-sm"
+              style={{
+                width: '230px',
+                height: '230px',
+                backgroundColor: '#86E3F0',
+              }}
+            ></div>
+
+            {/* Ellipse 1: 138x138 - Color #BFFFF48F (Light Greenish) - Top Layer */}
+            <div
+              className="absolute rounded-full opacity-70 z-10 backdrop-blur-sm"
+              style={{
+                width: '138px',
+                height: '138px',
+                backgroundColor: '#BFFFF48F',
+                bottom: '60px',
+                right: '65px',  // Center horizontally on larger ellipse
+              }}
+            ></div>
+          </div>
+
+          {/* Animated Bubbles */}
+          <div className="absolute inset-0 overflow-hidden pointer-events-none">
+            {/* Bubble 1 */}
+            <div className="absolute top-1/4 left-1/4 w-8 h-8 bg-white/20 rounded-full animate-bounce-slow"></div>
+
+            {/* Bubble 2 */}
+            <div className="absolute top-1/3 right-1/3 w-6 h-6 bg-white/15 rounded-full animate-bounce-slow-delayed"></div>
+
+            {/* Bubble 3 */}
+            <div className="absolute bottom-1/3 left-1/2 w-10 h-10 bg-white/10 rounded-full animate-bounce-slow-delayed-2"></div>
+
+            {/* Bubble 4 */}
+            <div className="absolute top-1/2 right-1/4 w-4 h-4 bg-white/25 rounded-full animate-bounce-slow"></div>
+
+            {/* Bubble 5 */}
+            <div className="absolute bottom-1/4 right-1/3 w-7 h-7 bg-white/20 rounded-full animate-bounce-slow-delayed"></div>
+
+            {/* Bubble 6 */}
+            <div className="absolute top-2/3 left-1/3 w-5 h-5 bg-white/15 rounded-full animate-bounce-slow-delayed-2"></div>
+          </div>
           <div>
-            <h3 className="text-xl font-semibold mb-6">Contact Information</h3>
+            <h3 className="text-xl font-semibold mb-6 drop-shadow-lg">Contact Information</h3>
             <ul className="space-y-4 text-sm">
               <li className="flex items-center space-x-2">
-                <Phone className="w-5 h-5" />
-                <span>+91 8585858585</span>
+                <Phone className="w-5 h-5 drop-shadow-md" />
+                <span className="drop-shadow-md">+91 8585858585</span>
               </li>
               <li className="flex items-center space-x-2">
-                <Mail className="w-5 h-5" />
-                <span>contact@avasuit.com</span>
+                <Mail className="w-5 h-5 drop-shadow-md" />
+                <span className="drop-shadow-md">contact@avasuit.com</span>
               </li>
               <li className="flex items-center space-x-2">
-                <MapPin className="w-5 h-5" />
-                <span>132 Las Vegas, United States</span>
+                <MapPin className="w-5 h-5 drop-shadow-md" />
+                <span className="drop-shadow-md">132 Las Vegas, United States</span>
               </li>
             </ul>
           </div>
@@ -114,31 +210,11 @@ export function GetInTouch() {
           {/* Socials */}
           <div className="flex space-x-4 mt-8">
             <a
-              href="#"
-              aria-label="Twitter"
-              className="hover:text-gray-200 transition"
-            >
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M24 4.557a9.83 9.83 0 01-2.828.775 4.932 4.932 0 002.165-2.724c-.951.564-2.005.974-3.127 1.195a4.916 4.916 0 00-8.38 4.482A13.94 13.94 0 011.671 3.149a4.916 4.916 0 001.523 6.574 4.9 4.9 0 01-2.228-.616c-.054 2.281 1.581 4.415 3.949 4.89a4.935 4.935 0 01-2.224.084 4.918 4.918 0 004.59 3.417A9.867 9.867 0 010 19.54a13.94 13.94 0 007.548 2.209c9.056 0 14.01-7.513 14.01-14.01 0-.213-.005-.425-.014-.636A10.012 10.012 0 0024 4.557z" />
-              </svg>
-            </a>
-            <a
-              href="#"
+              href="https://www.facebook.com/profile.php?id=61581973103795"
               aria-label="Instagram"
               className="hover:text-gray-200 transition"
             >
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M7.75 2h8.5A5.75 5.75 0 0122 7.75v8.5A5.75 5.75 0 0116.25 22h-8.5A5.75 5.75 0 012 16.25v-8.5A5.75 5.75 0 017.75 2zm0 1.5A4.25 4.25 0 003.5 7.75v8.5A4.25 4.25 0 007.75 20.5h8.5a4.25 4.25 0 004.25-4.25v-8.5A4.25 4.25 0 0016.25 3.5h-8.5zM12 7a5 5 0 110 10 5 5 0 010-10zm0 1.5a3.5 3.5 0 100 7 3.5 3.5 0 000-7zm4.75-.75a1.25 1.25 0 110 2.5 1.25 1.25 0 010-2.5z" />
-              </svg>
-            </a>
-            <a
-              href="#"
-              aria-label="LinkedIn"
-              className="hover:text-gray-200 transition"
-            >
-              <svg className="w-6 h-6 fill-current" viewBox="0 0 24 24">
-                <path d="M4.98 3.5C4.98 4.88 3.88 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1 4.98 2.12 4.98 3.5zM0 8h5v16H0V8zm7.5 0h4.8v2.2h.1c.7-1.3 2.4-2.7 4.9-2.7 5.2 0 6.2 3.4 6.2 7.8V24h-5v-7.5c0-1.8 0-4.1-2.5-4.1-2.5 0-2.9 2-2.9 4v7.6h-5V8z" />
-              </svg>
+              <Facebook className="w-6 h-6" />
             </a>
           </div>
         </div>
@@ -268,5 +344,6 @@ export function GetInTouch() {
         </form>
       </div>
     </section>
+    </>
   )
 }

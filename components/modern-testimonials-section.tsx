@@ -27,7 +27,7 @@ const testimonials: Testimonial[] = [
     role: "CEO",
     company: "TechFlow Solutions",
     content: "AVA One transformed our entire operation. We've seen a 150% increase in efficiency and our team productivity has never been higher. The AI automation features alone saved us 40 hours per week.",
-    avatar: "/avatars/avatar-1.png",
+    avatar: "/avatars/avatar.jpeg",
     rating: 5,
     metrics: {
       label: "Efficiency Increase",
@@ -41,7 +41,7 @@ const testimonials: Testimonial[] = [
     role: "Operations Director",
     company: "Global Dynamics",
     content: "The integration capabilities are phenomenal. We connected all our existing tools seamlessly and now have a unified view of our business. ROI was positive within the first month.",
-    avatar: "/avatars/avatar-2.png",
+    avatar: "/avatars/avatar-2.jpg",
     rating: 5,
     metrics: {
       label: "ROI Timeline",
@@ -55,7 +55,7 @@ const testimonials: Testimonial[] = [
     role: "VP of Engineering",
     company: "Innovation Labs",
     content: "The scalability is incredible. We went from 50 to 500 users without any performance issues. The AI insights help us make data-driven decisions that have increased our revenue by 300%.",
-    avatar: "/avatars/avatar-3.png",
+    avatar: "/avatars/somu.jpeg",
     rating: 5,
     metrics: {
       label: "Revenue Growth",

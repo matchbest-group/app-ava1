@@ -8,12 +8,14 @@ import { Check, Star, Users, MessageSquare, BarChart3, CreditCard, ChevronDown, 
 import { PricingContactForm } from "./pricing-contact-form"
 
 // Individual Pricing Card Component
-function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan }: {
+function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan, isSelected, onSelect }: {
   tier: { name: string; description: string; popular: boolean };
   index: number;
   billingCycle: "monthly" | "yearly";
   currentProduct: any;
   onChoosePlan: (planName: string, price: string, billingCycle: string) => void;
+  isSelected: boolean;
+  onSelect: () => void;
 }) {
   const [expandedProduct, setExpandedProduct] = useState<string | null>(null)
   
@@ -28,12 +30,23 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan }
   ]
 
   return (
-    <Card className={`relative overflow-hidden transition-all duration-300 hover:scale-105 ${
-      tier.popular 
-        ? "bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-cyan-400 shadow-2xl" 
-        : "bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700"
-    }`}>
-      {tier.popular && (
+    <Card
+      className={`relative overflow-hidden transition-all duration-300 cursor-pointer ${
+        isSelected
+          ? "bg-gradient-to-b from-slate-800 to-slate-900 border-2 border-cyan-400 shadow-2xl"
+          : "bg-gradient-to-b from-slate-800 to-slate-900 border border-slate-700 hover:scale-105 hover:border-cyan-400/50"
+      }`}
+      onClick={onSelect}
+    >
+      {isSelected && (
+        <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
+          <Badge className="bg-cyan-400 text-slate-900 px-4 py-1 font-bold rounded-full shadow-lg">
+            <Star className="w-3 h-3 mr-1" />
+            Selected
+          </Badge>
+        </div>
+      )}
+      {tier.popular && !isSelected && (
         <div className="absolute -top-8 left-1/2 transform -translate-x-1/2 z-10">
           <Badge className="bg-cyan-400 text-slate-900 px-4 py-1 font-bold rounded-full shadow-lg">
             <Star className="w-3 h-3 mr-1" />
@@ -42,45 +55,45 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan }
         </div>
       )}
 
-      <CardHeader className="text-center pb-6 pt-8">
-        <CardTitle className="font-bold text-2xl text-white mb-2">
+      <CardHeader className="text-center pb-2 pt-2">
+        <CardTitle className="font-bold text-lg text-white mb-1">
           {tier.name}
         </CardTitle>
-        <CardDescription className="text-slate-400 mb-6">
+        <CardDescription className="text-slate-400 mb-2 text-sm">
           {tier.description}
         </CardDescription>
-        
-        <div className="space-y-2">
-          <div className="font-bold text-4xl text-cyan-400">
-            {billingCycle === "yearly" 
-              ? `$${(plan.price * 12).toLocaleString()}` 
+
+        <div className="space-y-1">
+          <div className="font-bold text-2xl text-cyan-400">
+            {billingCycle === "yearly"
+              ? `$${(plan.price * 12).toLocaleString()}`
               : plan.priceText
             }
           </div>
-          <div className="text-sm text-slate-400">
+          <div className="text-xs text-slate-400">
             per user/{billingCycle === "yearly" ? "year" : "month"}
           </div>
-          <div className="flex items-center justify-center text-sm text-slate-400">
-            <Users className="w-4 h-4 mr-1" />
+          <div className="flex items-center justify-center text-xs text-slate-400">
+            <Users className="w-3 h-3 mr-1" />
             {plan.minUsers}
           </div>
         </div>
       </CardHeader>
 
-      <CardContent className="px-6 pb-8">
+      <CardContent className="">
         {/* AI Conversations Section */}
-        <div className="mb-6">
-          <div className="flex items-center space-x-2 text-cyan-400 font-semibold mb-3">
-            <Check className="w-4 h-4" />
+        <div className="mb-4">
+          <div className="flex items-center space-x-2 text-cyan-400 font-semibold mb-2 text-sm">
+            <Check className="w-3 h-3" />
             <span>AI Conversations</span>
           </div>
-          <div className="pl-6 space-y-1 text-sm text-slate-300">
+          <div className="pl-5 space-y-1 text-xs text-slate-300">
             {plan.features[0]?.items.map((item: string, idx: number) => (
               <div key={idx}>{item}</div>
             ))}
           </div>
-          <div className="pl-6 mt-2 text-xs text-slate-500">
-            <div className="font-medium text-slate-400 mb-1">Additional costs:</div>
+          <div className="pl-5 mt-1 text-xs text-slate-500">
+            <div className="font-medium text-slate-400 mb-1 text-xs">Additional costs:</div>
             {plan.features[1]?.items.map((item: string, idx: number) => (
               <div key={idx}>{item}</div>
             ))}
@@ -88,41 +101,41 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan }
         </div>
 
         {/* Product Sections with Dropdowns */}
-        <div className="space-y-3">
+        <div className="space-y-2">
           {productSections.map((product, prodIndex) => (
             <div key={product.name} className="border border-slate-700 rounded-lg">
               <button
                 onClick={() => setExpandedProduct(expandedProduct === product.name ? null : product.name)}
-                className="w-full flex items-center justify-between p-3 text-left hover:bg-slate-700/50 transition-colors"
+                className="w-full flex items-center justify-between p-2 text-left hover:bg-slate-700/50 transition-colors"
               >
                 <div className="flex items-center space-x-2">
-                  <Check className="w-4 h-4 text-cyan-400" />
-                  <span className="text-white font-medium">{product.name}</span>
+                  <Check className="w-3 h-3 text-cyan-400" />
+                  <span className="text-white font-medium text-sm">{product.name}</span>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <span className="text-slate-400 text-sm">
+                  <span className="text-slate-400 text-xs">
                     {Array.isArray(product.features) ? `${product.features.length} features` : product.features}
                   </span>
                   {expandedProduct === product.name ? (
-                    <ChevronUp className="w-4 h-4 text-slate-400" />
+                    <ChevronUp className="w-3 h-3 text-slate-400" />
                   ) : (
-                    <ChevronDown className="w-4 h-4 text-slate-400" />
+                    <ChevronDown className="w-3 h-3 text-slate-400" />
                   )}
                 </div>
               </button>
-              
+
               {expandedProduct === product.name && (
-                <div className="px-3 pb-3 border-t border-slate-700">
-                  <div className="pt-3 space-y-2">
+                <div className="px-2 pb-2 border-t border-slate-700">
+                  <div className="pt-2 space-y-1">
                     {Array.isArray(product.features) ? (
                       product.features.map((feature: string, idx: number) => (
-                        <div key={idx} className="text-sm text-slate-300 flex items-center space-x-2">
+                        <div key={idx} className="text-xs text-slate-300 flex items-center space-x-2">
                           <div className="w-1 h-1 bg-cyan-400 rounded-full"></div>
                           <span>{feature}</span>
                         </div>
                       ))
                     ) : (
-                      <div className="text-sm text-slate-300">{product.features}</div>
+                      <div className="text-xs text-slate-300">{product.features}</div>
                     )}
                   </div>
                 </div>
@@ -133,16 +146,16 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan }
 
         <Button
           onClick={() => onChoosePlan(
-            tier.name, 
+            tier.name,
             billingCycle === "yearly" ? `₹${Math.round(plan.price * 10)}` : plan.priceText,
             billingCycle
           )}
-          className={`w-full mt-8 py-3 font-semibold rounded-lg transition-all duration-300 ${
-            tier.popular
+          className={`w-full mt-6 py-2 font-semibold rounded-lg transition-all duration-300 text-sm ${
+            isSelected
               ? "bg-cyan-400 text-slate-900 hover:bg-cyan-300"
               : "bg-slate-700 text-white hover:bg-slate-600 border border-slate-600"
           }`}
-          size="lg"
+          size="sm"
         >
           Choose {tier.name}
         </Button>
@@ -605,7 +618,8 @@ export function NewPricingPage() {
     price: string;
     billingCycle: string;
   } | null>(null)
-  
+  const [selectedCardIndex, setSelectedCardIndex] = useState<number>(1) // Pro card (index 1) is initially selected
+
   // Default to AVA CX pricing
   const currentProduct = productPricing["ava-cx"]
 
@@ -616,6 +630,10 @@ export function NewPricingPage() {
       billingCycle: cycle
     })
     setIsContactFormOpen(true)
+  }
+
+  const handleCardSelect = (index: number) => {
+    setSelectedCardIndex(index)
   }
 
   return (
@@ -729,20 +747,22 @@ export function NewPricingPage() {
         </div>
 
         {/* Pricing Cards */}
-        <div className="grid lg:grid-cols-4 gap-6 max-w-7xl mx-auto mt-1">
+        <div className="grid lg:grid-cols-4 gap-4 max-w-6xl mx-auto mt-1">
           {[
             { name: "Basic", description: "Perfect for small teams getting started", popular: false },
             { name: "Pro", description: "Most popular choice for growing businesses", popular: true },
             { name: "Advanced", description: "Advanced features for scaling teams", popular: false },
             { name: "Enterprise", description: "Full-scale solution for large organizations", popular: false }
           ].map((tier, index) => (
-            <PricingCard 
+            <PricingCard
               key={tier.name}
               tier={tier}
               index={index}
               billingCycle={billingCycle}
               currentProduct={currentProduct}
               onChoosePlan={handleChoosePlan}
+              isSelected={selectedCardIndex === index}
+              onSelect={() => handleCardSelect(index)}
             />
           ))}
         </div>
@@ -757,16 +777,18 @@ export function NewPricingPage() {
               Contact our sales team for enterprise pricing and custom solutions tailored to your organization's needs.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button 
-                size="lg" 
+              <Button
+                size="lg"
                 className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8"
+                onClick={() => window.open('tel:+918585858585', '_self')}
               >
                 Contact Sales
               </Button>
-              <Button 
-                variant="outline" 
+              <Button
+                variant="outline"
                 size="lg"
                 className="border-2 border-blue-600 text-blue-600 hover:bg-blue-50 rounded-full px-8"
+                onClick={() => window.location.href = '/enterprise'}
               >
                 View Enterprise
               </Button>
