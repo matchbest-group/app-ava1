@@ -275,67 +275,6 @@ export function Header({}: HeaderProps = {}) {
           {/* Right Side Actions */}
           <div className="flex items-center space-x-4">
             
-            {/* Talk to AVA Button with Instruction */}
-            {(
-              <div className="relative">
-                <Button
-                  onClick={() => {
-                    console.log('Talk to AVA button clicked!', { handleTalkToAVA: !!handleTalkToAVA })
-                    handleTalkToAVA()
-                  }}
-                  variant="outline"
-                  size="sm"
-                  className={`flex items-center space-x-2 bg-transparent transition-all duration-300 relative overflow-hidden group ${
-                    isCallingAgent
-                      ? "border-green-500 text-green-600 animate-pulse"
-                      : isPricingPage
-                      ? "border-white/30 text-white hover:text-white hover:border-white"
-                      : "border-slate-300 hover:text-white hover:border-primary"
-                  }`}
-                  disabled={isCallingAgent}
-                >
-                  {/* Loading fill animation */}
-                  <div className={`absolute inset-0 bg-gradient-to-r transition-transform duration-500 ease-out ${
-                    isCallingAgent
-                      ? "from-green-500 to-emerald-600 translate-x-0"
-                      : "from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0"
-                  }`}></div>
-                  
-                  {/* Button content */}
-                  <div className="relative z-10 flex items-center space-x-2">
-                    {isCallingAgent ? (
-                      <>
-                        <Phone className="w-4 h-4 transition-transform duration-300 animate-bounce" />
-                        <span className="font-medium">Calling Agent...</span>
-                      </>
-                    ) : (
-                      <>
-                        <Bot className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
-                        <span className="font-medium">Talk to AVA</span>
-                      </>
-                    )}
-                  </div>
-                </Button>
-                
-                {/* Instruction Tooltip */}
-                {showInstruction && !isVoiceBotActive && (
-                  <div className="absolute top-full right-0 mt-2 w-48 bg-gray-900/95 backdrop-blur-xl text-white text-xs rounded-lg p-3 shadow-lg border border-gray-700/50 z-50">
-                    <div className="flex items-start space-x-2">
-                      <Bot className="w-4 h-4 text-blue-400 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="font-medium text-blue-400">Quick Start:</p>
-                        <p className="text-gray-300 mt-1">
-                          • Click "Talk to AVA" or<br/>
-                          • Say "Hi AVA" anywhere
-                        </p>
-                      </div>
-                    </div>
-                    {/* Arrow pointer */}
-                    <div className="absolute -top-1 right-6 w-2 h-2 bg-gray-900 rotate-45 border-l border-t border-gray-700/50"></div>
-                  </div>
-                )}
-              </div>
-            )}
             
             {/* Workspace Button */}
             <Link href="/workspace/login">
@@ -359,47 +298,6 @@ export function Header({}: HeaderProps = {}) {
               </Button>
             </Link>
 
-            {/* Mobile Talk to AVA Button */}
-            {(
-              <Button
-                onClick={() => {
-                  console.log('Mobile Talk to AVA button clicked!')
-                  handleTalkToAVA()
-                }}
-                variant="outline"
-                size="sm"
-                className={`md:hidden flex items-center space-x-2 bg-transparent transition-all duration-300 relative overflow-hidden group ${
-                  isCallingAgent
-                    ? "border-green-500 text-green-600 animate-pulse"
-                    : isPricingPage
-                    ? "border-white/30 text-white hover:text-white hover:border-white"
-                    : "border-slate-300 hover:text-white hover:border-primary"
-                }`}
-                disabled={isCallingAgent}
-              >
-                {/* Loading fill animation */}
-                <div className={`absolute inset-0 bg-gradient-to-r transition-transform duration-500 ease-out ${
-                  isCallingAgent
-                    ? "from-green-500 to-emerald-600 translate-x-0"
-                    : "from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0"
-                }`}></div>
-                
-                {/* Button content */}
-                <div className="relative z-10 flex items-center space-x-1">
-                  {isCallingAgent ? (
-                    <>
-                      <Phone className="w-4 h-4 transition-transform duration-300 animate-bounce" />
-                      <span className="font-medium text-xs">Calling...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Bot className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
-                      <span className="font-medium text-xs">AVA</span>
-                    </>
-                  )}
-                </div>
-              </Button>
-            )}
 
             {/* Mobile Menu Button */}
             <Button

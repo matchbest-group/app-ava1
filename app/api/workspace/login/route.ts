@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { WorkspaceDatabaseService } from '@/lib/database'
 import { FallbackDatabaseService } from '@/lib/fallback-database'
+import { MultiDatabaseService } from '@/lib/multi-database'
 
 export async function POST(request: NextRequest) {
   try {
@@ -14,9 +15,39 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    console.log(`Login attempt for Organization ID: ${organizationId}, Email: ${email}`)
+    console.log(`🔐 Enhanced login attempt for Organization ID: ${organizationId}, Email: ${email}`)
 
-    // Find workspace user by credentials with organization ID validation
+    // Try enhanced cross-service authentication first
+    try {
+      const crossServiceAuth = await MultiDatabaseService.authenticateUserAcrossServices(
+        organizationId,
+        email,
+        password
+      )
+
+      if (crossServiceAuth.success) {
+        console.log(`✅ Cross-service login successful for ${email} in organization: ${crossServiceAuth.organizationName}`)
+        console.log(`🎯 Authenticated services: ${crossServiceAuth.authenticatedServices?.join(', ')}`)
+
+        // Return user data (without sensitive information)
+        const { password: userPassword, ...safeUser } = crossServiceAuth.user
+        
+        return NextResponse.json({
+          success: true,
+          user: {
+            ...safeUser,
+            organizationName: crossServiceAuth.organizationName,
+            authenticatedServices: crossServiceAuth.authenticatedServices,
+            loginMethod: 'cross_service_auth'
+          }
+        })
+      }
+    } catch (error) {
+      console.error('❌ Cross-service authentication error:', error)
+    }
+
+    // Fallback to original authentication method
+    console.log('🔄 Falling back to original authentication method...')
     let user
     try {
       user = await WorkspaceDatabaseService.getWorkspaceUser(
@@ -35,21 +66,24 @@ export async function POST(request: NextRequest) {
     }
 
     if (!user) {
-      console.log(`Login failed for Organization ID: ${organizationId}, Email: ${email}`)
+      console.log(`❌ Login failed for Organization ID: ${organizationId}, Email: ${email}`)
       return NextResponse.json(
         { error: 'Invalid credentials. Please check your Organization ID, Email, and Password.' },
         { status: 401 }
       )
     }
 
-    console.log(`Login successful for Organization ID: ${organizationId}, Email: ${email}, Organization: ${user.organizationName}`)
+    console.log(`✅ Fallback login successful for Organization ID: ${organizationId}, Email: ${email}, Organization: ${user.organizationName}`)
 
     // Return user data (without sensitive information)
     const { password: userPassword, ...safeUser } = user
     
     return NextResponse.json({
       success: true,
-      user: safeUser
+      user: {
+        ...safeUser,
+        loginMethod: 'fallback_auth'
+      }
     })
 
   } catch (error) {
