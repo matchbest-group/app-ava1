@@ -29,8 +29,8 @@ const initializeServiceConnections = () => {
 // Initialize connections
 initializeServiceConnections()
 
-// Get database connection for a specific service
-export async function getServiceDb(serviceName: 'billing' | 'crm' | 'pingora', orgName: string): Promise<Db | null> {
+// Get database connection for a specific service with org ID
+export async function getServiceDb(serviceName: 'billing' | 'crm' | 'pingora', orgName: string, orgId?: string): Promise<Db | null> {
   try {
     if (!serviceClientPromises[serviceName]) {
       console.error(`${serviceName.toUpperCase()} service connection not available`)
@@ -38,7 +38,12 @@ export async function getServiceDb(serviceName: 'billing' | 'crm' | 'pingora', o
     }
 
     const client = await serviceClientPromises[serviceName]
-    const dbName = `${serviceName}_${orgName.toLowerCase().replace(/[^a-z0-9]/g, '_')}`
+    
+    // New naming convention: servicename_orgid_companyname
+    const sanitizedCompanyName = orgName.toLowerCase().replace(/[^a-z0-9]/g, '_')
+    const dbName = orgId 
+      ? `${serviceName}_${orgId}_${sanitizedCompanyName}`
+      : `${serviceName}_${sanitizedCompanyName}` // Fallback for backward compatibility
     
     console.log(`📊 Connecting to ${serviceName.toUpperCase()} database: ${dbName}`)
     return client.db(dbName)
@@ -46,6 +51,16 @@ export async function getServiceDb(serviceName: 'billing' | 'crm' | 'pingora', o
     console.error(`Error connecting to ${serviceName.toUpperCase()} database:`, error)
     return null
   }
+}
+
+// Backward compatibility function
+export async function getServiceDbByOrgName(serviceName: 'billing' | 'crm' | 'pingora', orgName: string): Promise<Db | null> {
+  return getServiceDb(serviceName, orgName)
+}
+
+// New function to get database by org ID (preferred method)
+export async function getServiceDbByOrgId(serviceName: 'billing' | 'crm' | 'pingora', orgId: string, orgName: string): Promise<Db | null> {
+  return getServiceDb(serviceName, orgName, orgId)
 }
 
 // Organization info to store in each service database
@@ -58,28 +73,33 @@ export interface OrganizationInfo {
   status: 'active' | 'inactive'
 }
 
-// Create organization databases across all services
+// Enhanced Organization Database Creation System
 export class MultiDatabaseService {
-  // Create organization databases in all services
+  // Create organization databases with proper structure across all services
   static async createOrganizationDatabases(orgData: {
     id: string
     name: string
     adminEmail: string
+    adminPassword: string
   }): Promise<{
     success: boolean
-    results: { [key: string]: { success: boolean; error?: string } }
+    results: { [key: string]: { success: boolean; error?: string; databaseName?: string; collections?: string[] } }
   }> {
     console.log(`🚀 Creating organization databases for: ${orgData.name} (${orgData.id})`)
     
-    const results: { [key: string]: { success: boolean; error?: string } } = {}
+    const results: { [key: string]: { success: boolean; error?: string; databaseName?: string; collections?: string[] } } = {}
     let overallSuccess = true
 
-    // Create databases for each service
+    // Sanitize company name for database naming
+    const sanitizedCompanyName = orgData.name.toLowerCase().replace(/[^a-z0-9]/g, '_')
+
+    // Create databases for each service with NEW naming convention including org ID
     for (const serviceName of ['billing', 'crm', 'pingora'] as const) {
       try {
-        console.log(`📊 Creating ${serviceName.toUpperCase()} database for ${orgData.name}...`)
+        console.log(`📊 Creating ${serviceName.toUpperCase()} database for ${orgData.name} (${orgData.id})...`)
         
-        const db = await getServiceDb(serviceName, orgData.name)
+        // Use new function with org ID
+        const db = await getServiceDbByOrgId(serviceName, orgData.id, orgData.name)
         if (!db) {
           results[serviceName] = { 
             success: false, 
@@ -88,6 +108,10 @@ export class MultiDatabaseService {
           overallSuccess = false
           continue
         }
+
+        // NEW Database naming: billing_orgid_companyname, crm_orgid_companyname, pingora_orgid_companyname
+        const databaseName = `${serviceName}_${orgData.id}_${sanitizedCompanyName}`
+        console.log(`🗄️ Enhanced Database name with Org ID: ${databaseName}`)
 
         // Create organization info collection
         const orgInfoCollection = db.collection('organization_info')
@@ -103,12 +127,22 @@ export class MultiDatabaseService {
 
         // Insert organization info
         await orgInfoCollection.insertOne(orgInfo)
-        console.log(`✅ ${serviceName.toUpperCase()} database created successfully`)
 
-        // Create service-specific collections and initial data
-        await this.createServiceSpecificCollections(db, serviceName, orgData)
+        // Create service-specific collections and initial data with admin credentials
+        const collections = await this.createServiceSpecificCollections(
+          db, 
+          serviceName, 
+          orgData, 
+          sanitizedCompanyName
+        )
         
-        results[serviceName] = { success: true }
+        results[serviceName] = { 
+          success: true, 
+          databaseName,
+          collections
+        }
+        
+        console.log(`✅ ${serviceName.toUpperCase()} database created successfully with collections: ${collections.join(', ')}`)
         
       } catch (error) {
         console.error(`❌ Error creating ${serviceName.toUpperCase()} database:`, error)
@@ -124,79 +158,162 @@ export class MultiDatabaseService {
     return { success: overallSuccess, results }
   }
 
-  // Create service-specific collections
+  // Create service-specific collections with proper naming convention
   private static async createServiceSpecificCollections(
     db: Db, 
     serviceName: 'billing' | 'crm' | 'pingora', 
-    orgData: { id: string; name: string; adminEmail: string }
-  ): Promise<void> {
+    orgData: { id: string; name: string; adminEmail: string; adminPassword: string },
+    sanitizedCompanyName: string
+  ): Promise<string[]> {
+    const createdCollections: string[] = []
+    
     try {
       switch (serviceName) {
         case 'billing':
-          // Create billing-specific collections
-          await db.createCollection('invoices')
-          await db.createCollection('payments')
-          await db.createCollection('subscriptions')
-          await db.createCollection('billing_users')
+          // Create billing-specific collections with company name
+          const billingCollections = [
+            'invoices',
+            'payments',
+            'subscriptions',
+            `user_${sanitizedCompanyName}`, // user_companyname collection
+            'billing_config'
+          ]
           
-          // Insert default billing admin
-          const billingUsersCollection = db.collection('billing_users')
+          for (const collectionName of billingCollections) {
+            await db.createCollection(collectionName)
+            createdCollections.push(collectionName)
+          }
+          
+          // Insert admin credentials in user_companyname collection
+          const billingUsersCollection = db.collection(`user_${sanitizedCompanyName}`)
           await billingUsersCollection.insertOne({
             organizationId: orgData.id,
             organizationName: orgData.name,
             email: orgData.adminEmail,
+            password: orgData.adminPassword, // Store admin password for login
             role: 'admin',
-            permissions: ['billing_read', 'billing_write', 'billing_admin'],
+            permissions: ['billing_read', 'billing_write', 'billing_admin', 'user_management'],
             isActive: true,
-            createdAt: new Date().toISOString()
+            serviceType: 'billing',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
           })
-          console.log(`💰 BILLING collections and admin user created for ${orgData.name}`)
+          console.log(`💰 BILLING collections and admin user created in user_${sanitizedCompanyName}`)
           break
 
         case 'crm':
-          // Create CRM-specific collections
-          await db.createCollection('contacts')
-          await db.createCollection('leads')
-          await db.createCollection('deals')
-          await db.createCollection('activities')
-          await db.createCollection('crm_users')
+          // Create CRM-specific collections with company name
+          const crmCollections = [
+            'contacts',
+            'leads',
+            'deals',
+            'activities',
+            `user_${sanitizedCompanyName}`, // user_companyname collection
+            'crm_config'
+          ]
           
-          // Insert default CRM admin
-          const crmUsersCollection = db.collection('crm_users')
+          for (const collectionName of crmCollections) {
+            await db.createCollection(collectionName)
+            createdCollections.push(collectionName)
+          }
+          
+          // Insert admin credentials in user_companyname collection
+          const crmUsersCollection = db.collection(`user_${sanitizedCompanyName}`)
           await crmUsersCollection.insertOne({
             organizationId: orgData.id,
             organizationName: orgData.name,
             email: orgData.adminEmail,
+            password: orgData.adminPassword, // Store admin password for login
             role: 'admin',
-            permissions: ['crm_read', 'crm_write', 'crm_admin'],
+            permissions: ['crm_read', 'crm_write', 'crm_admin', 'lead_management', 'user_management'],
             isActive: true,
-            createdAt: new Date().toISOString()
+            serviceType: 'crm',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
           })
-          console.log(`🤝 CRM collections and admin user created for ${orgData.name}`)
+          console.log(`🤝 CRM collections and admin user created in user_${sanitizedCompanyName}`)
           break
 
         case 'pingora':
-          // Create Pingora-specific collections
-          await db.createCollection('teams')
-          await db.createCollection('projects')
-          await db.createCollection('tasks')
-          await db.createCollection('messages')
-          await db.createCollection('pingora_users')
+          // Create Pingora-specific collections with company name
+          const pingoraCollections = [
+            'activity_log',
+            'attendance', 
+            'calendar-events',
+            'calendar_actions',
+            'calendar_blocks',
+            'calendar_bookings',
+            'channels',
+            'companies',
+            'conversations',
+            'directories',
+            'feedback',
+            'file_deletions',
+            'files',
+            'leaves',
+            'licenses',
+            'meetings',
+            'mention_reads',
+            'message_deletions',
+            'messages',
+            'notifications',
+            'push-subscriptions',
+            'scheduled_reminders',
+            'status_changes',
+            'task_comments',
+            'tasks',
+            'thread_reads',
+            'user_preferences',
+            'users',
+            'workspaces',
+            `user_${sanitizedCompanyName}`, // Admin credentials collection
+            'pingora_config'
+          ]
           
-          // Insert default Pingora admin
-          const pingoraUsersCollection = db.collection('pingora_users')
+          for (const collectionName of pingoraCollections) {
+            await db.createCollection(collectionName)
+            createdCollections.push(collectionName)
+          }
+          
+          // Insert admin credentials in user_companyname collection
+          const pingoraUsersCollection = db.collection(`user_${sanitizedCompanyName}`)
           await pingoraUsersCollection.insertOne({
             organizationId: orgData.id,
             organizationName: orgData.name,
             email: orgData.adminEmail,
+            password: orgData.adminPassword, // Store admin password for login
             role: 'admin',
-            permissions: ['pingora_read', 'pingora_write', 'pingora_admin'],
+            permissions: ['pingora_read', 'pingora_write', 'pingora_admin', 'team_management', 'user_management'],
             isActive: true,
-            createdAt: new Date().toISOString()
+            serviceType: 'pingora',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString()
           })
-          console.log(`🎯 PINGORA collections and admin user created for ${orgData.name}`)
+
+          // Also add admin credentials to the main 'users' collection for Pingora
+          const mainUsersCollection = db.collection('users')
+          await mainUsersCollection.insertOne({
+            organizationId: orgData.id,
+            organizationName: orgData.name,
+            email: orgData.adminEmail,
+            password: orgData.adminPassword,
+            role: 'admin',
+            permissions: ['pingora_read', 'pingora_write', 'pingora_admin', 'team_management', 'user_management'],
+            isActive: true,
+            serviceType: 'pingora',
+            createdAt: new Date().toISOString(),
+            updatedAt: new Date().toISOString(),
+            isAdmin: true,
+            canManageUsers: true,
+            canManageTeams: true,
+            canManageProjects: true
+          })
+          
+          console.log(`🎯 PINGORA collections and admin user created in user_${sanitizedCompanyName} and users collection`)
           break
       }
+      
+      return createdCollections
     } catch (error) {
       console.error(`Error creating ${serviceName.toUpperCase()} specific collections:`, error)
       throw error
@@ -257,6 +374,109 @@ export class MultiDatabaseService {
     }
 
     return { success: overallSuccess, results }
+  }
+
+  // Authenticate user across all service databases using org id + email + password
+  static async authenticateUserAcrossServices(
+    organizationId: string, 
+    email: string, 
+    password: string
+  ): Promise<{
+    success: boolean
+    user?: any
+    organizationName?: string
+    authenticatedServices?: string[]
+    error?: string
+  }> {
+    console.log(`🔐 Authenticating user across services for Org ID: ${organizationId}, Email: ${email}`)
+    
+    try {
+      // First, get organization name from main database
+      const mainDb = await this.getMainDb()
+      if (!mainDb) {
+        return { success: false, error: 'Main database connection failed' }
+      }
+      
+      const organization = await mainDb.collection('organizations').findOne({ id: organizationId })
+      if (!organization) {
+        return { success: false, error: 'Organization not found' }
+      }
+      
+      const organizationName = organization.name
+      const sanitizedCompanyName = organizationName.toLowerCase().replace(/[^a-z0-9]/g, '_')
+      
+      console.log(`🏢 Found organization: ${organizationName} (ID: ${organizationId})`)
+      
+      const authenticatedServices: string[] = []
+      let authenticatedUser: any = null
+      
+      // Try to authenticate against each service database using ORG ID
+      for (const serviceName of ['billing', 'crm', 'pingora'] as const) {
+        try {
+          // Use new method with org ID for precise database lookup
+          const db = await getServiceDbByOrgId(serviceName, organizationId, organizationName)
+          if (!db) {
+            console.log(`⚠️ ${serviceName.toUpperCase()} service not available for org ${organizationId}`)
+            continue
+          }
+          
+          console.log(`🔍 Checking ${serviceName.toUpperCase()} database: ${serviceName}_${organizationId}_${sanitizedCompanyName}`)
+          
+          // Check user in user_companyname collection
+          const userCollection = db.collection(`user_${sanitizedCompanyName}`)
+          const user = await userCollection.findOne({
+            organizationId: organizationId,
+            email: email,
+            password: password,
+            isActive: true
+          })
+          
+          if (user) {
+            authenticatedServices.push(serviceName)
+            if (!authenticatedUser) {
+              authenticatedUser = user // Use first found user as base
+            }
+            console.log(`✅ User authenticated in ${serviceName.toUpperCase()} service`)
+          }
+          
+        } catch (error) {
+          console.error(`❌ Error authenticating in ${serviceName.toUpperCase()}:`, error)
+        }
+      }
+      
+      if (authenticatedServices.length > 0) {
+        return {
+          success: true,
+          user: authenticatedUser,
+          organizationName,
+          authenticatedServices
+        }
+      } else {
+        return {
+          success: false,
+          error: 'Invalid credentials - user not found in any service database'
+        }
+      }
+      
+    } catch (error) {
+      console.error('❌ Error in cross-service authentication:', error)
+      return {
+        success: false,
+        error: error instanceof Error ? error.message : 'Authentication failed'
+      }
+    }
+  }
+
+  // Helper method to get main database connection
+  private static async getMainDb() {
+    try {
+      // This should use the same main database connection as the rest of the app
+      const { getMainDb } = await import('./mongodb')
+      return await getMainDb()
+    } catch (error) {
+      console.error('Error getting main database:', error)
+      return null
+    }
   }
 
   // Test connectivity to all services

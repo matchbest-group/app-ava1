@@ -77,13 +77,20 @@ export async function POST(request: NextRequest) {
         const multiDbResult = await MultiDatabaseService.createOrganizationDatabases({
           id: organization.id,
           name: organization.name,
-          adminEmail: organization.adminEmail
+          adminEmail: organization.adminEmail,
+          adminPassword: organization.adminPassword // Pass admin password for service database creation
         })
 
         console.log('Multi-database creation results:', multiDbResult)
         
         if (multiDbResult.success) {
           console.log(`✅ All service databases created successfully for ${organization.name}`)
+          console.log('📊 Created databases and collections:')
+          Object.entries(multiDbResult.results).forEach(([service, result]) => {
+            if (result.success) {
+              console.log(`  ${service.toUpperCase()}: ${result.databaseName} with collections: ${result.collections?.join(', ')}`)
+            }
+          })
         } else {
           console.warn(`⚠️ Some service databases failed to create for ${organization.name}:`, multiDbResult.results)
         }

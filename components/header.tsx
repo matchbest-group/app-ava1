@@ -359,47 +359,6 @@ export function Header({}: HeaderProps = {}) {
               </Button>
             </Link>
 
-            {/* Mobile Talk to AVA Button */}
-            {(
-              <Button
-                onClick={() => {
-                  console.log('Mobile Talk to AVA button clicked!')
-                  handleTalkToAVA()
-                }}
-                variant="outline"
-                size="sm"
-                className={`md:hidden flex items-center space-x-2 bg-transparent transition-all duration-300 relative overflow-hidden group ${
-                  isCallingAgent
-                    ? "border-green-500 text-green-600 animate-pulse"
-                    : isPricingPage
-                    ? "border-white/30 text-white hover:text-white hover:border-white"
-                    : "border-slate-300 hover:text-white hover:border-primary"
-                }`}
-                disabled={isCallingAgent}
-              >
-                {/* Loading fill animation */}
-                <div className={`absolute inset-0 bg-gradient-to-r transition-transform duration-500 ease-out ${
-                  isCallingAgent
-                    ? "from-green-500 to-emerald-600 translate-x-0"
-                    : "from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0"
-                }`}></div>
-                
-                {/* Button content */}
-                <div className="relative z-10 flex items-center space-x-1">
-                  {isCallingAgent ? (
-                    <>
-                      <Phone className="w-4 h-4 transition-transform duration-300 animate-bounce" />
-                      <span className="font-medium text-xs">Calling...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Bot className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
-                      <span className="font-medium text-xs">AVA</span>
-                    </>
-                  )}
-                </div>
-              </Button>
-            )}
 
             {/* Mobile Menu Button */}
             <Button
