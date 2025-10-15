@@ -59,7 +59,7 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan, 
         <CardTitle className="font-bold text-lg text-white mb-1">
           {tier.name}
         </CardTitle>
-        <CardDescription className="text-slate-400 mb-2 text-sm">
+        <CardDescription className="text-slate-200 mb-2 text-sm">
           {tier.description}
         </CardDescription>
 
@@ -70,10 +70,10 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan, 
               : plan.priceText
             }
           </div>
-          <div className="text-xs text-slate-400">
+          <div className="text-xs text-slate-300">
             per user/{billingCycle === "yearly" ? "year" : "month"}
           </div>
-          <div className="flex items-center justify-center text-xs text-slate-400">
+          <div className="flex items-center justify-center text-xs text-slate-300">
             <Users className="w-3 h-3 mr-1" />
             {plan.minUsers}
           </div>
@@ -92,8 +92,8 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan, 
               <div key={idx}>{item}</div>
             ))}
           </div>
-          <div className="pl-5 mt-1 text-xs text-slate-500">
-            <div className="font-medium text-slate-400 mb-1 text-xs">Additional costs:</div>
+          <div className="pl-5 mt-1 text-xs text-slate-400">
+            <div className="font-medium text-slate-300 mb-1 text-xs">Additional costs:</div>
             {plan.features[1]?.items.map((item: string, idx: number) => (
               <div key={idx}>{item}</div>
             ))}
@@ -103,7 +103,7 @@ function PricingCard({ tier, index, billingCycle, currentProduct, onChoosePlan, 
         {/* Product Sections with Dropdowns */}
         <div className="space-y-2">
           {productSections.map((product, prodIndex) => (
-            <div key={product.name} className="border border-slate-700 rounded-lg">
+            <div key={product.name} className="border border-slate-400 rounded-lg">
               <button
                 onClick={() => setExpandedProduct(expandedProduct === product.name ? null : product.name)}
                 className="w-full flex items-center justify-between p-2 text-left hover:bg-slate-700/50 transition-colors"

@@ -7,7 +7,7 @@ export function SimpleProductCatalog() {
   return (
     <>
       {/* Hero section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side content */}
           <div className="space-y-6 text-left">
@@ -39,7 +39,7 @@ export function SimpleProductCatalog() {
         </div>
       </section>
 
-      {/* section 1 */}
+      {/* section 1 - Image on Right */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side logo and text */}
@@ -54,7 +54,7 @@ export function SimpleProductCatalog() {
               />
             </div>
             <h2 className="text-4xl font-bold leading-tight max-w-md text-green-900">
-              Your <span className="text-green-400">AI-Powered</span> Customer Support Agent 
+              Your <span className="text-green-400">AI-Powered</span> Customer Support Agent
             </h2>
             <ul className="space-y-6 max-w-md text-gray-900">
               <li>
@@ -75,10 +75,10 @@ export function SimpleProductCatalog() {
               </li>
             </ul>
           </div>
-    
+
           {/* Right side image */}
           <div className="flex justify-center">
-            <Image  
+            <Image
               src="/rec/image1.png"
               alt="Product Visual"
               width={600}
@@ -89,7 +89,107 @@ export function SimpleProductCatalog() {
         </div>
       </section>
 
-      {/* section 2 */}
+      {/* section 3 - Image on Left */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          {/* Left side image */}
+          <div className="flex justify-center">
+            <Image
+              src="/rec/image3.png"
+              alt="Product Visual"
+              width={600}
+              height={400}
+              className="object-contain rounded-3xl shadow-lg"
+            />
+          </div>
+
+          {/* Right side logo and text */}
+          <div className="space-y-6">
+            <div className="flex justify-center md:justify-start">
+              <Image
+                src="/logo4.png"
+                alt="AVA pingora Logo"
+                width={200}
+                height={100}
+                className="object-contain"
+              />
+            </div>
+            <h2 className="text-4xl font-bold leading-tight max-w-md text-pink-900">
+              Your <span className="text-pink-400">Intelligent Business</span> Communication Hub
+            </h2>
+            <ul className="space-y-6 max-w-md text-gray-900">
+              <li>
+                <strong>Unified Connectivity:</strong><br />
+                Integrate chats, emails, and calls in one powerful dashboard.
+              </li>
+              <li>
+                <strong>Always Responsive:</strong><br />
+                AI ensures instant replies and smart follow-ups.
+              </li>
+              <li>
+                <strong>Smarter Interactions:</strong><br />
+                Understands context to improve customer relationships.
+              </li>
+              <li>
+                <strong>Data-Driven Growth:</strong><br />
+                Gain actionable insights with communication analytics.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* section 4 - Image on Right */}
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+          {/* Left side logo and text */}
+          <div className="space-y-6">
+            <div className="flex justify-center md:justify-start">
+              <Image
+                src="/logo2.png"
+                alt="AVA flow Logo"
+                width={200}
+                height={100}
+                className="object-contain"
+              />
+            </div>
+            <h2 className="text-4xl font-bold leading-tight max-w-md text-blue-900">
+              Your <span className="text-blue-400">AI-Driven</span> Workflow Automation Platform
+            </h2>
+            <ul className="space-y-6 max-w-md text-gray-900">
+              <li>
+                <strong>Seamless Integration:</strong><br />
+                Connect your tools, automate repetitive tasks, and save time.
+              </li>
+              <li>
+                <strong>Always Efficient:</strong><br />
+                AI ensures smooth process execution with no downtime.
+              </li>
+              <li>
+                <strong>Smarter Workflows:</strong><br />
+                Optimize operations through intelligent task routing.
+              </li>
+              <li>
+                <strong>Instant Visibility:</strong><br />
+                Track team performance with real-time automation insights.
+              </li>
+            </ul>
+          </div>
+
+          {/* Right side image */}
+          <div className="flex justify-center">
+            <Image
+              src="/rec/image4.png"
+              alt="Product Visual"
+              width={600}
+              height={400}
+              className="object-contain rounded-3xl shadow-lg"
+            />
+          </div>
+        </div>
+      </section>
+
+      {/* section 2 - AVA SmartBill - Image on Left */}
       <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side image */}
@@ -133,106 +233,6 @@ export function SimpleProductCatalog() {
               <li>
                 <strong>Real-Time Insights:</strong><br />
                 Monitor cash flow and performance with AI-driven analytics.
-              </li>
-            </ul>
-          </div>
-        </div>
-      </section>
-
-      {/* section 3 */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left side logo and text */}
-          <div className="space-y-6">
-            <div className="flex justify-center md:justify-start">
-              <Image
-                src="/logo4.png"
-                alt="AVA pingora Logo"
-                width={200}
-                height={100}
-                className="object-contain"
-              />
-            </div>
-            <h2 className="text-4xl font-bold leading-tight max-w-md text-pink-900">
-              Your <span className="text-pink-400">Intelligent Business</span> Communication Hub 
-            </h2>
-            <ul className="space-y-6 max-w-md text-gray-900">
-              <li>
-                <strong>Unified Connectivity:</strong><br />
-                Integrate chats, emails, and calls in one powerful dashboard.
-              </li>
-              <li>
-                <strong>Always Responsive:</strong><br />
-                AI ensures instant replies and smart follow-ups.
-              </li>
-              <li>
-                <strong>Smarter Interactions:</strong><br />
-                Understands context to improve customer relationships.
-              </li>
-              <li>
-                <strong>Data-Driven Growth:</strong><br />
-                Gain actionable insights with communication analytics.
-              </li>
-            </ul>
-          </div>
-    
-          {/* Right side image */}
-          <div className="flex justify-center">
-            <Image  
-              src="/rec/image3.png"
-              alt="Product Visual"
-              width={600}
-              height={400}
-              className="object-contain rounded-3xl shadow-lg"
-            />
-          </div>
-        </div>
-      </section>
-
-      {/* section 4 */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          {/* Left side image */}
-          <div className="flex justify-center">
-            <Image
-              src="/rec/image4.png"
-              alt="Product Visual"
-              width={600}
-              height={400}
-              className="object-contain rounded-3xl shadow-lg"
-            />
-          </div>
-
-          {/* Right side logo and text */}
-          <div className="space-y-6">
-            <div className="flex justify-center md:justify-start">
-              <Image
-                src="/logo2.png"
-                alt="AVA flow Logo"
-                width={200}
-                height={100}
-                className="object-contain"
-              />
-            </div>
-            <h2 className="text-4xl font-bold leading-tight max-w-md text-blue-900">
-              Your <span className="text-blue-400">AI-Driven</span> Workflow Automation Platform
-            </h2>
-            <ul className="space-y-6 max-w-md text-gray-900">
-              <li>
-                <strong>Seamless Integration:</strong><br />
-                Connect your tools, automate repetitive tasks, and save time.
-              </li>
-              <li>
-                <strong>Always Efficient:</strong><br />
-                AI ensures smooth process execution with no downtime.
-              </li>
-              <li>
-                <strong>Smarter Workflows:</strong><br />
-                Optimize operations through intelligent task routing.
-              </li>
-              <li>
-                <strong>Instant Visibility:</strong><br />
-                Track team performance with real-time automation insights.
               </li>
             </ul>
           </div>

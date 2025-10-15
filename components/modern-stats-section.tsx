@@ -73,7 +73,7 @@ function AnimatedCounter({ end, duration, suffix = "", prefix = "" }: CounterPro
 
 export function ModernStatsSection() {
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
+    <section className="py-16 bg-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -81,10 +81,10 @@ export function ModernStatsSection() {
         }} />
       </div>
 
-      <div className="container mx-auto px-4 relative z-10">
+      <div className="container mx-auto px-4 -mb-5 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full px-6 py-3 mb-6">
+        <div className="text-center mb-10">
+          <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full px-6 -mt-10 mb-5 py-3">
             <Trophy className="w-5 h-5 text-blue-500" />
             <span className="text-blue-700 font-semibold">Our Impact</span>
           </div>
