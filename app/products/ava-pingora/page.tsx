@@ -11,8 +11,8 @@ export default function AVAPingoraPage() {
   return (
     <main className="min-h-screen bg-background">
       <Header />
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-8 relative">
-        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 lg:min-h-[80vh] mb-20">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 pt-[2rem] pb-4 relative">
+        <div className="flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 lg:min-h-[80vh] mb-[4rem]">
         {/* Left side */}
         <div className="flex-1 w-full max-w-lg flex flex-col justify-center order-2 lg:order-1">
           {/* Top left logo */}
@@ -28,7 +28,7 @@ export default function AVAPingoraPage() {
           </div>
 
           {/* Heading */}
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-8 lg:mb-16">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-extrabold leading-tight mb-6 lg:mb-5">
             <span className="text-pink-600">Connect</span> <br />
             Collaborate & Grow <span className="text-pink-600">Seamlessly</span> <br />
 
@@ -49,8 +49,8 @@ export default function AVAPingoraPage() {
       </div>
 
       {/* Subtitle and buttons centered full width */}
-      <div className="w-full flex flex-col items-center space-y-4 mt-8 lg:mt-0 lg:absolute lg:bottom-16 lg:left-0 lg:right-0">
-        <p className="text-lg sm:text-xl lg:text-2xl text-gray-700 font-medium max-w-4xl text-center mb-8 px-4">
+      <div className="w-full flex flex-col items-center space-y-4 mt-4 lg:mt-5 lg:absolute lg:bottom-10 lg:left-0 lg:right-0">
+        <p className="text-md sm:text-md lg:text-md text-gray-700 font-medium max-w-4xl text-center px-4">
           An AI-powered digital office that unifies communication, boosts collaboration, and scales
           <br className="hidden sm:block" />
           effortlessly — designed for the modern workplace.
@@ -198,7 +198,7 @@ export default function AVAPingoraPage() {
     </section>
 
     {/* New Section: See AVA Pingora in Action */}
-    <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+    <section className="container mx-auto px-4 sm:px-6 lg:px-8 py-7 text-center">
       <h2 className="text-4xl font-extrabold mb-4">
         See AVA <span className="text-pink-600">Pingora</span> in Action
       </h2>

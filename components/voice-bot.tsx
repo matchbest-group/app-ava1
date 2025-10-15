@@ -2,11 +2,11 @@
 
 import { useState, useRef, useEffect, useCallback } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { 
-  Mic, 
-  MicOff, 
-  Bot, 
-  Minimize2, 
+import {
+  Mic,
+  MicOff,
+  Bot,
+  Minimize2,
   Maximize2,
   Zap,
   Sparkles,
@@ -52,6 +52,15 @@ export function VoiceBot({ isOpen, onToggle, isHeaderTriggered = false, onCallin
   const [meetingFormData, setMeetingFormData] = useState<any>({})
   
   const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  // Ensure audio element is properly initialized
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = 0.9
+      audioRef.current.preload = 'auto'
+      console.log('🎵 Audio element initialized successfully')
+    }
+  }, [])
   const isConnectedRef = useRef(false)
   const isSpeakingRef = useRef(false)
   const router = useRouter()
@@ -2626,5 +2635,3 @@ export function VoiceBot({ isOpen, onToggle, isHeaderTriggered = false, onCallin
     </>
   )
 }
-
-

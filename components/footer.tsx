@@ -34,7 +34,7 @@ export function Footer() {
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Solutions</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/products" className="hover:text-[#4B6CEB] transition">All Products</Link></li>
-                <li><Link href="/bundles" className="hover:text-[#4B6CEB] transition">Bundled Offers</Link></li>
+                {/* <li><Link href="/bundles" className="hover:text-[#4B6CEB] transition">Bundled Offers</Link></li> */}
                 <li><Link href="/pricing" className="hover:text-[#4B6CEB] transition">Pricing Plans</Link></li>
               </ul>
             </div>
@@ -45,6 +45,7 @@ export function Footer() {
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/enterprise" className="hover:text-[#4B6CEB] transition">Enterprise</Link></li>
                 <li><Link href="/support" className="hover:text-[#4B6CEB] transition">Documentation</Link></li>
+                <li><Link href="/sitemap" className="hover:text-[#4B6CEB] transition">Sitemap</Link></li>
               </ul>
             </div>
 
@@ -62,17 +63,13 @@ export function Footer() {
             <div className="text-left">
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Contact Us</h4>
               <div className="space-y-4 text-sm text-gray-600">
-                <div className="flex items-center space-x-2">
+                {/* <div className="flex items-center space-x-2">
                   <Phone className="w-4 h-4 text-[#4B6CEB]" />
                   <span>+91 8585858585</span>
-                </div>
+                </div> */}
                 <div className="flex items-center space-x-2">
                   <Mail className="w-4 h-4 text-[#4B6CEB]" />
-                  <span>contact@avasuit.com</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <MapPin className="w-4 h-4 text-[#4B6CEB]" />
-                  <span>132 Las Vegas, United States</span>
+                  <span>contact@matchbestsoftware.com</span>
                 </div>
               </div>
             </div>

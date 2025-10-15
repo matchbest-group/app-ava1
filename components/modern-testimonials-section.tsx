@@ -27,7 +27,7 @@ const testimonials: Testimonial[] = [
     role: "CEO",
     company: "TechFlow Solutions",
     content: "AVA One transformed our entire operation. We've seen a 150% increase in efficiency and our team productivity has never been higher. The AI automation features alone saved us 40 hours per week.",
-    avatar: "/avatars/avatar-1.png",
+    avatar: "/avatars/avatar.jpeg",
     rating: 5,
     metrics: {
       label: "Efficiency Increase",
@@ -41,7 +41,7 @@ const testimonials: Testimonial[] = [
     role: "Operations Director",
     company: "Global Dynamics",
     content: "The integration capabilities are phenomenal. We connected all our existing tools seamlessly and now have a unified view of our business. ROI was positive within the first month.",
-    avatar: "/avatars/avatar-2.png",
+    avatar: "/avatars/avatar-2.jpg",
     rating: 5,
     metrics: {
       label: "ROI Timeline",
@@ -55,7 +55,7 @@ const testimonials: Testimonial[] = [
     role: "VP of Engineering",
     company: "Innovation Labs",
     content: "The scalability is incredible. We went from 50 to 500 users without any performance issues. The AI insights help us make data-driven decisions that have increased our revenue by 300%.",
-    avatar: "/avatars/avatar-3.png",
+    avatar: "/avatars/somu.jpeg",
     rating: 5,
     metrics: {
       label: "Revenue Growth",
@@ -172,7 +172,7 @@ export function ModernTestimonialsSection() {
   }
 
   return (
-    <section className="py-24 bg-white relative overflow-hidden">
+    <section className="py-16 bg-white relative overflow-hidden">
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0" style={{
@@ -182,7 +182,7 @@ export function ModernTestimonialsSection() {
 
       <div className="container mx-auto px-4 relative z-10">
         {/* Section Header */}
-        <div className="text-center mb-20">
+        <div className="text-center -mt-10">
           <div className="inline-flex items-center gap-2 bg-gradient-to-r from-blue-100 to-indigo-100 rounded-full px-6 py-3 mb-6">
             <Star className="w-5 h-5 text-blue-500 fill-current" />
             <span className="text-blue-700 font-semibold">Success Stories</span>
@@ -192,7 +192,7 @@ export function ModernTestimonialsSection() {
             Customer success stories
           </h2>
           
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-3">
             See how businesses like yours have transformed their operations and achieved remarkable results with AVA One.
           </p>
         </div>
@@ -210,7 +210,7 @@ export function ModernTestimonialsSection() {
           </div>
 
           {/* Navigation */}
-          <div className="flex items-center justify-center gap-4 mt-12">
+          <div className="flex items-center -mt-10 justify-center gap-4">
             <Button
               variant="outline"
               size="lg"
@@ -246,7 +246,7 @@ export function ModernTestimonialsSection() {
         </div>
 
         {/* Bottom CTA */}
-        <div className="mt-20 text-center">
+        <div className="mt-10 text-center">
           <div className="inline-flex items-center gap-6 bg-gradient-to-r from-gray-50 to-gray-100 rounded-2xl p-8">
             <div className="flex -space-x-4">
               {testimonials.map((testimonial, index) => (

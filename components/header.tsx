@@ -84,30 +84,30 @@ export function Header({}: HeaderProps = {}) {
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Pricing", href: "/pricing" },
-    { name: "Contact", href: "/contacts" }, 
+    { name: "Contact", href: "/contacts" },
     // { name: "Custom Bundle", href: "/custom-bundle" },
   ]
 
   return (
-    <motion.header 
+    <motion.header
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         isPricingPage
-          ? isScrolled 
+          ? isScrolled
             ? 'bg-white/10 backdrop-blur-xl border-b border-white/20'
             : 'bg-transparent'
-          : isScrolled 
-            ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-slate-200/50' 
+          : isScrolled
+            ? 'bg-white/95 backdrop-blur-xl shadow-2xl border-b border-slate-200/50'
             : 'bg-transparent'
       }`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5 }}
     >
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20">
+      <div className="container mx-auto px-3 sm:px-4 md:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-14 sm:h-16 md:h-18 lg:h-20 min-h-[56px]">
           
           {/* Logo */}
-          <Link href="/" className="flex items-center space-x-3 z-10">
+          <Link href="/" className="flex items-center space-x-2 sm:space-x-3 z-10">
             <motion.div
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
@@ -115,13 +115,13 @@ export function Header({}: HeaderProps = {}) {
               <img
                 src="/logo.png"
                 alt="AVA Suite Logo"
-                className="h-10 md:h-12 w-auto"
+                className="h-8 sm:h-9 md:h-10 lg:h-11 xl:h-12 w-auto flex-shrink-0"
               />
             </motion.div>
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex items-center space-x-8">
+          <nav className="hidden lg:flex items-center space-x-6 xl:space-x-8">
             
             {/* Home */}
             <Link
@@ -273,7 +273,7 @@ export function Header({}: HeaderProps = {}) {
           </nav>
 
           {/* Right Side Actions */}
-          <div className="flex items-center space-x-4">
+          <div className="flex items-center space-x-2 sm:space-x-3 md:space-x-4">
             
             {/* Talk to AVA Button with Instruction */}
             {(
@@ -285,7 +285,7 @@ export function Header({}: HeaderProps = {}) {
                   }}
                   variant="outline"
                   size="sm"
-                  className={`flex items-center space-x-2 bg-transparent transition-all duration-300 relative overflow-hidden group ${
+                  className={`hidden md:flex items-center px-3 py-2 sm:px-4 sm:py-2.5 text-sm bg-transparent transition-all duration-300 relative overflow-hidden group ${
                     isCallingAgent
                       ? "border-green-500 text-green-600 animate-pulse"
                       : isPricingPage
@@ -359,47 +359,6 @@ export function Header({}: HeaderProps = {}) {
               </Button>
             </Link>
 
-            {/* Mobile Talk to AVA Button */}
-            {(
-              <Button
-                onClick={() => {
-                  console.log('Mobile Talk to AVA button clicked!')
-                  handleTalkToAVA()
-                }}
-                variant="outline"
-                size="sm"
-                className={`md:hidden flex items-center space-x-2 bg-transparent transition-all duration-300 relative overflow-hidden group ${
-                  isCallingAgent
-                    ? "border-green-500 text-green-600 animate-pulse"
-                    : isPricingPage
-                    ? "border-white/30 text-white hover:text-white hover:border-white"
-                    : "border-slate-300 hover:text-white hover:border-primary"
-                }`}
-                disabled={isCallingAgent}
-              >
-                {/* Loading fill animation */}
-                <div className={`absolute inset-0 bg-gradient-to-r transition-transform duration-500 ease-out ${
-                  isCallingAgent
-                    ? "from-green-500 to-emerald-600 translate-x-0"
-                    : "from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0"
-                }`}></div>
-                
-                {/* Button content */}
-                <div className="relative z-10 flex items-center space-x-1">
-                  {isCallingAgent ? (
-                    <>
-                      <Phone className="w-4 h-4 transition-transform duration-300 animate-bounce" />
-                      <span className="font-medium text-xs">Calling...</span>
-                    </>
-                  ) : (
-                    <>
-                      <Bot className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />
-                      <span className="font-medium text-xs">AVA</span>
-                    </>
-                  )}
-                </div>
-              </Button>
-            )}
 
             {/* Mobile Menu Button */}
             <Button
@@ -435,9 +394,9 @@ export function Header({}: HeaderProps = {}) {
             transition={{ duration: 0.3 }}
             className="lg:hidden bg-white/95 backdrop-blur-xl border-t border-slate-200/50"
           >
-            <div className="container mx-auto px-4 py-6">
+            <div className="container mx-auto px-3 sm:px-4 py-4 sm:py-6 max-w-full overflow-x-hidden">
               <nav className="space-y-4">
-                
+
                 {/* Home */}
                 <Link
                   href="/"
@@ -486,7 +445,7 @@ export function Header({}: HeaderProps = {}) {
                   >
                     {/* Loading fill animation */}
                     <div className="absolute inset-0 bg-gradient-to-r from-primary to-purple-600 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-500 ease-out"></div>
-                    
+
                     {/* Button content */}
                     <div className="relative z-10 flex items-center justify-center space-x-2">
                       <LogIn className="w-4 h-4 transition-transform duration-300 group-hover:scale-110" />

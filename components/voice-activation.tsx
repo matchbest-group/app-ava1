@@ -162,7 +162,7 @@ export function VoiceActivation({ onActivate, isVoiceBotActive, shouldStartListe
 
   // Visual indicator (always visible for debugging)
   return (
-    <div className="fixed bottom-4 left-4 z-30">
+    <div className="fixed bottom-4 right-4 z-30">
       <div className="bg-blue-600/10 backdrop-blur-sm border border-blue-500/20 rounded-lg px-3 py-1">
         <div className="flex items-center space-x-2 text-xs text-blue-400">
           <div className={`w-2 h-2 rounded-full ${isBackgroundListening ? 'bg-green-400 animate-pulse' : 'bg-red-400'}`}></div>

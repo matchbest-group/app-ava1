@@ -408,20 +408,6 @@ export default function WorkspaceLayout({ children, user, selectedProducts }: Wo
                 <Badge variant="outline" className="text-sm">
                   {selectedProducts.length} Products Active
                 </Badge>
-                <Button
-                  onClick={() => setIsVoiceBotOpen(!isVoiceBotOpen)}
-                  className={`relative transition-all duration-200 ${
-                    isVoiceBotOpen 
-                      ? 'bg-blue-600 hover:bg-blue-700 text-white shadow-lg' 
-                      : 'bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white shadow-md hover:shadow-lg'
-                  }`}
-                  size="sm"
-                >
-                  <div className="flex items-center space-x-2">
-                    <div className={`w-2 h-2 rounded-full ${isVoiceBotOpen ? 'bg-green-400 animate-pulse' : 'bg-white'}`}></div>
-                    <span className="font-medium">Talk to AVA</span>
-                  </div>
-                </Button>
               </div>
             </div>
           </div>
