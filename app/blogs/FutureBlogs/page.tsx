@@ -3,10 +3,10 @@ import Image from 'next/image';
 
 const FutureBlog = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-50 py-16">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-gray-50 pt-10 pb-4">
+      <div className="max-w-6xl mx-auto sm:px-6 lg:px-8">
         {/* Hero Section */}
-        <div className="mb-16">
+        <div className="mb-5">
           {/* Main Heading */}
           <div className="text-center px-4">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">

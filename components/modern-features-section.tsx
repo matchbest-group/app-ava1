@@ -154,7 +154,7 @@ export function ModernFeaturesSection() {
   ]
 
   return (
-    <section className="py-24 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
+    <section className="py-16 bg-gradient-to-br from-gray-50 via-white to-gray-50 relative overflow-hidden">
       {/* Background Elements */}
       <div className="absolute inset-0">
         <div className="absolute top-40 left-10 w-96 h-96 bg-gradient-to-r from-blue-400/10 to-indigo-400/10 rounded-full mix-blend-multiply filter blur-3xl"></div>
@@ -212,11 +212,11 @@ export function ModernFeaturesSection() {
         </div>
 
         {/* Bottom Section */}
-        <div className="mt-24 text-center">
+        <div className="mt-20 text-center">
           <div className="bg-gradient-to-br from-blue-500 to-indigo-500 rounded-3xl p-12 text-white relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-blue-600/20 to-indigo-600/20 backdrop-blur-sm"></div>
             <div className="relative z-10">
-              <div className="flex items-center justify-center mb-6">
+              <div className="flex items-center justify-center">
                 <div className="flex -space-x-4">
                   <Smartphone className="w-8 h-8 text-white/80" />
                   <Cloud className="w-8 h-8 text-white/80" />

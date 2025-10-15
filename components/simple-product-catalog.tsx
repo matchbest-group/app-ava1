@@ -7,7 +7,7 @@ export function SimpleProductCatalog() {
   return (
     <>
       {/* Hero section */}
-      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-12">
+      <section className="container mx-auto px-4 sm:px-6 lg:px-8 pt-16 pb-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
           {/* Left side content */}
           <div className="space-y-6 text-left">

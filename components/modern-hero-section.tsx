@@ -318,7 +318,7 @@ export function ModernHeroSection() {
       </div>
 
       {/* Main Content */}
-      <div className="relative z-10 container mx-auto px-4 pt-24 pb-20">
+      <div className="relative z-10 container mx-auto px-4 pt-24 pb-10">
         {/* Hero Header */}
         <div className="text-center mb-16 relative">
           {/* Badge with animation */}
