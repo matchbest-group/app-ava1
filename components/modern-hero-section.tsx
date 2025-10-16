@@ -8,7 +8,7 @@ import { useState, useEffect } from "react"
 
 export function ModernHeroSection() {
   const [isVisible, setIsVisible] = useState(false)
-  const [activeSection, setActiveSection] = useState('sales')
+  const [activeSection, setActiveSection] = useState('cx')
 
   useEffect(() => {
     setIsVisible(true)
