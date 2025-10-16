@@ -9,10 +9,10 @@ export function Footer() {
     <footer className="relative bg-gradient-to-b from-white to-gray-50 rounded-t-3xl shadow-inner mt-20 pt-12 pb-10">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Top: Left (Logo/About) + Right (Links) */}
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-10 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-12 md:grid-cols-12 gap-2 items-start">
           {/* Left: Logo + About */}
-          <div className="md:col-span-2">
-            <div className="flex items-center mb-4">
+          <div className="sm:col-span-4 md:col-span-4">
+            <div className="flex left-4 items-center mb-4">
               <Image
                 src="/logo.png"
                 alt="AVAONE Logo"
@@ -28,9 +28,9 @@ export function Footer() {
           </div>
 
           {/* Right: 4 Link Sections */}
-          <div className="md:col-span-3 grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="sm:col-span-8 md:col-span-8 grid grid-cols-1 sm:grid-cols-4 md:grid-cols-4 gap-4 sm:gap-8">
             {/* Solutions */}
-            <div className="text-left">
+            <div className="text-center sm:text-left">
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Solutions</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/products" className="hover:text-[#4B6CEB] transition">All Products</Link></li>
@@ -40,7 +40,7 @@ export function Footer() {
             </div>
 
             {/* Resources */}
-            <div className="text-left">
+            <div className="text-center sm:text-left">
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Resources</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/enterprise" className="hover:text-[#4B6CEB] transition">Enterprise</Link></li>
@@ -50,7 +50,7 @@ export function Footer() {
             </div>
 
             {/* Access */}
-            <div className="text-left">
+            <div className="text-center sm:text-left">
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Access</h4>
               <ul className="space-y-2 text-sm text-gray-600">
                 <li><Link href="/organization/login" className="hover:text-[#4B6CEB] transition">Organization Login</Link></li>
@@ -60,13 +60,9 @@ export function Footer() {
             </div>
 
             {/* Contact */}
-            <div className="text-left">
+            <div className="text-center sm:text-left">
               <h4 className="font-semibold text-gray-800 mb-4 text-base">Contact Us</h4>
-              <div className="space-y-4 text-sm text-gray-600">
-                {/* <div className="flex items-center space-x-2">
-                  <Phone className="w-4 h-4 text-[#4B6CEB]" />
-                  <span>+91 8585858585</span>
-                </div> */}
+              <div className="flex flex-col sm:flex-row gap-4 text-sm text-gray-600">
                 <div className="flex items-center space-x-2">
                   <Mail className="w-4 h-4 text-[#4B6CEB]" />
                   <span>contact@matchbestsoftware.com</span>
